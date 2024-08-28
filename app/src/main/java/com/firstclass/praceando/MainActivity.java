@@ -9,8 +9,12 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.firstclass.praceando.calendar.CalendarFragment;
+import com.firstclass.praceando.home.HomeFragment;
+import com.firstclass.praceando.map.MapFragment;
+import com.firstclass.praceando.marketplace.MarketplaceFragment;
+import com.firstclass.praceando.perfil.PerfilFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     private BottomNavigationView navigationView;
@@ -41,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             loadFragment(new CalendarFragment(), false);
 
         } else if (itemId == R.id.navigation_market) {
-            loadFragment(new MarketFragment(), false);
+            loadFragment(new MarketplaceFragment(), false);
 
         } else if (itemId == R.id.navigation_perfil) {
             loadFragment(new PerfilFragment(), false);

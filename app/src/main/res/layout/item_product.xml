@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:backgroundTint="@color/white"
+    android:layout_marginBottom="20dp"
+    android:elevation="0dp"
+    app:cardElevation="0dp"
+    app:cardCornerRadius="0dp">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
+
+        <View
+            android:layout_width="340dp"
+            android:layout_height="110dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="2dp"
+            android:background="@drawable/product_item_text_background" />
+
+        <TextView
+            android:id="@+id/productTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Avatar Futuristico"
+            android:textColor="@color/rosaEscurao"
+            android:layout_gravity="start"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="120dp"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            />
+
+        <TextView
+            android:id="@+id/productDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="bonito lindo cheiroso"
+            android:textColor="@color/rosaEscurao"
+            android:layout_gravity="start"
+            android:layout_marginTop="52dp"
+            android:layout_marginStart="120dp"
+            android:textSize="14sp"
+            />
+
+        <TextView
+            android:id="@+id/productPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="R$ 1.99"
+            android:textColor="@color/rosaEscurao"
+            android:layout_gravity="start"
+            android:layout_marginTop="90dp"
+            android:layout_marginStart="120dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            />
+
+        <ImageView
+            android:id="@+id/productImage"
+            android:layout_width="113dp"
+            android:layout_height="143dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/avatar" />
+
+
+    </FrameLayout>
+
+
+
+
+
+
+</androidx.cardview.widget.CardView>

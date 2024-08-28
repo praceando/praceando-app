@@ -55,4 +55,10 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:20.0.0")
 
     // Removido `com.android.support:design:27.0.2` para evitar conflito com AndroidX
+
+    //imagem
+    implementation("com.squareup.picasso:picasso:2.71828")
+
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
+
 }

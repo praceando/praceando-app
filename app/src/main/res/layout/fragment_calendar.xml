@@ -3,13 +3,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CalendarFragment">
+    tools:context=".calendar.CalendarFragment">
+
+    <FrameLayout
+        android:id="@+id/calendarFragmentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="60dp"
+        />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@drawable/rounded_container"
+        android:backgroundTint="@color/rosaClaro"
+        android:layout_gravity="bottom"/>
+
 
     <TextView
+        android:id="@+id/dateText"
+        android:layout_width="wrap_content"
+        android:layout_height="21dp"
+        android:text="Quinta 14, Julho"
+        android:textSize="16sp"
+        android:textColor="@color/rosaEscurao"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="265dp"
+        android:layout_marginStart="30dp"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewCalendarEvent"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_width="378dp"
+        android:layout_height="250dp"
+        tools:listitem="@layout/item_event_calendar"
+        />
+
+
+    <FrameLayout
+        android:id="@+id/headerFragmentLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#9C27B0"
-        android:gravity="center"
-        android:text="CALENDAR FRAGMENT" />
+        android:layout_height="60dp"
+        />
+
+
+
 
 </FrameLayout>
