@@ -77,7 +77,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         int height = 130;
         int width = 130;
-        BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.bee);
+        BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.img_bee);
         Bitmap b = bitmapdraw.getBitmap();
         Bitmap myLocationMarker = Bitmap.createScaledBitmap(b, width, height, false);
 

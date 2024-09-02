@@ -5,18 +5,20 @@
     android:layout_height="wrap_content"
     android:elevation="0dp"
     app:cardElevation="0dp"
+    android:backgroundTint="@color/white"
+    android:layout_marginStart="6dp"
     app:cardCornerRadius="5dp">
 
     <TextView
-        android:id="@+id/tag"
+        android:id="@+id/tagName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Gastronomia"
-        android:textColor="@color/rosa"
+        android:textColor="@color/rosaEscuro"
         android:layout_gravity="start"
-        android:textSize="18sp"
+        android:textSize="12sp"
         android:padding="6dp"
-        android:background="@drawable/tag"
+        android:background="@drawable/shape_tag"
         />
 
 </androidx.cardview.widget.CardView>

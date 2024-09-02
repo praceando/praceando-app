@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="PRACEANDO"
-        android:background="@drawable/background_linear_color"
+        android:background="@drawable/shape_background_linear_color"
         android:fontFamily="sans-serif-condensed"
         android:gravity="center"
         />

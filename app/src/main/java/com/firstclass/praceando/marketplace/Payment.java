@@ -1,4 +1,4 @@
-package com.firstclass.praceando;
+package com.firstclass.praceando.marketplace;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.firstclass.praceando.R;
 import com.squareup.picasso.Picasso;
 
 public class Payment extends AppCompatActivity {

@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_linear_color"
-    tools:context=".Payment">
+    android:background="@drawable/shape_background_linear_color"
+    tools:context=".marketplace.Payment">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="600dp"
         android:layout_gravity="bottom"
-        android:background="@drawable/background_white"
+        android:background="@drawable/shape_background_white"
         />
 
     <LinearLayout
@@ -88,7 +88,7 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/qrcode"
+            android:background="@drawable/img_qrcode"
             android:layout_marginVertical="20dp"
             />
 

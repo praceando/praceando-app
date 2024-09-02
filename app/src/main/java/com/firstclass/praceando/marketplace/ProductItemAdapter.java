@@ -12,7 +12,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firstclass.praceando.Payment;
 import com.firstclass.praceando.R;
 import com.firstclass.praceando.entities.Product;
 import com.squareup.picasso.Picasso;
@@ -32,7 +31,6 @@ public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemAdapter.
     }
     @Override
     public void onBindViewHolder(@NonNull ProductItemAdapter.ProductItemViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        // Carrega os dados do objeto no viewItem
         holder.title.setText(productList.get(position).getTitle());
         holder.price.setText("R$:"+productList.get(position).getPrice());
         holder.description.setText(productList.get(position).getDescription());
@@ -40,8 +38,6 @@ public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemAdapter.
         Picasso.get()
                 .load(productList.get(position).getImageUrl())
                 .into(holder.imageUrl);
-
-
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
