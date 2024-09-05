@@ -1,8 +1,10 @@
 package com.firstclass.praceando.EventDetails;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -16,7 +18,6 @@ import com.denzcoskun.imageslider.models.SlideModel;
 import com.firstclass.praceando.R;
 import com.firstclass.praceando.entities.Event;
 import com.firstclass.praceando.entities.Tag;
-import com.google.android.flexbox.FlexboxLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,8 +28,10 @@ public class EventActivity  extends AppCompatActivity {
 
     private ImageView returnArrow;
     private TextView title, locale, time, date;
+    private LinearLayout goToReviews;
     private RatingBar ratingBar;
     private RecyclerView recyclerView;
+    private List<Tag> tagList = new ArrayList<>();
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -40,6 +43,7 @@ public class EventActivity  extends AppCompatActivity {
         time = findViewById(R.id.time);
         date = findViewById(R.id.date);
         recyclerView = findViewById(R.id.tagsRecyclerView);
+        goToReviews = findViewById(R.id.goToReviews);
 
         returnArrow = findViewById(R.id.returnArrow);
         returnArrow.setOnClickListener(v -> finish());
@@ -65,13 +69,22 @@ public class EventActivity  extends AppCompatActivity {
 
         ratingBar.setRating(3.5F);
 
-        List<Tag> tagList = Arrays.asList(event.getTags());
+        tagList = Arrays.asList(event.getTags());
 
         TagsItemAdapter tagsItemAdapter = new TagsItemAdapter(tagList);
         recyclerView.setAdapter(tagsItemAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(layoutManager);
+
+        goToReviews.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("event", event);
+
+            Intent intent = new Intent(this, ReviewsActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        });
 
     }
 }

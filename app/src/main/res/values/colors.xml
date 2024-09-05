@@ -10,4 +10,5 @@
     <color name="transparente">#00000000</color>
     <color name="cinza">#8C8C8C</color>
     <color name="rosaClarinho">#FFF0F5</color>
+    <color name="cinzaEscuro">#4C4C4C</color>
 </resources>

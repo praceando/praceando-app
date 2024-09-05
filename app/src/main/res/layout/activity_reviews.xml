@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EventDetails.ActivityComments">
+    tools:context=".EventDetails.ReviewsActivity">
 
     <View
         android:layout_width="match_parent"
@@ -23,9 +23,10 @@
         android:layout_width="match_parent"
         android:layout_gravity="bottom"
         android:background="@drawable/shape_rounded_container"
-        android:layout_height="593dp"/>
+        android:layout_height="610dp"/>
 
     <TextView
+        android:id="@+id/title"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:textStyle="bold"
@@ -34,13 +35,23 @@
         android:textSize="25sp"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
-        android:layout_marginTop="40dp"/>
+        android:layout_marginTop="47dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/commentsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="575dp"
-        tools:listitem="@layout/item_comment"
+        android:layout_height="590dp"
+        tools:listitem="@layout/item_review"
         android:layout_gravity="bottom"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addReviewBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:src="@drawable/ic_plus"
+        app:rippleColor="@color/rosaEscurao"
+        app:backgroundTint="@color/rosaEscuro"
+        android:layout_margin="20dp"/>
 
 </FrameLayout>

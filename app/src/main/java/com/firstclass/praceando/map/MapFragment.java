@@ -95,7 +95,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
-        googleMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+        googleMap.moveCamera(CameraUpdateFactory.zoomTo(12));
         googleMap.addMarker(new MarkerOptions()
                 .position(userLocation)
                 .icon(BitmapDescriptorFactory.fromBitmap(myLocationMarker))

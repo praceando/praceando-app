@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    app:cardElevation="30dp"
+    app:cardCornerRadius="0dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+   <FrameLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:background="@drawable/shape_dialog_review" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <ImageView
+            android:id="@+id/closeBtn"
+            android:layout_width="17dp"
+            android:layout_height="17dp"
+            android:background="@drawable/ic_x"
+            android:backgroundTint="@color/rosaEscurao"
+            android:layout_marginEnd="13dp"
+            android:layout_marginTop="13dp"
+            android:layout_gravity="end"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="Como você avaliaria Hot Dog Sr Antonio?"
+            android:textColor="@color/rosaEscurao"
+            android:textSize="18sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"/>
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_marginTop="80dp"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:stepSize="0.5"
+            android:isIndicator="false"
+            android:rating="0"
+            style="@style/CustomRatingBarStyle"
+            android:layout_gravity="center_horizontal"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="135dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the. "
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:paddingHorizontal="17dp"
+                android:paddingVertical="10dp"
+                android:orientation="vertical"
+                android:background="@drawable/shape_comment">
+
+                <EditText
+                    android:id="@+id/comment"
+                    android:layout_width="225dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="120dp"
+                    android:maxLines="10"
+                    android:textColor="@color/black"
+                    android:textSize="15.5sp"
+                    android:hint="Deixe um comentário"
+                    android:gravity="start"
+                    android:background="@color/white"
+                    />
+
+            </LinearLayout>
+            <Button
+                android:id="@+id/reviewBtn"
+                android:layout_width="88dp"
+                android:layout_height="42dp"
+                android:layout_gravity="end|bottom"
+                android:backgroundTint="@color/rosaEscuro"
+                android:text="Avaliar"
+                android:textSize="12sp"
+                android:layout_marginVertical="11dp"
+                />
+        </LinearLayout>
+
+
+
+    </FrameLayout>
+
+
+</androidx.cardview.widget.CardView>

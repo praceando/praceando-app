@@ -1,6 +1,8 @@
 package com.firstclass.praceando.calendar;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firstclass.praceando.EventDetails.EventActivity;
 import com.firstclass.praceando.R;
 import com.firstclass.praceando.entities.Event;
 
@@ -27,18 +30,24 @@ public class CalendarEventItemAdapter extends RecyclerView.Adapter<CalendarEvent
     }
     @Override
     public void onBindViewHolder(@NonNull CalendarEventItemAdapter.CalendarEventItemViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        // Carrega os dados do objeto no viewItem
-        holder.title.setText(eventlist.get(position).getTitle());
-        holder.locale.setText(eventlist.get(position).getLocale());
-        holder.time.setText(eventlist.get(position).getTime());
-        holder.date.setText(eventlist.get(position).getDate());
+        Event event = eventlist.get(position);
 
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(v.getContext(), "Position clicked: " + position, Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        holder.title.setText(event.getTitle());
+        holder.locale.setText(event.getLocale());
+        holder.time.setText(event.getTime());
+        holder.date.setText(event.getDate());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("event", event);
+
+                Intent intent = new Intent(holder.itemView.getContext(), EventActivity.class);
+                intent.putExtras(bundle);
+                holder.itemView.getContext().startActivity(intent);
+            }
+        });
     }
     @Override
     public int getItemCount() {

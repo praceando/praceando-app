@@ -11,13 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Toast;
 
 import com.firstclass.praceando.R;
-import com.firstclass.praceando.calendar.CalendarEventItemAdapter;
-import com.firstclass.praceando.calendar.CalendarViewFragment;
 import com.firstclass.praceando.entities.Event;
 import com.firstclass.praceando.entities.Tag;
 import com.firstclass.praceando.fragments.HeaderFragment;
@@ -28,13 +24,13 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
 
-    private List eventList = new ArrayList<>();
+    private final List<Object> eventList = new ArrayList<>();
     RecyclerView recyclerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         // Initialize and commit child fragments
@@ -55,18 +51,9 @@ public class HomeFragment extends Fragment {
         TagItemAdapter adapter = new TagItemAdapter(getContext(), tagList);
         autoCompleteTextView.setAdapter(adapter);
 
-        autoCompleteTextView.setOnItemClickListener((parent, view1, position, id) -> {
-            Tag selectedItem = (Tag) parent.getItemAtPosition(position);
-            Long selectedId = selectedItem.getId();
-        });
-
-
-        // Criando a lista de eventos
-        List eventList = new ArrayList<>();
 
         eventList.add("Cada tonelada de papel reciclado economiza cerca de 17 árvores, faça sua parte!");
 
-        // Criando e adicionando diferentes eventos com listas de tags
         eventList.add(new Event("9:30h - 17h", "Praça do Samba", "14/07 - 14/07", "Hot Dog Sr. Antonio", "https://s2-oglobo.glbimg.com/DxiOCjddhu1nx9GiDbsAYPh2tKY=/0x0:809x493/1008x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_da025474c0c44edd99332dddb09cabe8/internal_photos/bs/2022/L/d/NfVSGFSTqULzZK7MjveQ/lanche.jpg",
                 new Tag[] {
                         new Tag(1L, "Gastronomia"),
@@ -76,7 +63,7 @@ public class HomeFragment extends Fragment {
                         new Tag(3L, "Popular")
                 }));
 
-        eventList.add(new Event("10:00h - 18h", "N. Sra. dos Prazeres", "15/07 - 15/07", "Feira de Artesanato", "https://blog.123milhas.com/wp-content/uploads/2022/08/feira-de-artesanato-ao-ar-livre-redes-outros-objetos-artesanais-conexao123.jpg",
+        eventList.add(new Event("10h - 18h", "N. Sra. dos Prazeres", "15/07 - 15/07", "Feira de Artesanato", "https://blog.123milhas.com/wp-content/uploads/2022/08/feira-de-artesanato-ao-ar-livre-redes-outros-objetos-artesanais-conexao123.jpg",
                 new Tag[] {
                         new Tag(4L, "Artesanato"),
                         new Tag(5L, "Feira"),
@@ -84,35 +71,35 @@ public class HomeFragment extends Fragment {
                         new Tag(3L, "Popular")
                 }));
 
-        eventList.add(new Event("8:00h - 12h", "Praia do Futuro", "16/07 - 16/07", "Corrida do Sol", "https://eccobolsas.com.br/wp-content/uploads/2023/05/Quais-sao-os-tipos-de-corrida-de-rua.png",
+        eventList.add(new Event("8h - 12h", "Praia do Futuro", "16/07 - 16/07", "Corrida do Sol", "https://eccobolsas.com.br/wp-content/uploads/2023/05/Quais-sao-os-tipos-de-corrida-de-rua.png",
                 new Tag[] {
                         new Tag(7L, "Esporte"),
                         new Tag(8L, "Saúde"),
                         new Tag(9L, "Corrida")
                 }));
 
-        eventList.add(new Event("14:00h - 22h", "Centro Cultural", "17/07 - 17/07", "Mostra de Cinema", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIe1cF_ZkxAniXv0qqy2XX73u079G2BKXASA&s",
+        eventList.add(new Event("14h - 22h", "Centro Cultural", "17/07 - 17/07", "Mostra de Cinema", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIe1cF_ZkxAniXv0qqy2XX73u079G2BKXASA&s",
                 new Tag[] {
                         new Tag(10L, "Cinema"),
                         new Tag(11L, "Cultura"),
                         new Tag(12L, "Arte")
                 }));
 
-        eventList.add(new Event("18:00h - 23h", "Estádio Municipal", "18/07 - 18/07", "Show de Rock", "https://midias.correio24horas.com.br/2023/04/13/rock-no-parque-da-cidade-em-salvador-1567377.jpg",
+        eventList.add(new Event("18h - 23h", "Estádio Municipal", "18/07 - 18/07", "Show de Rock", "https://midias.correio24horas.com.br/2023/04/13/rock-no-parque-da-cidade-em-salvador-1567377.jpg",
                 new Tag[] {
                         new Tag(13L, "Música"),
                         new Tag(14L, "Rock"),
                         new Tag(15L, "Entretenimento")
                 }));
 
-        eventList.add(new Event("9:00h - 13h", "Biblioteca Pública", "19/07 - 19/07", "Encontro de Leitores", "https://catracalivre.com.br/wp-content/uploads/2020/04/1028904-02-07-2016-dsc7443-910x544.jpg",
+        eventList.add(new Event("9h - 13h", "Biblioteca Pública", "19/07 - 19/07", "Encontro de Leitores", "https://catracalivre.com.br/wp-content/uploads/2020/04/1028904-02-07-2016-dsc7443-910x544.jpg",
                 new Tag[] {
                         new Tag(16L, "Leitura"),
                         new Tag(17L, "Literatura"),
                         new Tag(18L, "Cultura")
                 }));
 
-        eventList.add(new Event("20:00h - 02h", "Centro Histórico", "20/07 - 20/07", "Noite dos Museus", "https://www.blogvambora.com.br/wp-content/uploads/2012/05/39009754_5de61cb610_Hugo.jpg",
+        eventList.add(new Event("20h - 02h", "Centro Histórico", "20/07 - 20/07", "Noite dos Museus", "https://www.blogvambora.com.br/wp-content/uploads/2012/05/39009754_5de61cb610_Hugo.jpg",
                 new Tag[] {
                         new Tag(19L, "Museus"),
                         new Tag(20L, "História"),

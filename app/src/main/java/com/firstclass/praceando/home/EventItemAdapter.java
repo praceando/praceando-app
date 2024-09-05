@@ -96,7 +96,6 @@ public class EventItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     return;
                 }
 
-
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("event", event);
 

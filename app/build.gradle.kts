@@ -42,8 +42,10 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+//    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
+//    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-livedata:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-viewmode:2.7.0")
     implementation("androidx.navigation:navigation-fragment:2.6.0")
     implementation("androidx.navigation:navigation-ui:2.6.0")
     implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
@@ -60,6 +62,9 @@ dependencies {
     //imagem
     implementation("com.squareup.picasso:picasso:2.71828")
 
+    //flexbox - para tags
     implementation("com.google.android.flexbox:flexbox:3.0.0")
+
+    //carossel
     implementation("com.github.denzcoskun:ImageSlideshow:0.1.2")
 }
