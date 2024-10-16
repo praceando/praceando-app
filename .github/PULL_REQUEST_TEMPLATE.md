@@ -15,9 +15,9 @@
 <!-- Explique como testar as alterações localmente ou em ambiente de desenvolvimento, incluindo qualquer pré-requisito. -->
 
 - Passos para testar:
-  1. Clone o branch `nome-do-branch`.
-  2. Rode a aplicação.
-  3. Verifique se [função XYZ] está funcionando conforme esperado.
+  1. Clone o branch `main`.
+  2. Sincronize as dependencias.
+  3. Rode a aplicação.
 
 ## ⚠️ Informações adicionais
 
@@ -29,7 +29,6 @@
 
 ## ✅ Checklist
 
-- [ ] Testes foram criados/adaptados.
 - [ ] O código está de acordo com o guia de estilo do projeto.
 - [ ] A documentação foi atualizada, se necessário.
 
