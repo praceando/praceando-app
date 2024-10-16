@@ -33,6 +33,7 @@
             android:layout_height="wrap_content"
             android:text="Avatar Futuristica"
             android:textColor="@color/rosaEscurao"
+            android:fontFamily="@font/montserrat_medium"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:textStyle="bold"
@@ -46,9 +47,10 @@
             android:layout_height="wrap_content"
             android:text="Avatar feio padrão descrição dele aaaaa lindo lindo"
             android:textColor="@color/rosaEscurao"
+            android:fontFamily="@font/montserrat_medium"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:textSize="17sp"
+            android:textSize="16sp"
             android:layout_marginTop="17dp"
             />
 
@@ -80,7 +82,8 @@
             android:textColor="@color/rosaEscurao"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:textSize="17sp"
+            android:fontFamily="@font/montserrat_medium"
+            android:textSize="16sp"
             android:textStyle="bold"
             />
 
@@ -100,6 +103,7 @@
             android:layout_gravity="center_horizontal"
             android:text="Finalizar"
             android:textColor="@color/white"
+            android:fontFamily="@font/montserrat_semibold"
             android:layout_marginTop="12dp"
             />
 

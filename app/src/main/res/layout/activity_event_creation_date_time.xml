@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:background="@drawable/shape_background_linear_color"
+    android:layout_height="match_parent"
+    tools:context=".EventDetails.EventCreationDateTime">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/shape_background_linear_color"/>
+
+    <ImageView
+        android:id="@+id/returnArrow"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/ic_rounded_arrow"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="18dp"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_gravity="bottom"
+        android:background="@drawable/shape_rounded_container"
+        android:layout_marginTop="68dp"
+        android:layout_height="match_parent"/>
+
+    <TextView
+        android:layout_width="300dp"
+        android:fontFamily="@font/montserrat_semibold"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="Novo Evento"
+        android:textColor="@color/rosaEscuraoClaro"
+        android:textSize="24sp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_marginTop="18dp"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="90dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Preencha as informações de data, hora e local do evento"
+            android:textColor="@color/rosaEscurao"
+            android:fontFamily="@font/montserrat_semibold"
+            android:textStyle="bold"
+            android:textSize="17sp"
+            android:gravity="center"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginBottom="30dp"/>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                android:fontFamily="@font/montserrat_medium"
+                android:layout_marginBottom="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Selecione o local do evento"
+                android:layout_gravity="start"
+                android:textSize="15sp"
+                android:layout_marginStart="10dp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/dropdownLayout"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/rosaEscurao"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColorHint="@color/cinza"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                android:padding="0dp"
+                android:layout_marginBottom="25dp"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                app:endIconDrawable="@drawable/ic_dropdown_arrow"
+                app:endIconTint="@color/rosaEscurao"
+                app:errorEnabled="true"
+                app:errorIconDrawable="@null"
+                app:hintEnabled="false">
+
+                <AutoCompleteTextView
+                    android:id="@+id/autoCompleteTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Selecione um local"
+                    android:background="@drawable/shape_dropdown"
+                    android:textSize="15sp"
+                    android:textColor="@color/rosaEscurao"
+                    app:simpleItems="@array/event_list"
+                    android:dropDownHeight="172dp"
+                    android:popupBackground="@color/cinzaClaro"
+                    android:focusableInTouchMode="false"
+                    android:padding="0dp"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:fontFamily="@font/montserrat_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Selecione a data de ínicio"
+                android:layout_gravity="start"
+                android:layout_marginBottom="5dp"
+                android:textSize="15sp"
+                android:layout_marginStart="10dp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/startDateInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                app:endIconMode="custom"
+                android:padding="0dp"
+                app:endIconDrawable="@drawable/calendar_thin"
+                android:layout_marginBottom="5dp"
+                app:errorIconDrawable="@null"
+                app:endIconTint="@color/rosaEscurao">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/startDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:background="@drawable/shape_input"
+                    android:textColor="@color/black"
+                    android:singleLine="true"
+                    android:enabled="false"
+                    android:padding="0dp"
+                    android:contextClickable="false"
+                    android:textSize="14sp"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:fontFamily="@font/montserrat_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Selecione a data de encerramento"
+                android:layout_gravity="start"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="3dp"
+                android:textSize="15sp"
+                android:layout_marginStart="10dp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/endDateInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                app:endIconMode="custom"
+                android:padding="0dp"
+                app:errorIconDrawable="@null"
+                app:endIconDrawable="@drawable/calendar_thin"
+                android:layout_marginBottom="5dp"
+                app:endIconTint="@color/rosaEscurao">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/endDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:background="@drawable/shape_input"
+                    android:textColor="@color/black"
+                    android:singleLine="true"
+                    android:padding="0dp"
+                    android:enabled="false"
+                    android:contextClickable="false"
+                    android:textSize="14sp"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:fontFamily="@font/montserrat_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Selecione o horário de início"
+                android:layout_gravity="start"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="3dp"
+                android:textSize="15sp"
+                android:layout_marginStart="10dp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/startTimeInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                app:endIconMode="custom"
+                android:padding="0dp"
+                app:endIconDrawable="@drawable/clock_thin"
+                app:errorIconDrawable="@null"
+                android:layout_marginBottom="5dp"
+                app:endIconTint="@color/rosaEscurao">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/startTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:background="@drawable/shape_input"
+                    android:textColor="@color/black"
+                    android:singleLine="true"
+                    android:enabled="false"
+                    android:padding="0dp"
+                    android:contextClickable="false"
+                    android:textSize="14sp"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:fontFamily="@font/montserrat_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Selecione o horário de encerramento"
+                android:layout_gravity="start"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="3dp"
+                android:textSize="15sp"
+                android:layout_marginStart="10dp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/endTimeInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                app:endIconMode="custom"
+                android:padding="0dp"
+                app:endIconDrawable="@drawable/clock_thin"
+                app:errorIconDrawable="@null"
+                android:layout_marginBottom="5dp"
+                app:endIconTint="@color/rosaEscurao">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/endTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:background="@drawable/shape_input"
+                    android:textColor="@color/black"
+                    android:singleLine="true"
+                    android:enabled="false"
+                    android:padding="0dp"
+                    android:contextClickable="false"
+                    android:textSize="14sp"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/nextBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:layout_gravity="end|bottom"
+                android:backgroundTint="@color/rosaEscuraoDesativado"
+                android:text="Próximo"
+                android:enabled="false"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:layout_marginTop="3dp"
+                android:fontFamily="@font/montserrat_semibold"
+                android:drawableEnd="@drawable/ic_arrow"
+                android:drawableTint="@color/white"
+                />
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+
+</FrameLayout>

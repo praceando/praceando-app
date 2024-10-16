@@ -39,9 +39,9 @@ public class MarketplaceFragment extends Fragment {
         fragmentTransaction.commit();
 
 
-        productList.add(new Product("avatar padrão feio", 1.99, "Avatar Futuristico", "https://cdn-icons-png.freepik.com/512/13748/13748555.png"));
-        productList.add(new Product("avatar padrão feio", 1.99, "Avatar Futuristico", "https://cdn-icons-png.freepik.com/512/13748/13748436.png"));
         productList.add(new Product("avatar padrão feio", 1.99, "Avatar Futuristico", "https://cdn-icons-png.freepik.com/512/13748/13748379.png"));
+        productList.add(new Product("avatar padrão feio", 1.99, "Avatar Futuristico", "https://cdn-icons-png.freepik.com/512/13748/13748436.png"));
+        productList.add(new Product("avatar padrão feio", 1.99, "Avatar Futuristico", "https://cdn-icons-png.freepik.com/512/13748/13748555.png"));
         productList.add(new Product("avatar padrão feio", 1.99, "Avatar Futuristico", "https://cdn-icons-png.freepik.com/256/13748/13748527.png"));
         productList.add(new Product("avatar padrão feio", 1.99, "Avatar Futuristico", "https://cdn-icons-png.freepik.com/512/13748/13748670.png"));
         productList.add(new Product("avatar padrão feio", 1.99, "Avatar Futuristico", "https://cdn-icons-png.freepik.com/512/13748/13748614.png"));

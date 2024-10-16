@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/main"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/shape_background_linear_color"
+    tools:context=".perfil.PerfilEdit">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/shape_background_linear_color"/>
+
+    <ImageView
+        android:id="@+id/returnArrow"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_x"
+        app:tint="@color/cinza"
+        android:layout_margin="25dp"
+        />
+
+    <Button
+        android:id="@+id/saveBtn"
+        android:layout_width="67dp"
+        android:textColor="@color/white"
+        android:layout_height="35dp"
+        android:layout_gravity="end"
+        android:fontFamily="@font/montserrat_medium"
+        android:padding="0dp"
+        android:backgroundTint="@color/rosaEscuraoClaro"
+        android:layout_margin="18dp"
+        android:text="Salvar"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_gravity="bottom"
+        android:background="@drawable/shape_rounded_container"
+        android:layout_marginTop="120dp"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_gravity="center"
+            android:id="@+id/userImage"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:scaleType="centerCrop"
+            android:clipToOutline="true"
+            android:layout_marginBottom="20dp"/>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
+            <TextView
+                android:fontFamily="@font/montserrat_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/cinza"
+                android:text="Nickname"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/nicknameInputLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/nickname"
+                    android:layout_width="350dp"
+                    android:text="Mayren"
+                    android:layout_height="49dp"
+                    android:background="@drawable/shape_input"
+                    android:textColor="@color/black"
+                    android:singleLine="true"
+                    android:inputType="textEmailAddress"
+                    android:textSize="14sp"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:fontFamily="@font/montserrat_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/cinza"
+                android:layout_marginTop="15dp"
+                android:text="Sua Bio"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/bioInputLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:counterEnabled="true"
+                android:layout_gravity="center_horizontal"
+                app:counterMaxLength="230"
+                android:layout_marginBottom="12dp"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/bio"
+                    android:layout_width="350dp"
+                    android:layout_height="90dp"
+                    android:background="@drawable/shape_input"
+                    android:textColor="@color/black"
+                    android:inputType="textMultiLine"
+                    android:text="Amante de eventos ao ar livre"
+                    android:lineBreakStyle="normal"
+                    android:textSize="14sp"
+                    android:maxLines="10"
+                    android:gravity="start|top"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
+            <TextView
+                android:fontFamily="@font/montserrat_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/cinza"
+                android:layout_marginBottom="5dp"
+                android:text="Seu Avatar"/>
+
+            <FrameLayout
+                android:layout_width="350dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/shape_input"
+                android:layout_gravity="center_horizontal">
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingVertical="10dp"
+                    android:scrollbars="none">
+
+                    <com.google.android.flexbox.FlexboxLayout
+                        android:id="@+id/avatarFlexblox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        app:flexDirection="row"
+                        app:flexWrap="wrap"
+                        app:alignContent="flex_start"
+                        app:alignItems="flex_start"
+                        app:justifyContent="flex_start" />
+                </ScrollView>
+            </FrameLayout>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

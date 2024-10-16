@@ -14,9 +14,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Gastronomia"
+        android:fontFamily="@font/montserrat_medium"
         android:textColor="@color/rosaEscuro"
         android:layout_gravity="start"
-        android:textSize="12sp"
+        android:textSize="11.5sp"
         android:padding="6dp"
         android:background="@drawable/shape_tag"
         />

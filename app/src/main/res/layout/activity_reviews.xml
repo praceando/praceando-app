@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/shape_background_linear_color"
+    android:id="@+id/main"
     tools:context=".EventDetails.ReviewsActivity">
 
     <View
@@ -23,7 +25,8 @@
         android:layout_width="match_parent"
         android:layout_gravity="bottom"
         android:background="@drawable/shape_rounded_container"
-        android:layout_height="610dp"/>
+        android:layout_marginTop="135dp"
+        android:layout_height="match_parent"/>
 
     <TextView
         android:id="@+id/title"
@@ -31,8 +34,9 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:text="21 Avaliações de Hot dog Sr antonio"
-        android:textColor="@color/rosaEscurao"
-        android:textSize="25sp"
+        android:textColor="@color/rosaEscuraoClaro"
+        android:fontFamily="@font/montserrat_medium"
+        android:textSize="24sp"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:layout_marginTop="47dp"/>
@@ -40,8 +44,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/commentsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="590dp"
+        android:layout_height="match_parent"
         tools:listitem="@layout/item_review"
+        android:layout_marginTop="145dp"
         android:layout_gravity="bottom"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -51,7 +56,7 @@
         android:layout_gravity="bottom|end"
         android:src="@drawable/ic_plus"
         app:rippleColor="@color/rosaEscurao"
-        app:backgroundTint="@color/rosaEscuro"
+        app:backgroundTint="@color/rosa"
         android:layout_margin="20dp"/>
 
 </FrameLayout>

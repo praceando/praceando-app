@@ -1,76 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white"
-    tools:context=".marketplace.MarketplaceFragment"
-    android:orientation="vertical">
+    tools:context=".home.HomeFragment">
 
-    <FrameLayout
-        android:id="@+id/headerFragmentLayout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginBottom="10dp"
-        />
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textColor="@color/rosaEscurao"
-        android:text="meus eventos    outros eventos"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="15dp"
-        android:visibility="visible"
-        />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="340dp"
-        android:layout_height="43dp"
-        android:layout_gravity="center_horizontal"
-        android:textColor="@color/rosaEscurao"
-        android:text="barra pesquisa"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColorHint="@color/cinza"
-        android:layout_marginBottom="20dp"
-        app:boxCornerRadiusBottomStart="10dp"
-        app:boxCornerRadiusTopStart="10dp"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="0dp"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-        app:endIconDrawable="@drawable/ic_dropdown_arrow"
-        app:endIconTint="@color/white"
-        app:hintEnabled="false">
-        <AutoCompleteTextView
-            android:id="@+id/autoCompleteTextView"
+        <FrameLayout
+            android:id="@+id/headerFragmentLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="selecione uma tag"
-            android:background="@drawable/shape_dropdown"
-            android:textSize="15sp"
-            android:paddingStart="7dp"
-            android:textColorHighlight="@color/transparente"
-            android:focusableInTouchMode="false"
-            android:textColor="@color/rosaEscurao"
-            app:simpleItems="@array/tag_list"
-            android:dropDownHeight="172dp"
-            android:popupBackground="@color/rosaClarinho"
+            android:layout_height="60dp"
+            android:layout_marginBottom="15dp"
             />
 
-    </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tabs"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/myEnventsTab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:fontFamily="@font/montserrat_medium"
+                android:text="Meus eventos"
+                android:textColor="@color/rosa"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/otherEnventsTab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/rosaEscuraoClaro"
+                android:fontFamily="@font/montserrat_medium"
+                android:text="Outros eventos"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                android:visibility="visible"
+                android:layout_marginStart="40dp"
+                />
+        </LinearLayout>
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewEvent"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_width="378dp"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/dropdownLayout"
+            android:layout_width="350dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/rosaEscurao"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColorHint="@color/cinza"
+            android:layout_marginBottom="20dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopStart="10dp"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            android:padding="0dp"
+            android:layout_marginVertical="26dp"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+            app:endIconDrawable="@drawable/ic_dropdown_arrow"
+            app:endIconTint="@color/rosaEscurao"
+            app:hintEnabled="false">
+
+            <AutoCompleteTextView
+                android:id="@+id/autoCompleteTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Selecione uma tag"
+                android:background="@drawable/shape_dropdown"
+                android:textSize="15sp"
+                android:textColor="@color/rosaEscurao"
+                app:simpleItems="@array/tag_list"
+                android:dropDownHeight="175dp"
+                android:popupBackground="@color/cinzaClaro"
+                android:focusableInTouchMode="false"
+                android:padding="0dp"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewEvent"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_width="378dp"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_event"
+            />
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addEvent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/item_event"
-        />
+        android:layout_gravity="bottom|end"
+        android:src="@drawable/ic_plus"
+        app:rippleColor="@color/rosaEscurao"
+        app:backgroundTint="@color/rosa"
+        android:layout_margin="20dp"/>
 
-</LinearLayout>
+</FrameLayout>

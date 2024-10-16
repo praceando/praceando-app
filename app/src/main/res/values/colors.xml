@@ -5,10 +5,14 @@
     <color name="rosa">#F4A9B6</color>
     <color name="rosaClaro">#F1CED4</color>
     <color name="rosaEscurao">#672235</color>
+    <color name="rosaEscuraoClaro">#882532</color>
     <color name="rosaEscuro">#D4456C</color>
     <color name="verde">#8CCE91</color>
     <color name="transparente">#00000000</color>
     <color name="cinza">#8C8C8C</color>
+    <color name="cinzaClaro">#E7E7E7</color>
     <color name="rosaClarinho">#FFF0F5</color>
     <color name="cinzaEscuro">#4C4C4C</color>
+    <color name="red">#BA0000</color>
+    <color name="rosaEscuraoDesativado">#7F5B333C</color>
 </resources>

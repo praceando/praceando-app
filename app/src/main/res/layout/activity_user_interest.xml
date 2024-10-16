@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_background_linear_color"
+    tools:context=".login.UserInterest">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/shape_background_linear_color"/>
+
+    <ImageView
+        android:id="@+id/returnArrow"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/ic_rounded_arrow"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="18dp"
+        />
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="PRACEANDO"
+        android:textColor="@color/black"
+        android:fontFamily="@font/krona_one"
+        android:textSize="17sp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_marginTop="25dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_gravity="bottom"
+        android:background="@drawable/shape_rounded_container"
+        android:layout_marginTop="68dp"
+        android:layout_height="match_parent"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="O que você mais gosta quando se trata de eventos ao ar livre?"
+        android:textColor="@color/rosaEscurao"
+        android:textStyle="bold"
+        android:textSize="17sp"
+        android:gravity="center"
+        android:fontFamily="@font/montserrat_medium"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="90dp"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="160dp"
+        android:layout_marginHorizontal="20dp"
+        android:scrollbars="none"
+        android:layout_marginBottom="90dp">
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/tagsFlexblox"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            app:flexDirection="row"
+            app:flexWrap="wrap"
+            app:alignContent="center"
+            app:alignItems="center"
+            app:justifyContent="center" />
+    </ScrollView>
+
+    <Button
+        android:id="@+id/startBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="42dp"
+        android:layout_gravity="end|bottom"
+        android:backgroundTint="@color/rosaEscuraoClaro"
+        android:text="Iniciar"
+        android:textColor="@color/white"
+        android:fontFamily="@font/montserrat_semibold"
+        android:textSize="12sp"
+        android:drawableEnd="@drawable/ic_arrow"
+        android:drawableTint="@color/white"
+        android:layout_margin="20dp"
+        />
+
+
+
+
+
+</FrameLayout>

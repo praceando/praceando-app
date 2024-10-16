@@ -1,19 +1,4 @@
-<resources>
-<!--    <style name="CalenderViewCustom" parent="Theme.AppCompat">-->
-<!--        <item name="colorAccent">@color/rosaClaro</item>-->
-<!--        <item name="colorPrimary">@color/white</item>-->
-<!--        <item name="android:textColorPrimaryInverse">@color/rosa</item>  // color of date selected.-->
-<!--        <item name="colorControlActivated">@color/rosaEscuro</item>-->
-<!--        <item name="android:textColorPrimary">@color/rosaEscurao</item>-->
-<!--    </style>-->
-
-<!--    <style name="CalenderViewDateCustomText" parent="android:TextAppearance.DeviceDefault.Small">-->
-<!--        <item name="android:textColor">@color/date_color_selector</item>-->
-<!--    </style>-->
-
-<!--    <style name="CalenderViewWeekCustomText" parent="android:TextAppearance.DeviceDefault.Small">-->
-<!--        <item name="android:textColor">@color/rosaEscurao</item>-->
-<!--    </style>-->
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="CalenderViewCustom" parent="Theme.AppCompat">
         <item name="colorControlActivated">@color/rosaEscuro</item>
@@ -40,4 +25,17 @@
         <item name="android:minHeight">15dip</item>
         <item name="android:maxHeight">47dip</item>
     </style>
+
+    <!-- Tema personalizado para o DatePicker -->
+    <style name="CustomDatePicker" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/rosa</item>
+    </style>
+
+    <!-- Tema personalizado para o TimePicker -->
+    <style name="CustomTimePicker" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/rosa</item>
+    </style>
+
+
+
 </resources>

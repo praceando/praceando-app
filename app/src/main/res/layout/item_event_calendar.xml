@@ -33,6 +33,7 @@
         android:textSize="16sp"
         android:text="Hot dog Sr. Antonio"
         android:textColor="@color/rosaEscurao"
+        android:fontFamily="@font/montserrat_medium"
         />
 
     <LinearLayout
@@ -52,12 +53,14 @@
 
       <TextView
           android:id="@+id/locale"
+          android:fontFamily="@font/montserrat_medium"
           android:layout_width="wrap_content"
           android:layout_height="20dp"
           android:text="Praça do Samba"
           android:textColor="@color/rosaEscurao"
+          android:gravity="center"
           android:layout_marginRight="10dp"
-          android:textSize="12sp" />
+          android:textSize="11sp" />
 
 
       <ImageView
@@ -70,10 +73,12 @@
           android:id="@+id/date"
           android:layout_width="wrap_content"
           android:layout_height="20dp"
+          android:fontFamily="@font/montserrat_medium"
           android:text="14/07 - 14/07"
           android:layout_marginRight="10dp"
           android:textColor="@color/rosaEscurao"
-          android:textSize="12sp" />
+          android:gravity="center"
+          android:textSize="11.5sp" />
 
       <ImageView
           android:layout_width="19dp"
@@ -85,10 +90,12 @@
           android:id="@+id/time"
           android:layout_width="wrap_content"
           android:layout_height="20dp"
+          android:fontFamily="@font/montserrat_medium"
           android:layout_marginRight="10dp"
           android:text="9:30 - 17h"
           android:textColor="@color/rosaEscurao"
-          android:textSize="12sp" />
+          android:gravity="center"
+          android:textSize="11.5sp" />
 
     </LinearLayout>
 
