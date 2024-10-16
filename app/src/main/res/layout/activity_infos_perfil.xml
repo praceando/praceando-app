@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_background_linear_color"
+    tools:context=".login.InfosPerfil">
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@drawable/shape_background_linear_color"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="120dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/shape_rounded_container"/>
+
+    <ImageView
+        android:id="@+id/returnArrow"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/ic_rounded_arrow"
+        android:layout_margin="20dp"
+        />
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:layout_marginTop="60dp"
+        android:layout_marginHorizontal="40dp">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/userImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            android:clipToOutline="true"
+            android:background="@drawable/shape_user_image_background"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Seu Perfil"
+            android:textStyle="bold"
+            android:fontFamily="@font/montserrat_medium"
+            android:textSize="26sp"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:fontFamily="@font/montserrat_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fale um pouco sobre você para as outras pessoas"
+            android:textSize="15sp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/cinzaEscuro"/>
+
+        <TextView
+            android:fontFamily="@font/montserrat_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/cinzaEscuro"
+            android:layout_marginTop="40dp"
+            android:text="Nickname"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/nicknameInputLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:errorEnabled="true"
+            app:endIconMode="clear_text"
+            app:endIconDrawable="@drawable/ic_x"
+            app:endIconTint="@color/rosaEscuro">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nickname"
+                android:layout_width="300dp"
+                android:layout_height="49dp"
+                android:background="@drawable/shape_input"
+                android:textColor="@color/black"
+                android:singleLine="true"
+                android:inputType="textEmailAddress"
+                android:textSize="14sp"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:fontFamily="@font/montserrat_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/cinzaEscuro"
+            android:layout_marginTop="20dp"
+            android:text="Sua bio"/>
+
+        <TextView
+            android:fontFamily="@font/montserrat_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@color/cinza"
+            android:text="Fale um pouco sobre você e seus interesses"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/bioInputLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:counterEnabled="true"
+            app:counterMaxLength="230"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/bio"
+                android:layout_width="300dp"
+                android:layout_height="150dp"
+                android:background="@drawable/shape_input"
+                android:textColor="@color/black"
+                android:inputType="textMultiLine"
+                android:lineBreakStyle="normal"
+                android:textSize="14sp"
+                android:maxLines="10"
+                android:gravity="start|top"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/enterBtn"
+            android:layout_width="300dp"
+            android:layout_height="52dp"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/rosaEscuraoDesativado"
+            android:text="Entrar"
+            android:textSize="15sp"
+            android:layout_marginTop="45dp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:textColor="@color/white"/>
+
+    </LinearLayout>
+    </ScrollView>
+
+
+</FrameLayout>

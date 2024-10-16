@@ -1,7 +1,12 @@
 package com.firstclass.praceando;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -16,19 +21,33 @@ import com.firstclass.praceando.marketplace.MarketplaceFragment;
 import com.firstclass.praceando.perfil.PerfilFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     private BottomNavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        navigationView = (BottomNavigationView) findViewById(R.id.bottonNavigation);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, 60, systemBars.right, 0);
+            return insets;
+        });
+
+
+        navigationView = findViewById(R.id.bottonNavigation);
         navigationView.setOnNavigationItemSelectedListener(this);
 
-
-        loadFragment(new HomeFragment(), true);
+        if (getIntent().getStringExtra("openFragment") != null &&
+                Objects.equals(getIntent().getStringExtra("openFragment"), "perfil")) {
+            loadFragment(new PerfilFragment(), true);
+        } else {
+            loadFragment(new HomeFragment(), true);
+        }
     }
 
     @Override

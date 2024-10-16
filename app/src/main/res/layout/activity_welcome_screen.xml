@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".login.WelcomeScreen">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Seja bem-vinda(o)"
+            android:fontFamily="@font/montserrat_medium"
+            android:textSize="35dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_margin="45dp"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="Registre-se para criar eventos ou para gerenciar os eventos que você participará."
+            android:gravity="center"
+            android:textSize="18sp"/>
+
+        <Button
+            android:id="@+id/consumerBtn"
+            android:layout_width="300dp"
+            android:layout_height="52dp"
+            android:layout_gravity="center"
+            android:fontFamily="@font/montserrat_semibold"
+            android:backgroundTint="@color/rosa"
+            android:text="Consumidor"
+            android:textSize="15sp"
+            android:textColor="@color/rosaEscurao"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="22dp"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="@color/grey_font"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_medium"
+                android:text="OU"
+                android:textColor="@color/grey_font"
+                android:paddingHorizontal="50dp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="@color/grey_font"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/advertiserBtn"
+            android:layout_width="300dp"
+            android:layout_height="52dp"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/rosa"
+            android:text="Anunciante"
+            android:fontFamily="@font/montserrat_semibold"
+            android:textSize="15sp"
+            android:textColor="@color/rosaEscurao"/>
+
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/logo"
+            android:layout_margin="20dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:fontFamily="@font/montserrat_medium"
+                android:layout_height="wrap_content"
+                android:text="Já tem uma conta?"/>
+            <TextView
+                android:layout_marginStart="10dp"
+                android:id="@+id/enterTxt"
+                android:fontFamily="@font/montserrat_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Entrar"
+                android:textColor="@color/rosaEscuro"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

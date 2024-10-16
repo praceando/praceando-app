@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".calendar.CalendarFragment">
 
     <FrameLayout
@@ -15,7 +16,8 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="390dp"
         android:background="@drawable/shape_rounded_container"
         android:backgroundTint="@color/rosaClaro"
         android:layout_gravity="bottom"/>
@@ -27,9 +29,10 @@
         android:layout_height="21dp"
         android:text="Quinta 14, Julho"
         android:textSize="16sp"
+        android:fontFamily="@font/montserrat_medium"
         android:textColor="@color/rosaEscurao"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="265dp"
+        android:layout_gravity="top"
+        android:layout_marginTop="405dp"
         android:layout_marginStart="30dp"
         />
 
@@ -37,7 +40,8 @@
         android:id="@+id/recyclerViewCalendarEvent"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_width="378dp"
-        android:layout_height="250dp"
+        android:layout_marginTop="440dp"
+        android:layout_height="match_parent"
         tools:listitem="@layout/item_event_calendar"
         />
 

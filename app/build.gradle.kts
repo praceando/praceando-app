@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -45,10 +46,11 @@ dependencies {
 //    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
 //    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
     implementation("androidx.lifecycle:lifecycle-livedata:2.7.0")
-    implementation("androidx.lifecycle:lifecycle-viewmode:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel:2.7.0")
     implementation("androidx.navigation:navigation-fragment:2.6.0")
     implementation("androidx.navigation:navigation-ui:2.6.0")
     implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
+    implementation("androidx.activity:activity:1.8.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
@@ -67,4 +69,12 @@ dependencies {
 
     //carossel
     implementation("com.github.denzcoskun:ImageSlideshow:0.1.2")
+
+    //splash screen
+    implementation("androidx.core:core-splashscreen:1.0.0")
+
+    //firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
+    implementation("com.google.firebase:firebase-auth")
+
 }

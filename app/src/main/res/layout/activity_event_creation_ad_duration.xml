@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:background="@drawable/shape_background_linear_color"
+    android:layout_height="match_parent"
+    tools:context=".EventDetails.EventCreationAdDuration">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/shape_background_linear_color"/>
+
+    <ImageView
+        android:id="@+id/returnArrow"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/ic_rounded_arrow"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="18dp"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_gravity="bottom"
+        android:background="@drawable/shape_rounded_container"
+        android:layout_marginTop="68dp"
+        android:layout_height="match_parent"/>
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="Novo Evento"
+        android:fontFamily="@font/montserrat_semibold"
+        android:textColor="@color/rosaEscuraoClaro"
+        android:textSize="24sp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_marginTop="18dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="644dp"
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="Preencha o tempo de duração do anuncio"
+            android:textColor="@color/rosaEscurao"
+            android:textStyle="bold"
+            android:textSize="17.5sp"
+            android:gravity="center"
+            android:layout_marginHorizontal="45dp"
+            android:layout_marginBottom="50dp"/>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginBottom="15dp">
+
+            <TextView
+                android:fontFamily="@font/montserrat_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Selecione a data de inicio"
+                android:layout_gravity="start"
+                android:layout_marginBottom="5dp"
+                android:textSize="15sp"
+                android:layout_marginStart="10dp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/startDateInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                app:endIconMode="custom"
+                android:padding="0dp"
+                app:endIconDrawable="@drawable/calendar_thin"
+                android:layout_marginBottom="5dp"
+                app:errorIconDrawable="@null"
+                app:endIconTint="@color/rosaEscurao">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/startDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:background="@drawable/shape_input"
+                    android:textColor="@color/black"
+                    android:singleLine="true"
+                    android:enabled="false"
+                    android:padding="0dp"
+                    android:contextClickable="false"
+                    android:textSize="14sp"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:fontFamily="@font/montserrat_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Selecione a data de encerramento"
+                android:layout_gravity="start"
+                android:layout_marginBottom="5dp"
+                android:textSize="15sp"
+                android:layout_marginStart="10dp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/endDateInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                app:endIconMode="custom"
+                android:padding="0dp"
+                app:errorIconDrawable="@null"
+                app:endIconDrawable="@drawable/calendar_thin"
+                app:endIconTint="@color/rosaEscurao">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/endDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:background="@drawable/shape_input"
+                    android:textColor="@color/black"
+                    android:singleLine="true"
+                    android:enabled="false"
+                    android:padding="0dp"
+                    android:contextClickable="false"
+                    android:textSize="14sp"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:fontFamily="@font/montserrat_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="R$3.50/dia"
+            android:layout_gravity="end"
+            android:layout_marginEnd="50dp"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginStart="10dp"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/nextBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="42dp"
+        android:fontFamily="@font/montserrat_semibold"
+        android:layout_gravity="bottom|end"
+        android:backgroundTint="@color/rosaEscuraoDesativado"
+        android:text="Próximo"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:drawableEnd="@drawable/ic_arrow"
+        android:drawableTint="@color/white"
+        android:layout_margin="40dp"
+        />
+
+</FrameLayout>

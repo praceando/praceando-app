@@ -24,10 +24,12 @@
 
         <TextView
             android:id="@+id/nickname"
+            android:fontFamily="@font/montserrat_medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="MysticShadow_StarGazer_NightWhisper"
             android:layout_marginStart="60dp"
+            android:textSize="13sp"
             android:layout_marginTop="10dp"
             android:textColor="@color/cinzaEscuro"
             android:textStyle="bold"
@@ -61,6 +63,7 @@
 
             <TextView
                 android:id="@+id/comment"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the. "

@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
+    android:id="@+id/main"
+    android:background="@drawable/shape_background_linear_color"
     tools:context=".MainActivity">
 
     <FrameLayout

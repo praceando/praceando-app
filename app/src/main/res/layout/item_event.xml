@@ -20,6 +20,7 @@
             android:layout_marginTop="15dp"
             android:layout_width="wrap_content"
             android:layout_height="26dp"
+            android:fontFamily="@font/montserrat_medium"
             android:textSize="18sp"
             android:text="Hot dog Sr. Antonio"
             android:textColor="@color/rosaEscurao"
@@ -44,13 +45,14 @@
 
             <TextView
                 android:id="@+id/locale"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:text="Praça do Samba"
                 android:textColor="@color/rosaEscurao"
                 android:layout_marginRight="10dp"
                 android:gravity="center_vertical"
-                android:textSize="12sp" />
+                android:textSize="11sp" />
 
 
             <ImageView
@@ -61,13 +63,14 @@
 
             <TextView
                 android:id="@+id/date"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:text="14/07 - 14/07"
                 android:layout_marginRight="10dp"
                 android:gravity="center_vertical"
                 android:textColor="@color/rosaEscurao"
-                android:textSize="12sp" />
+                android:textSize="11sp" />
 
             <ImageView
                 android:layout_width="19dp"
@@ -77,13 +80,14 @@
 
             <TextView
                 android:id="@+id/time"
+                android:fontFamily="@font/montserrat_medium"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:layout_marginRight="10dp"
                 android:text="9:30 - 17h"
                 android:gravity="center_vertical"
                 android:textColor="@color/rosaEscurao"
-                android:textSize="12sp" />
+                android:textSize="11sp" />
 
         </LinearLayout>
 
@@ -108,7 +112,6 @@
             app:flexDirection="row"
             app:flexWrap="wrap"
             app:alignItems="center"/>
-
 
     </FrameLayout>
 </androidx.cardview.widget.CardView>

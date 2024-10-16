@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "39640090818",
+    "project_id": "praceandoauth",
+    "storage_bucket": "praceandoauth.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39640090818:android:71548a41d94daf03a0135b",
+        "android_client_info": {
+          "package_name": "com.firstclass.praceando"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgBeLxNIw4lA6j3KmMkRoUYtG0OXLZnHA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

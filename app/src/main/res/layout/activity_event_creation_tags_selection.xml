@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_background_linear_color"
+    tools:context=".EventDetails.EventCreationTagsSelection">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/shape_background_linear_color"/>
+
+    <ImageView
+        android:id="@+id/returnArrow"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/ic_rounded_arrow"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="18dp"
+        />
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="Novo Evento"
+        android:textColor="@color/rosaEscuraoClaro"
+        android:fontFamily="@font/montserrat_medium"
+        android:textSize="24sp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_marginTop="18dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_gravity="bottom"
+        android:background="@drawable/shape_rounded_container"
+        android:layout_marginTop="68dp"
+        android:layout_height="match_parent"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Selecione as tags relacionadas ao seu evento"
+        android:textColor="@color/rosaEscurao"
+        android:textStyle="bold"
+        android:textSize="17sp"
+        android:gravity="center"
+        android:fontFamily="@font/montserrat_medium"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="90dp"/>
+
+    <TextView
+        android:fontFamily="@font/montserrat_medium"
+        android:id="@+id/errorMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Selecione no mínimo 1 tag e no máximo 5"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:drawableTint="@color/white"
+        android:gravity="center"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="150dp"
+        />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="190dp"
+        android:layout_marginHorizontal="20dp"
+        android:scrollbars="none"
+        android:layout_marginBottom="90dp">
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/tagsFlexblox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            app:flexDirection="row"
+            app:flexWrap="wrap"
+            app:alignContent="center"
+            app:alignItems="center"
+            app:justifyContent="center" />
+    </ScrollView>
+
+    <Button
+        android:id="@+id/nextBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="42dp"
+        android:layout_gravity="end|bottom"
+        android:backgroundTint="@color/rosaEscuraoDesativado"
+        android:text="Próximo"
+        android:textColor="@color/white"
+        android:fontFamily="@font/montserrat_semibold"
+        android:textSize="12sp"
+        android:enabled="false"
+        android:drawableEnd="@drawable/ic_arrow"
+        android:drawableTint="@color/white"
+        android:layout_margin="20dp"
+        />
+
+</FrameLayout>

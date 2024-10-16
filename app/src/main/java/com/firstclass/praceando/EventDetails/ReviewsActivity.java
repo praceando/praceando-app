@@ -2,21 +2,29 @@ package com.firstclass.praceando.EventDetails;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firstclass.praceando.R;
 import com.firstclass.praceando.entities.Event;
 import com.firstclass.praceando.entities.Review;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -33,6 +41,14 @@ public class ReviewsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reviews);
+        EdgeToEdge.enable(this);
+
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, 60, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         returnArrow = findViewById(R.id.returnArrow);
         returnArrow.setOnClickListener(v -> finish());
@@ -92,26 +108,48 @@ public class ReviewsActivity extends AppCompatActivity {
 
 
         addReviewBtn.setOnClickListener(v -> {
-            Dialog reviewDialog = new Dialog(ReviewsActivity.this);
-            reviewDialog.setContentView(R.layout.dialog_review);
-            reviewDialog.getWindow().setLayout(WRAP_CONTENT, WRAP_CONTENT);
-//                reviewDialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.));
+//            Dialog reviewDialog = new Dialog(ReviewsActivity.this);
+//            reviewDialog.setContentView(R.layout.dialog_review);
+//            reviewDialog.getWindow().setLayout(WRAP_CONTENT, WRAP_CONTENT);
+////                reviewDialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.));
+//
+//            //nao permitir clique fora da caixa
+//            reviewDialog.setCancelable(false);
+//
+//            //inicializar os componentes da caixa
+//            TextView title = reviewDialog.findViewById(R.id.title);
+//            EditText comment = reviewDialog.findViewById(R.id.comment);
+//            RatingBar ratingBar = reviewDialog.findViewById(R.id.ratingBar);
+//            Button reviewBtn = reviewDialog.findViewById(R.id.reviewBtn);
+//            ImageView closeBtn = reviewDialog.findViewById(R.id.closeBtn);
+//
+//            title.setText("Como você avaliaria "+event.getTitle()+"?");
+//
+//            closeBtn.setOnClickListener(view -> {reviewDialog.dismiss();});
+//            reviewDialog.show();
 
-            //nao permitir clique fora da caixa
-            reviewDialog.setCancelable(false);
+            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ReviewsActivity.this);
+            View view = LayoutInflater.from(ReviewsActivity.this).inflate(R.layout.botton_sheet_review, null);
+            bottomSheetDialog.setContentView(view);
+            bottomSheetDialog.show();
 
-            //inicializar os componentes da caixa
-            TextView title = reviewDialog.findViewById(R.id.title);
-            EditText comment = reviewDialog.findViewById(R.id.comment);
-            RatingBar ratingBar = reviewDialog.findViewById(R.id.ratingBar);
-            Button reviewBtn = reviewDialog.findViewById(R.id.reviewBtn);
-            ImageView closeBtn = reviewDialog.findViewById(R.id.closeBtn);
+            TextView title = view.findViewById(R.id.title);
+            RatingBar ratingBar = view.findViewById(R.id.ratingBar);
+            EditText comment = view.findViewById(R.id.comment);
+            Button reviewBtn = view.findViewById(R.id.reviewBtn);
 
             title.setText("Como você avaliaria "+event.getTitle()+"?");
+            reviewBtn.setOnClickListener(vv -> {
+                //enviar para a api e tals
+                bottomSheetDialog.dismiss();
+            });
 
-
-            closeBtn.setOnClickListener(view -> {reviewDialog.dismiss();});
-            reviewDialog.show();
+            ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                @Override
+                public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                    Toast.makeText(ReviewsActivity.this, ratingBar.getRating() + "", Toast.LENGTH_SHORT).show();
+                }
+            });
         });
 
     }

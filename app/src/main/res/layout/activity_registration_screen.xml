@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent"
+    tools:context=".login.RegistrationScreen">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/half_flowers"
+        android:layout_gravity="end"/>
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginHorizontal="20dp"
+    android:layout_marginTop="70dp"
+    android:scrollbars="none"
+    android:layout_marginBottom="20dp">
+
+    <LinearLayout
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+    <ImageView
+        android:id="@+id/returnArrow"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/ic_rounded_arrow"
+        android:layout_marginBottom="25dp"
+        />
+        
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="Crie sua conta"/>
+
+    <TextView
+        android:fontFamily="@font/montserrat_medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/grey_font"
+        android:textSize="17sp"
+        android:text="Registre-se para entrar com seu e-mail."/>
+
+        <LinearLayout
+            android:layout_marginTop="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:fontFamily="@font/montserrat_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="E-mail"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/emailInputLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:startIconDrawable="@drawable/ic_email"
+                app:startIconScaleType="centerCrop"
+                app:startIconTint="@color/rosaEscuro"
+                app:errorEnabled="true"
+                app:endIconMode="clear_text"
+                app:endIconDrawable="@drawable/ic_x"
+                app:endIconTint="@color/rosaEscuro">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/email"
+                    android:layout_width="300dp"
+                    android:layout_height="49dp"
+                    android:background="@drawable/shape_input"
+                    android:textColor="@color/black"
+                    android:singleLine="true"
+                    android:inputType="textEmailAddress"
+                    android:textSize="14sp"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView android:fontFamily="@font/montserrat_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="Senha"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/passwordInputLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:startIconDrawable="@drawable/ic_padlock"
+                app:startIconScaleType="centerCrop"
+                app:startIconTint="@color/rosaEscuro"
+                app:errorIconDrawable="@null"
+                app:endIconMode="password_toggle"
+                app:errorEnabled="true"
+                app:endIconTint="@color/rosaEscuro">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/password"
+                    android:layout_width="300dp"
+                    android:layout_height="49dp"
+                    android:background="@drawable/shape_input"
+                    android:textColor="@color/black"
+                    android:singleLine="true"
+                    android:inputType="textPassword"
+                    android:textSize="14sp"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView android:fontFamily="@font/montserrat_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="Repita sua senha"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/passwordRepeatInputLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:startIconDrawable="@drawable/ic_padlock"
+                app:startIconScaleType="centerCrop"
+                app:startIconTint="@color/rosaEscuro"
+                app:errorEnabled="true"
+                app:endIconMode="password_toggle"
+                app:errorIconDrawable="@null"
+                app:endIconTint="@color/rosaEscuro">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/passwordRepeat"
+                    android:layout_width="300dp"
+                    android:layout_height="49dp"
+                    android:background="@drawable/shape_input"
+                    android:textColor="@color/black"
+                    android:singleLine="true"
+                    android:inputType="textPassword"
+                    android:textSize="14sp"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cnpjBox"
+                android:orientation="vertical">
+
+            <TextView android:fontFamily="@font/montserrat_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="CNPJ"/>
+            <TextView android:fontFamily="@font/montserrat_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/grey_font"
+                android:text="(Não possui? Continue como MEI)"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/cnpjInputLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:startIconDrawable="@drawable/ic_document"
+                app:startIconTint="@color/rosaEscuro"
+                app:errorEnabled="true"
+                app:errorIconDrawable="@null"
+                app:endIconMode="password_toggle"
+                app:endIconTint="@color/rosaEscuro">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/cnpj"
+                    android:layout_width="300dp"
+                    android:layout_height="49dp"
+                    android:background="@drawable/shape_input"
+                    android:textColor="@color/black"
+                    android:singleLine="true"
+                    android:textSize="14sp"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+
+            <CheckBox android:id="@+id/termsCheckbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Concordo com os Termos de uso"
+                android:backgroundTint="@color/grey_font"
+                android:textColor="@color/grey_font"
+                android:layout_marginBottom="5dp"/>
+
+            <Button
+                android:id="@+id/nextBtn"
+                android:layout_width="300dp"
+                android:layout_height="52dp"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/rosaEscuraoDesativado"
+                android:fontFamily="@font/montserrat_semibold"
+                android:text="Continuar"
+                android:textSize="15sp"
+                android:textColor="@color/white"
+                android:enabled="true"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
+</FrameLayout>
