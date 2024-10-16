@@ -76,5 +76,4 @@ dependencies {
     //firebase
     implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
     implementation("com.google.firebase:firebase-auth")
-
 }
