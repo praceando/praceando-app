@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    tools:context=".marketplace.MarketplaceFragment"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/headerFragmentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="10dp"
+        />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/rosaEscurao"
+        android:text="meus eventos    outros eventos"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="15dp"
+        android:visibility="visible"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="340dp"
+        android:layout_height="43dp"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/rosaEscurao"
+        android:text="barra pesquisa"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColorHint="@color/cinza"
+        android:layout_marginBottom="20dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+        app:endIconDrawable="@drawable/ic_dropdown_arrow"
+        app:endIconTint="@color/white"
+        app:hintEnabled="false">
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="selecione uma tag"
+            android:background="@drawable/shape_dropdown"
+            android:textSize="15sp"
+            android:paddingStart="7dp"
+            android:textColorHighlight="@color/transparente"
+            android:focusableInTouchMode="false"
+            android:textColor="@color/rosaEscurao"
+            app:simpleItems="@array/tag_list"
+            android:dropDownHeight="172dp"
+            android:popupBackground="@color/rosaClarinho"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewEvent"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_width="378dp"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/item_event"
+        />
+
+</LinearLayout>

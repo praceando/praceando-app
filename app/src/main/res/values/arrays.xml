@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="tag_list">
+        <item>aaaa</item>
+        <item>aaaa2</item>
+        <item>aaaa3</item>
+        <item>aaaa4</item>
+        <item>aaaa5</item>
+    </string-array>
+</resources>

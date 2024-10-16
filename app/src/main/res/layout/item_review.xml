@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="20dp"
+    app:cardCornerRadius="0dp"
+    android:backgroundTint="@color/white"
+    android:layout_marginBottom="30dp"
+    app:cardElevation="0dp">
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="350dp"
+        android:backgroundTint="@color/white"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/userImage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="centerCrop"
+            android:clipToOutline="true"
+            android:background="@drawable/shape_user_image_background"/>
+
+        <TextView
+            android:id="@+id/nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MysticShadow_StarGazer_NightWhisper"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/cinzaEscuro"
+            android:textStyle="bold"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the. "
+            android:textColor="@color/black"
+            android:layout_gravity="start"
+            android:textSize="12sp"
+            android:layout_marginTop="40dp"
+            android:paddingHorizontal="17dp"
+            android:paddingVertical="10dp"
+            android:layout_marginStart="50dp"
+            android:orientation="vertical"
+            android:background="@drawable/shape_comment">
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="105dp"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:stepSize="0.5"
+                android:isIndicator="true"
+                android:rating="2.5"
+                style="@style/CustomRatingBarStyleSmall"
+                />
+
+
+            <TextView
+                android:id="@+id/comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the. "
+                android:textColor="@color/black"
+                />
+
+        </LinearLayout>
+
+
+    </FrameLayout>
+</androidx.cardview.widget.CardView>

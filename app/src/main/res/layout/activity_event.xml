@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".EventDetails.EventActivity">
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/shape_background_linear_color"/>
+
+    <ImageView
+        android:id="@+id/returnArrow"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/ic_rounded_arrow"
+        android:layout_margin="17dp"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_gravity="bottom"
+        android:background="@drawable/shape_rounded_container"
+        android:layout_height="593dp"/>
+
+
+    <LinearLayout
+        android:layout_gravity="center_horizontal|bottom"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="720dp"
+        android:orientation="vertical">
+
+        <com.denzcoskun.imageslider.ImageSlider
+            android:id="@+id/imageSlider"
+            android:layout_width="190dp"
+            android:layout_height="200dp"
+            app:iss_auto_cycle="true"
+            android:clipToOutline="true"
+            app:iss_delay="200"
+            app:iss_period="2500"
+            app:iss_no_dots="true"
+            android:background="@drawable/shape_product_item_image_background"
+            />
+
+        <TextView
+            android:id="@+id/eventTitle"
+            android:layout_width="300dp"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:text="Hot dog Sr. Antonio"
+            android:textColor="@color/rosaEscurao"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            />
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_marginTop="10dp"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:stepSize="0.5"
+            android:isIndicator="true"
+            android:rating="3.5"
+            style="@style/CustomRatingBarStyle"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="19dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginStart="3dp"
+                android:background="@drawable/ic_location"/>
+
+            <TextView
+                android:id="@+id/locale"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:text="Nossa Sra. dos Prazeres"
+                android:textColor="@color/black"
+                android:layout_marginRight="10dp"
+                android:gravity="center_vertical"
+                android:textSize="14sp" />
+
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginHorizontal="2dp"
+                android:background="@drawable/ic_calendar_item"/>
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:text="14/07 - 14/07"
+                android:layout_marginRight="10dp"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:layout_marginHorizontal="2dp"
+                android:background="@drawable/ic_clock"/>
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginEnd="3dp"
+                android:text="9:30 - 17h"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/tagsRecyclerView"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="15dp"
+            tools:listitem="@layout/item_tag"/>
+
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="226dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="25dp"
+            android:gravity="center_horizontal"
+            android:text="Lorem Ipsum is simply dumm unchanged in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently wi\n desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.pri into electronic typesetting, remaining essentially release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software"
+            android:textColor="@color/black"
+            android:textSize="15dp" />
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/goToReviews"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:orientation="horizontal"
+        android:layout_gravity="end|bottom"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="40dp"
+        tools:ignore="UseCompoundDrawables">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ver avaliações"
+            android:textColor="@color/rosaEscuro"
+            android:textSize="15sp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_arrow"
+            android:backgroundTint="@color/rosaEscuro"
+            android:layout_gravity="center"
+            android:layout_marginTop="1dp"
+            android:layout_marginStart="5dp"
+            />
+
+    </LinearLayout>
+
+</FrameLayout>
