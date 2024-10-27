@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "39640090818",
-    "project_id": "praceandoauth",
-    "storage_bucket": "praceandoauth.appspot.com"
+    "project_number": "92776138461",
+    "project_id": "praceando-dbad6",
+    "storage_bucket": "praceando-dbad6.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:39640090818:android:71548a41d94daf03a0135b",
+        "mobilesdk_app_id": "1:92776138461:android:423c77cba906a0d588bd34",
         "android_client_info": {
           "package_name": "com.firstclass.praceando"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAgBeLxNIw4lA6j3KmMkRoUYtG0OXLZnHA"
+          "current_key": "AIzaSyDQPA4-Eln05m6dJ6Nn9aURdtZQo7jJKU4"
         }
       ],
       "services": {

@@ -33,7 +33,6 @@ public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemAdapter.
     public void onBindViewHolder(@NonNull ProductItemAdapter.ProductItemViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.title.setText(productList.get(position).getTitle());
         holder.price.setText("R$:"+productList.get(position).getPrice());
-        holder.description.setText(productList.get(position).getDescription());
 
         Picasso.get()
                 .load(productList.get(position).getImageUrl())
@@ -44,7 +43,6 @@ public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemAdapter.
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putString("title", productList.get(position).getTitle());
-                bundle.putString("description", productList.get(position).getDescription());
                 bundle.putDouble("price", productList.get(position).getPrice());
                 bundle.putString("image", productList.get(position).getImageUrl());
 
@@ -59,12 +57,11 @@ public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemAdapter.
         return productList.size();
     }
     public class ProductItemViewHolder extends RecyclerView.ViewHolder {
-        TextView title,  description, price;
+        TextView title, price;
         ImageView imageUrl;
         public ProductItemViewHolder(@NonNull View viewItem) {
             super(viewItem);
             title = viewItem.findViewById(R.id.productTitle);
-            description = viewItem.findViewById(R.id.productDescription);
             imageUrl = viewItem.findViewById(R.id.productImage);
             price = viewItem.findViewById(R.id.productPrice);
         }

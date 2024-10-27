@@ -22,7 +22,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.firstclass.praceando.API.postgresql.PostgresqlAPI;
+import com.firstclass.praceando.API.postgresql.callbackInterfaces.LocalesCallback;
 import com.firstclass.praceando.R;
+import com.firstclass.praceando.entities.Locale;
 import com.firstclass.praceando.fragments.HeaderFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -38,12 +41,15 @@ import com.firstclass.praceando.databinding.FragmentMapBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.List;
+
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private final int FINE_PERMISSION_CODE = 1;
     Location currentLocation;
     FusedLocationProviderClient fusedLocationProviderClient;
     private FragmentMapBinding binding;
+    private PostgresqlAPI postgresqlAPI = new PostgresqlAPI();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -85,16 +91,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         int height = 130;
         int width = 130;
-        BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.img_bee);
+        BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.img_bee);
         Bitmap b = bitmapdraw.getBitmap();
         Bitmap myLocationMarker = Bitmap.createScaledBitmap(b, width, height, false);
 
-        LatLng pracaDoSamba = new LatLng(-23.4098528, -46.76213);
-        LatLng nossaSenhora = new LatLng(-23.4894623, -46.6098262);
-        LatLng pracaHerois = new LatLng(-23.5049739, -46.6306044);
-        LatLng pracaMargarida = new LatLng(-23.4993033, -46.6267953);
-        LatLng pracaVistaVerde = new LatLng(-23.4755539, -46.754478);
-        LatLng pracaMorelis = new LatLng(-23.4784685, -46.6230578);
         LatLng userLocation = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
 
         googleMap.setMyLocationEnabled(true);
@@ -109,53 +109,27 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 .icon(BitmapDescriptorFactory.fromBitmap(myLocationMarker))
                 .title("Você está aqui!"));
 
-        googleMap.addMarker(
-                new MarkerOptions()
-                        .position(pracaDoSamba)
-                        .icon(BitmapFromVector(
-                                requireContext(),
-                                R.drawable.ic_flower_filled))
-                        .title("Praça do Samba"));
+        postgresqlAPI.getLocales(new LocalesCallback() {
+            @Override
+            public void onSuccess(List<Locale> locales) {
+                for (Locale locale : locales) {
+                    LatLng markerPosition = new LatLng(locale.getNrLat(), locale.getNrLong());
 
-        googleMap.addMarker(
-                new MarkerOptions()
-                        .position(nossaSenhora)
-                        .icon(BitmapFromVector(
-                                requireContext(),
-                                R.drawable.ic_flower_filled))
-                        .title("Nossa senhora dos prazeres"));
+                    googleMap.addMarker(
+                            new MarkerOptions()
+                                    .position(markerPosition)
+                                    .icon(BitmapFromVector(
+                                            requireContext(),
+                                            R.drawable.ic_flower_filled))
+                                    .title(locale.getName()));
+                }
+            }
 
-        googleMap.addMarker(
-                new MarkerOptions()
-                        .position(pracaHerois)
-                        .icon(BitmapFromVector(
-                                requireContext(),
-                                R.drawable.ic_flower_filled))
-                        .title("Praça Heróis da FEB"));
+            @Override
+            public void onError(String errorMessage) {
 
-        googleMap.addMarker(
-                new MarkerOptions()
-                        .position(pracaMargarida)
-                        .icon(BitmapFromVector(
-                                requireContext(),
-                                R.drawable.ic_flower_filled))
-                        .title("Praça Margarida A. Gimenez"));
-
-        googleMap.addMarker(
-                new MarkerOptions()
-                        .position(pracaVistaVerde)
-                        .icon(BitmapFromVector(
-                                requireContext(),
-                                R.drawable.ic_flower_filled))
-                        .title("Praça vista verde"));
-
-        googleMap.addMarker(
-                new MarkerOptions()
-                        .position(pracaMorelis)
-                        .icon(BitmapFromVector(
-                                requireContext(),
-                                R.drawable.ic_flower_filled))
-                        .title("Praça Novais Morelis"));
+            }
+        });
     }
 
     private BitmapDescriptor BitmapFromVector(Context context, int vectorResId) {

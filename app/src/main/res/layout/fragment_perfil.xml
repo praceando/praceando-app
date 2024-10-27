@@ -92,7 +92,7 @@
                 android:scrollbars="none"
                 android:background="@color/white"
                 android:gravity="start"
-                android:editable="false"
+                android:inputType="none"
                 android:fontFamily="@font/montserrat_medium"
                 android:text="Amante de eventos"
                 android:textSize="15sp"

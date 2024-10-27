@@ -17,7 +17,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="80dp"
         android:layout_gravity="bottom"
         android:background="@drawable/shape_rounded_container"/>
 
@@ -29,24 +29,14 @@
         android:layout_margin="20dp"
         />
 
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scrollbars="none"
-        android:layout_marginTop="60dp"
-        android:layout_marginHorizontal="40dp">
+
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="20dp"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/userImage"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:scaleType="centerCrop"
-            android:clipToOutline="true"
-            android:background="@drawable/shape_user_image_background"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -67,12 +57,19 @@
             android:layout_marginTop="5dp"
             android:textColor="@color/cinzaEscuro"/>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
         <TextView
+            android:id="@+id/nameText"
             android:fontFamily="@font/montserrat_medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/cinzaEscuro"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="50dp"
             android:text="Nickname"/>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -81,6 +78,7 @@
             android:layout_height="wrap_content"
             app:errorEnabled="true"
             app:endIconMode="clear_text"
+            app:errorTextColor="@color/red"
             app:endIconDrawable="@drawable/ic_x"
             app:endIconTint="@color/rosaEscuro">
 
@@ -103,7 +101,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/cinzaEscuro"
             android:layout_marginTop="20dp"
-            android:text="Sua bio"/>
+            android:text="Descrição do perfil"/>
 
         <TextView
             android:fontFamily="@font/montserrat_medium"
@@ -118,6 +116,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:counterEnabled="true"
+            app:errorTextColor="@color/red"
             app:counterMaxLength="230"
             app:errorEnabled="true">
 
@@ -135,6 +134,8 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        </LinearLayout>
+
         <Button
             android:id="@+id/enterBtn"
             android:layout_width="300dp"
@@ -148,7 +149,6 @@
             android:textColor="@color/white"/>
 
     </LinearLayout>
-    </ScrollView>
 
 
 </FrameLayout>

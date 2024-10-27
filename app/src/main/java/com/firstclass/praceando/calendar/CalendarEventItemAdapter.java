@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firstclass.praceando.API.postgresql.entities.EventoFeed;
 import com.firstclass.praceando.EventDetails.EventActivity;
 import com.firstclass.praceando.R;
 import com.firstclass.praceando.entities.Event;
@@ -18,8 +19,8 @@ import com.firstclass.praceando.entities.Event;
 import java.util.List;
 
 public class CalendarEventItemAdapter extends RecyclerView.Adapter<CalendarEventItemAdapter.CalendarEventItemViewHolder> {
-    private List<Event> eventlist;
-    public CalendarEventItemAdapter(List<Event> eventList) {
+    private List<EventoFeed> eventlist;
+    public CalendarEventItemAdapter(List<EventoFeed> eventList) {
         this.eventlist = eventList;
     }
     @NonNull
@@ -30,12 +31,12 @@ public class CalendarEventItemAdapter extends RecyclerView.Adapter<CalendarEvent
     }
     @Override
     public void onBindViewHolder(@NonNull CalendarEventItemAdapter.CalendarEventItemViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        Event event = eventlist.get(position);
+        EventoFeed event = eventlist.get(position);
 
-        holder.title.setText(event.getTitle());
-        holder.locale.setText(event.getLocale());
-        holder.time.setText(event.getTime());
-        holder.date.setText(event.getDate());
+        holder.title.setText(event.getNomeEvento());
+        holder.locale.setText(event.getNomeLocal());
+        holder.time.setText(event.getFormattedHrInicio() + " - " + event.getFormattedHrFim());
+        holder.date.setText(event.getFormattedDtInicio() + " - " + event.getFormattedDtFim());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

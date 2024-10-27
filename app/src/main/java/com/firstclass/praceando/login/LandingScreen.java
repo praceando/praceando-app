@@ -1,10 +1,7 @@
 package com.firstclass.praceando.login;
 
-import static android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,7 +17,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.firstclass.praceando.MainActivity;
 import com.firstclass.praceando.R;
-import com.firstclass.praceando.authentication.Authentication;
+import com.firstclass.praceando.firebase.authentication.Authentication;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Objects;

@@ -10,18 +10,28 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import com.firstclass.praceando.API.postgresql.PostgresqlAPI;
+import com.firstclass.praceando.API.postgresql.callbackInterfaces.EventsCallback;
+import com.firstclass.praceando.API.postgresql.callbackInterfaces.FraseSustentavelCallback;
+import com.firstclass.praceando.API.postgresql.callbackInterfaces.TagsCallback;
+import com.firstclass.praceando.API.postgresql.callbackInterfaces.UsuarioConsumidorCallback;
+import com.firstclass.praceando.API.postgresql.entities.EventoFeed;
+import com.firstclass.praceando.API.postgresql.entities.FraseSustentavel;
+import com.firstclass.praceando.API.postgresql.entities.UsuarioConsumidor;
 import com.firstclass.praceando.EventDetails.EventCreationBasicDatas;
 import com.firstclass.praceando.Globals;
 import com.firstclass.praceando.R;
-import com.firstclass.praceando.entities.Event;
+import com.firstclass.praceando.entities.Gender;
 import com.firstclass.praceando.entities.Tag;
+import com.firstclass.praceando.firebase.database.Database;
 import com.firstclass.praceando.fragments.HeaderFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
@@ -38,10 +48,19 @@ public class HomeFragment extends Fragment {
     private TextView otherEnventsTab, myEnventsTab;
     private FloatingActionButton addEvent;
     private LinearLayout tabs;
+    private String fraseSustentavel;
+    private PostgresqlAPI postgresqlAPI = new PostgresqlAPI();
+    private Globals globals;
+    private Tag  selectedTag;
+    private boolean isMyEvents = false;
+    private TextInputLayout textInputLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        globals = (Globals) requireActivity().getApplication();
+        loadFraseSustevel();
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
@@ -53,7 +72,7 @@ public class HomeFragment extends Fragment {
         Globals globals = new Globals();
         int userRole = globals.getUserRole();
 
-        if (userRole == 0) {
+        if (userRole == 1) {
             tabs.setVisibility(View.GONE);
             addEvent.setVisibility(View.GONE);
         }
@@ -72,20 +91,20 @@ public class HomeFragment extends Fragment {
         recyclerView.setAdapter(eventItemAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        loadEvents(true);
+        loadEvents();
 
         addEvent.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), EventCreationBasicDatas.class);
             startActivity(intent);
         });
 
-
         final AutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
-        final TextInputLayout textInputLayout = view.findViewById(R.id.dropdownLayout);
+        textInputLayout = view.findViewById(R.id.dropdownLayout);
 
-        // Altera o ícone quando um item é selecionado
         autoCompleteTextView.setOnItemClickListener((parent, v, position, id) -> {
+            selectedTag = tagList.get(position);
             textInputLayout.setEndIconDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_x));
+            loadEvents();
         });
 
         // Configura o listener para o ícone "X"
@@ -96,7 +115,9 @@ public class HomeFragment extends Fragment {
                     autoCompleteTextView.showDropDown();
                 } else {
                     autoCompleteTextView.setText("");
+                    selectedTag = null;
                     textInputLayout.setEndIconDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_dropdown_arrow));
+                    loadEvents();
                 }
             }
         });
@@ -122,98 +143,106 @@ public class HomeFragment extends Fragment {
 
     @SuppressLint("NotifyDataSetChanged")
     private void addEventsInTheList(boolean isMyEvents) {
-
         eventList.clear();
-        if(isMyEvents){
-            eventList.add("Cada tonelada de papel reciclado economiza cerca de 17 árvores, faça sua parte!");
+        eventList.add(fraseSustentavel);
 
-            eventList.add(new Event("9h - 13h", "Biblioteca Pública", "19/07 - 19/07", "Encontro de Leitores", "https://catracalivre.com.br/wp-content/uploads/2020/04/1028904-02-07-2016-dsc7443-910x544.jpg",
-                    new Tag[]{
-                            new Tag(16L, "Leitura"),
-                            new Tag(17L, "Literatura"),
-                            new Tag(18L, "Cultura")
-                    }));
+        if (isMyEvents) {
+            postgresqlAPI.getEventsByUserId(13, new EventsCallback() {
+                @Override
+                public void onSuccess(List<EventoFeed> events) {
+                    eventList.addAll(events);
+                    Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
+                }
 
-            eventList.add(new Event("20h - 02h", "Centro Histórico", "20/07 - 20/07", "Noite dos Museus", "https://www.blogvambora.com.br/wp-content/uploads/2012/05/39009754_5de61cb610_Hugo.jpg",
-                    new Tag[]{
-                            new Tag(19L, "Museus"),
-                            new Tag(20L, "História"),
-                            new Tag(21L, "Cultura")
-                    }));
-        } else {
+                @Override
+                public void onError(String errorMessage) {
+                    Log.e("API", errorMessage);
+                }
+            });
+        } else if (selectedTag != null) {
+            // Se uma tag estiver selecionada, busque eventos por tag
+            postgresqlAPI.getEventsByTagId(selectedTag.getId(), new EventsCallback() {
+                @Override
+                public void onSuccess(List<EventoFeed> events) {
+                    eventList.addAll(events);
+                    Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
+                }
 
-            eventList.add("Cada tonelada de papel reciclado economiza cerca de 17 árvores, faça sua parte!");
+                @Override
+                public void onError(String errorMessage) {
+                    Log.e("API", errorMessage);
+                }
+            });
+        }  else {
+            postgresqlAPI.getEvents(new EventsCallback() {
+                @Override
+                public void onSuccess(List<EventoFeed> events) {
+                    eventList.addAll(events);
+                    Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
+                }
 
-            eventList.add(new Event("10h - 18h", "N. Sra. dos Prazeres", "15/07 - 15/07", "Feira de Artesanato", "https://blog.123milhas.com/wp-content/uploads/2022/08/feira-de-artesanato-ao-ar-livre-redes-outros-objetos-artesanais-conexao123.jpg",
-                    new Tag[]{
-                            new Tag(4L, "Artesanato"),
-                            new Tag(5L, "Feira"),
-                            new Tag(6L, "Cultura"),
-                            new Tag(3L, "Popular")
-                    }));
-
-            eventList.add(new Event("8h - 12h", "Praia do Futuro", "16/07 - 16/07", "Corrida do Sol", "https://eccobolsas.com.br/wp-content/uploads/2023/05/Quais-sao-os-tipos-de-corrida-de-rua.png",
-                    new Tag[]{
-                            new Tag(7L, "Esporte"),
-                            new Tag(8L, "Saúde"),
-                            new Tag(9L, "Corrida")
-                    }));
-
-            eventList.add(new Event("14h - 22h", "Centro Cultural", "17/07 - 17/07", "Mostra de Cinema", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIe1cF_ZkxAniXv0qqy2XX73u079G2BKXASA&s",
-                    new Tag[]{
-                            new Tag(10L, "Cinema"),
-                            new Tag(11L, "Cultura"),
-                            new Tag(12L, "Arte")
-                    }));
-
-            eventList.add(new Event("18h - 23h", "Estádio Municipal", "18/07 - 18/07", "Show de Rock", "https://midias.correio24horas.com.br/2023/04/13/rock-no-parque-da-cidade-em-salvador-1567377.jpg",
-                    new Tag[]{
-                            new Tag(13L, "Música"),
-                            new Tag(14L, "Rock"),
-                            new Tag(15L, "Entretenimento")
-                    }));
-
-            eventList.add(new Event("9h - 13h", "Biblioteca Pública", "19/07 - 19/07", "Encontro de Leitores", "https://catracalivre.com.br/wp-content/uploads/2020/04/1028904-02-07-2016-dsc7443-910x544.jpg",
-                    new Tag[]{
-                            new Tag(16L, "Leitura"),
-                            new Tag(17L, "Literatura"),
-                            new Tag(18L, "Cultura")
-                    }));
-
-            eventList.add(new Event("20h - 02h", "Centro Histórico", "20/07 - 20/07", "Noite dos Museus", "https://www.blogvambora.com.br/wp-content/uploads/2012/05/39009754_5de61cb610_Hugo.jpg",
-                    new Tag[]{
-                            new Tag(19L, "Museus"),
-                            new Tag(20L, "História"),
-                            new Tag(21L, "Cultura")
-                    }));
-
+                @Override
+                public void onError(String errorMessage) {
+                    Log.e("API", errorMessage);
+                }
+            });
         }
-        Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
     }
+
 
 
     private void addTagsInTheList() {
-        tagList.add(new Tag(1L, "artesanato"));
-        tagList.add(new Tag(2L, "gastronomia"));
-        tagList.add(new Tag(3L, "arte"));
-        tagList.add(new Tag(4L, "esporte"));
-        tagList.add(new Tag(5L, "saude"));
+
+        postgresqlAPI.getTags(new TagsCallback() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onSuccess(List<Tag> tags) {
+                tagList.addAll(tags);
+                Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+        });
     }
 
-    private void loadEvents(boolean isAppInitialized) {
-        if (isAppInitialized) {
-            addEventsInTheList(false);
-            updateTabColors(false);
-        }
+    private void loadEvents() {
+        addEventsInTheList(isMyEvents);
+        updateTabColors(isMyEvents);
 
         otherEnventsTab.setOnClickListener(v -> {
-            addEventsInTheList(false);
-            updateTabColors(false);
+            isMyEvents = false;
+            addEventsInTheList(isMyEvents);
+            updateTabColors(isMyEvents);
+            textInputLayout.setVisibility(View.VISIBLE);
         });
 
         myEnventsTab.setOnClickListener(v -> {
-            addEventsInTheList(true);
-            updateTabColors(true);
+            isMyEvents = true;
+            addEventsInTheList(isMyEvents);
+            updateTabColors(isMyEvents);
+            textInputLayout.setVisibility(View.GONE);
+        });
+    }
+
+    private void loadFraseSustevel() {
+
+        postgresqlAPI.getFraseSustentavel(1, new FraseSustentavelCallback() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onSuccess(FraseSustentavel fraseSustentavelResponse) {
+                fraseSustentavel = fraseSustentavelResponse.getDsFrase();
+
+                addEventsInTheList(false);
+                Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.e("ERRO", errorMessage);
+            }
         });
     }
 }

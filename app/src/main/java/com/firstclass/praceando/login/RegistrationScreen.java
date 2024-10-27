@@ -18,30 +18,31 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.firstclass.praceando.Globals;
-import com.firstclass.praceando.MainActivity;
 import com.firstclass.praceando.R;
-import com.firstclass.praceando.authentication.Authentication;
+import com.firstclass.praceando.firebase.authentication.Authentication;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
 
 public class RegistrationScreen extends AppCompatActivity {
-    TextInputEditText cnpjEditText;
-    TextInputLayout cnpjInputLayout;
-    TextInputLayout passwordInputLayout;
-    TextInputLayout passwordRepeatInputLayout;
-    TextInputEditText passwordEditText;
-    TextInputEditText passwordRepeatEditText;
-    TextInputEditText emailEditText;
-    TextInputLayout emailInputLayout;
-    CheckBox termsCheckbox;
-    Button nextBtn;
-    boolean isAdvertiser;
-    LinearLayout cnpjLayout;
-    Globals globals;
-    boolean enable;
-
+    private TextInputEditText cnpjEditText;
+    private TextInputLayout cnpjInputLayout;
+    private TextInputLayout passwordInputLayout;
+    private TextInputLayout passwordRepeatInputLayout;
+    private TextInputEditText passwordEditText;
+    private TextInputEditText passwordRepeatEditText;
+    private TextInputEditText emailEditText;
+    private TextInputLayout emailInputLayout;
+    private CheckBox termsCheckbox;
+    private Button nextBtn;
+    private boolean isAdvertiser;
+    private LinearLayout cnpjLayout;
+    private boolean enable;
+    private String gender;
+    private String birthDate;
+    private String name;
+    private String userRole;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +55,14 @@ public class RegistrationScreen extends AppCompatActivity {
             return insets;
         });
 
-        isAdvertiser = getIntent().getStringExtra("type").equals("advertiser");
-        globals = (Globals) getApplication();
+        gender = getIntent().getStringExtra("gender");
+        birthDate = getIntent().getStringExtra("birthDate");
+        name = getIntent().getStringExtra("name");
+        userRole = getIntent().getStringExtra("type");
+
+        Toast.makeText(this, "gender "+gender, Toast.LENGTH_SHORT).show();
+
+        isAdvertiser = Objects.equals(getIntent().getStringExtra("type"), "advertiser");
         cnpjLayout = findViewById(R.id.cnpjBox);
         termsCheckbox = findViewById(R.id.termsCheckbox);
         cnpjEditText = findViewById(R.id.cnpj);
@@ -176,24 +183,18 @@ public class RegistrationScreen extends AppCompatActivity {
 
         nextBtn.setOnClickListener(v -> {
 
-            Authentication authManager = new Authentication();
-            authManager.signUp(Objects.requireNonNull(emailEditText.getText()).toString(), Objects.requireNonNull(passwordEditText.getText()).toString(), new Authentication.AuthCallback() {
-                @Override
-                public void onSuccess() {
-                    Intent intent = new Intent(RegistrationScreen.this, InfosPerfil.class);
-                    startActivity(intent);
-                }
-
-                @Override
-                public void onFailure(Exception exception) {
-                    Toast.makeText(globals, ""+exception, Toast.LENGTH_SHORT).show();
-//                    errorMessage.setText("Usuário inválido!");
-                }
-            });
-
+            Intent intent = new Intent(RegistrationScreen.this, InfosPerfil.class);
+            intent.putExtra("gender",gender);
+            intent.putExtra("birthDate", birthDate);
+            intent.putExtra("name", name);
+            intent.putExtra("type", userRole);
+            intent.putExtra("email", Objects.requireNonNull(emailEditText.getText()).toString());
+            intent.putExtra("password", Objects.requireNonNull(passwordEditText.getText()).toString());
+            if (isAdvertiser) {
+                intent.putExtra("cnpj", Objects.requireNonNull(cnpjEditText.getText()).toString());
+            }
+            startActivity(intent);
         });
-
-
     }
 
     private final TextWatcher watchFields = new TextWatcher() {
@@ -261,8 +262,6 @@ public class RegistrationScreen extends AppCompatActivity {
         } else {
             enable = isEmailValid && isPasswordValid && doPasswordsMatch && isTermsChecked;
         }
-
-        globals.setUserRole(isAdvertiser ? 0 : 1);
 
         nextBtn.setEnabled(enable);
         int color = enable ? getResources().getColor(R.color.rosaEscuraoClaro, getTheme()) : getResources().getColor(R.color.rosaEscuraoDesativado, getTheme());

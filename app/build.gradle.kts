@@ -57,7 +57,7 @@ dependencies {
 
     // Maps
     implementation("com.google.android.gms:play-services-maps:19.0.0")
-    implementation("com.google.android.gms:play-services-location:20.0.0")
+    implementation("com.google.android.gms:play-services-location:21.3.0")
 
     // Removido `com.android.support:design:27.0.2` para evitar conflito com AndroidX
 
@@ -74,6 +74,13 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.0.0")
 
     //firebase
-    implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.5.0"))
     implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-storage")
+    implementation("com.google.firebase:firebase-appcheck-playintegrity")
+
+    //retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
 }

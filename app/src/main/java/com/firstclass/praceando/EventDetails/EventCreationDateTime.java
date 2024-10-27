@@ -20,6 +20,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.firstclass.praceando.API.postgresql.PostgresqlAPI;
+import com.firstclass.praceando.API.postgresql.callbackInterfaces.LocalesCallback;
 import com.firstclass.praceando.R;
 import com.firstclass.praceando.entities.Locale;
 import com.google.android.material.textfield.TextInputEditText;
@@ -40,6 +42,7 @@ public class EventCreationDateTime extends AppCompatActivity {
     private TextInputLayout startDateInputLayout, endDateInputLayout, startTimeInputLayout, endTimeInputLayout, dropdownLayout;
     private AutoCompleteTextView autoCompleteTextView;
     private Locale selectedLocale;
+    private PostgresqlAPI postgresqlAPI = new PostgresqlAPI();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,12 +74,11 @@ public class EventCreationDateTime extends AppCompatActivity {
         autoCompleteTextView = findViewById(R.id.autoCompleteTextView);
 
         addLocalesInTheList();
-        setupAutoCompleteTextView();
 
         setupDateAndTimePickers();
 
         autoCompleteTextView.setOnItemClickListener((parent, v, position, id) -> {
-                selectedLocale = localeList.get(position);
+            selectedLocale = localeList.get(position);
             validateFields();
         });
 
@@ -266,8 +268,21 @@ public class EventCreationDateTime extends AppCompatActivity {
     }
 
     private void addLocalesInTheList() {
-        localeList.add(new Locale(1L, "Praça vista verde", "08:00", "22:00"));
-        localeList.add(new Locale(2L, "Nossa senhora dos prazeres", "07:00", "20:00"));
+        postgresqlAPI.getLocales(new LocalesCallback() {
+            @Override
+            public void onSuccess(List<Locale> locales) {
+                Log.e("LOCAL", ""+locales);
+                localeList.addAll(locales);
+                setupAutoCompleteTextView();
+
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.e("LOCAL", errorMessage);
+            }
+        });
+
     }
 }
 

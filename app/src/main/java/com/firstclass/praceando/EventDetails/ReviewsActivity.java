@@ -1,7 +1,5 @@
 package com.firstclass.praceando.EventDetails;
 
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -10,8 +8,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Dialog;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -21,14 +20,22 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firstclass.praceando.API.mongo.MongoAPI;
+import com.firstclass.praceando.API.mongo.callbacksInterfaces.EventReviewsInterface;
+import com.firstclass.praceando.API.mongo.entities.Avaliacao;
+import com.firstclass.praceando.API.mongo.entities.AvaliacoesUsuarios;
+import com.firstclass.praceando.API.postgresql.PostgresqlAPI;
+import com.firstclass.praceando.API.postgresql.callbackInterfaces.UserByIdCallback;
+import com.firstclass.praceando.API.postgresql.entities.EventoFeed;
 import com.firstclass.praceando.R;
-import com.firstclass.praceando.entities.Event;
 import com.firstclass.praceando.entities.Review;
+import com.firstclass.praceando.entities.User;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ReviewsActivity extends AppCompatActivity {
 
@@ -37,6 +44,9 @@ public class ReviewsActivity extends AppCompatActivity {
     private ImageView returnArrow;
     private TextView title;
     private FloatingActionButton addReviewBtn;
+    private EventoFeed event;
+    private PostgresqlAPI postgresqlAPI = new PostgresqlAPI();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,78 +65,17 @@ public class ReviewsActivity extends AppCompatActivity {
         title = findViewById(R.id.title);
         addReviewBtn = findViewById(R.id.addReviewBtn);
 
-        Event event = (Event) getIntent().getParcelableExtra("event");
+        event = getIntent().getParcelableExtra("event");
 
         recyclerView = findViewById(R.id.commentsRecyclerView);
 
-        reviewList.add(new Review(
-                "MysticShadow_StarGazer_NightWhisper",
-                "https://img.freepik.com/psd-gratuitas/ilustracao-3d-de-avatar-ou-perfil-humano_23-2150671142.jpg?size=338&ext=jpg&ga=GA1.1.1413502914.1725148800&semt=ais_hybrid",
-                4.5f,
-                "Excelente evento! Tudo foi bem organizado e divertido."
-        ));
-
-        reviewList.add(new Review(
-                "NightRider_HiddenEcho",
-                "https://img.freepik.com/psd-gratis/ilustracion-3d-avatar-o-perfil-humano_23-2150671116.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1724976000&semt=ais_hybrid",
-                3.0f,
-                "Foi um bom evento, mas algumas atividades poderiam ter sido melhores."
-        ));
-
-        reviewList.add(new Review(
-                "EchoKnight_DuskBringer",
-                "https://img.freepik.com/psd-gratuitas/ilustracao-3d-de-avatar-ou-perfil-humano_23-2150671130.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1725062400&semt=ais_hybrid",
-                2.5f
-        ));
-
-        reviewList.add(new Review(
-                "LunarWolf_SilentHunter",
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfMkSd3q4P5iEp8Afhty7gZwuyAHBQCNXbYagz8D_oEkcu-7yyggxiCXZUjnFTwT_OpDY&usqp=CAU",
-                5.0f,
-                "Incrível! Superou todas as minhas expectativas!"
-        ));
-
-        reviewList.add(new Review(
-                "SolarFlare_DreamChaser",
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmzwO4A38YY78S55EjUOwdqXNUiKqm6tVnacvqUj0brZ8kOyUseOe2RBfUzotpsICntho&usqp=CAU",
-                4.0f,
-                "Ótimo evento, mas o local poderia ser mais acessível."
-        ));
-
-        reviewList.add(new Review(
-                "EchoKnight_DuskBringer",
-                "https://img.freepik.com/psd-gratuitas/ilustracao-3d-de-avatar-ou-perfil-humano_23-2150671120.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1724889600&semt=ais_hybrid",
-                2.5f,
-                "Não gostei muito do evento, a organização deixou a desejar."
-        ));
+       addReviewsInTheList();
 
         ReviewItemAdapter reviewItemAdapter = new ReviewItemAdapter(reviewList);
         recyclerView.setAdapter(reviewItemAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        title.setText(reviewList.size()+" Avaliações de "+event.getTitle());
-
-
         addReviewBtn.setOnClickListener(v -> {
-//            Dialog reviewDialog = new Dialog(ReviewsActivity.this);
-//            reviewDialog.setContentView(R.layout.dialog_review);
-//            reviewDialog.getWindow().setLayout(WRAP_CONTENT, WRAP_CONTENT);
-////                reviewDialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.));
-//
-//            //nao permitir clique fora da caixa
-//            reviewDialog.setCancelable(false);
-//
-//            //inicializar os componentes da caixa
-//            TextView title = reviewDialog.findViewById(R.id.title);
-//            EditText comment = reviewDialog.findViewById(R.id.comment);
-//            RatingBar ratingBar = reviewDialog.findViewById(R.id.ratingBar);
-//            Button reviewBtn = reviewDialog.findViewById(R.id.reviewBtn);
-//            ImageView closeBtn = reviewDialog.findViewById(R.id.closeBtn);
-//
-//            title.setText("Como você avaliaria "+event.getTitle()+"?");
-//
-//            closeBtn.setOnClickListener(view -> {reviewDialog.dismiss();});
-//            reviewDialog.show();
 
             BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ReviewsActivity.this);
             View view = LayoutInflater.from(ReviewsActivity.this).inflate(R.layout.botton_sheet_review, null);
@@ -138,7 +87,7 @@ public class ReviewsActivity extends AppCompatActivity {
             EditText comment = view.findViewById(R.id.comment);
             Button reviewBtn = view.findViewById(R.id.reviewBtn);
 
-            title.setText("Como você avaliaria "+event.getTitle()+"?");
+            title.setText("Como você avaliaria "+event.getNomeEvento()+"?");
             reviewBtn.setOnClickListener(vv -> {
                 //enviar para a api e tals
                 bottomSheetDialog.dismiss();
@@ -150,6 +99,49 @@ public class ReviewsActivity extends AppCompatActivity {
                     Toast.makeText(ReviewsActivity.this, ratingBar.getRating() + "", Toast.LENGTH_SHORT).show();
                 }
             });
+        });
+
+    }
+
+    private void addReviewsInTheList() {
+
+        MongoAPI mongoAPI = new MongoAPI();
+
+        mongoAPI.getEventReviews(event.getId(), 1, new EventReviewsInterface() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onSuccess(AvaliacoesUsuarios avaliacoesUsuarios) {
+
+                for (Avaliacao avaliacao : avaliacoesUsuarios.getAvaliacoes()) {
+
+                    postgresqlAPI.getUserById(avaliacao.getCdUsuario(), new UserByIdCallback() {
+                        @Override
+                        public void onSuccess(User user) {
+                            Log.e("USER", user+"");
+                            reviewList.add(
+                                    new Review(
+                                            user.getNome(),
+                                            "https://img.freepik.com/psd-gratuitas/ilustracao-3d-de-avatar-ou-perfil-humano_23-2150671142.jpg?size=338&ext=jpg&ga=GA1.1.1413502914.1725148800&semt=ais_hybrid",
+                                            avaliacao.getNrNota(),
+                                            avaliacao.getDsComentario()
+                                    )
+                            );
+                            Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onError(String errorMessage) {
+                            Log.e("API", errorMessage);
+                        }
+                    });
+                }
+                title.setText(avaliacoesUsuarios.getAvaliacoes().size()+" Avaliações de "+event.getNomeEvento());
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.e("ERRO", errorMessage);
+            }
         });
 
     }

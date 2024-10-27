@@ -14,6 +14,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firstclass.praceando.API.postgresql.entities.Evento;
+import com.firstclass.praceando.API.postgresql.entities.EventoFeed;
 import com.firstclass.praceando.EventDetails.EventActivity;
 import com.firstclass.praceando.R;
 import com.firstclass.praceando.entities.Event;
@@ -60,29 +62,29 @@ public class EventItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         } else {
             EventItemViewHolder eventHolder = (EventItemViewHolder) holder;
-            Event event = (Event) itemList.get(position);
+            EventoFeed event = (EventoFeed) itemList.get(position);
 
-            eventHolder.title.setText(event.getTitle());
-            eventHolder.locale.setText(event.getLocale());
-            eventHolder.time.setText(event.getTime());
-            eventHolder.date.setText(event.getDate());
+            eventHolder.title.setText(event.getNomeEvento());
+            eventHolder.locale.setText(event.getNomeLocal());
+            eventHolder.time.setText(event.getFormattedHrInicio() + " - " + event.getFormattedHrFim());
+            eventHolder.date.setText(event.getFormattedDtInicio() + " - " + event.getFormattedDtFim());
 
             Picasso.get()
-                    .load(event.getImageUrl())
+                    .load("https://joycone.com/wp-content/uploads/2019/07/joycone_milkshakes3.jpeg")
                     .into(eventHolder.image);
 
             eventHolder.tagsFlexbox.removeAllViews();
-            Tag[] tags = event.getTags();
+            List<String> tags = event.getTags();
             LayoutInflater inflater = LayoutInflater.from(holder.itemView.getContext());
 
             float density = holder.itemView.getContext().getResources().getDisplayMetrics().density;
             int marginInPixels = (int) (5 * density);
 
-            for (Tag tag : tags) {
+            for (String tag : tags) {
                 View tagItem = inflater.inflate(R.layout.item_tag, eventHolder.tagsFlexbox, false);
 
                 TextView tagName = tagItem.findViewById(R.id.tagName);
-                tagName.setText(tag.getName());
+                tagName.setText(tag);
 
                 ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) tagItem.getLayoutParams();
                 layoutParams.setMargins(marginInPixels, marginInPixels, marginInPixels, marginInPixels);

@@ -1,5 +1,7 @@
 package com.firstclass.praceando.EventDetails;
 
+import static java.security.AccessController.getContext;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
@@ -22,7 +25,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.firstclass.praceando.R;
+import com.firstclass.praceando.firebase.database.Database;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EventCreationBasicDatas extends AppCompatActivity {
     ImageView img1, img2, img3, selectedImageView;
@@ -30,6 +37,7 @@ public class EventCreationBasicDatas extends AppCompatActivity {
     private EditText titleEditText, descriptionEditText;
     private TextView titleErrorMessage, descriptionErrorMessage;
     private Button nextButton;
+    List<Uri> imagesUri = new ArrayList<>();
 
 
     @Override
@@ -43,6 +51,8 @@ public class EventCreationBasicDatas extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        Database database = new Database();
 
         img1 = findViewById(R.id.img1);
         img2 = findViewById(R.id.img2);
@@ -144,22 +154,46 @@ public class EventCreationBasicDatas extends AppCompatActivity {
             new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getData() != null && result.getData().getData() != null) {
                     Uri imageUri = result.getData().getData();
+                    imagesUri.add(imageUri);
+
                     updateImageView(selectedImageView, imageUri);
                 }
             }
     );
 
     private void updateImageView(ImageView imageView, Uri imageUri) {
-            imageView.setPadding(0, 0, 0, 0);
-            Picasso.get().load(imageUri).into(imageView);
+        imageView.setPadding(0, 0, 0, 0);
 
-            if (imageView == img1) {
-                x1.setVisibility(View.VISIBLE);
-            } else if (imageView == img2) {
-                x2.setVisibility(View.VISIBLE);
-            } else if (imageView == img3) {
-                x3.setVisibility(View.VISIBLE);
-            }
+        imageView.setImageURI(imageUri);
+        Database database = new Database();
+        database.teste(imageView);
+//        Picasso.get().load(imageUri).into(imageView, new com.squareup.picasso.Callback() {
+//            @Override
+//            public void onSuccess() {
+//                // A imagem foi carregada com sucesso, agora podemos acessar o drawable
+//                Toast.makeText(EventCreationBasicDatas.this, "" + imageView.getDrawable(), Toast.LENGTH_SHORT).show();
+//
+//                // Chame a função do banco de dados aqui
+//
+//            }
+//
+//            @Override
+//            public void onError(Exception e) {
+//                // Trate o erro de carregamento aqui
+//                Toast.makeText(EventCreationBasicDatas.this, "Erro ao carregar imagem", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
+
+        if (imageView == img1) {
+            x1.setVisibility(View.VISIBLE);
+        } else if (imageView == img2) {
+            x2.setVisibility(View.VISIBLE);
+        } else if (imageView == img3) {
+            x3.setVisibility(View.VISIBLE);
+        }
+
+
     }
 
     private void clearImage(ImageView imageView, ImageView closeButton) {
