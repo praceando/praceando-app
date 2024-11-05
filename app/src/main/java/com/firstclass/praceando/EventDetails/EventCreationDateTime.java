@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,6 +13,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,6 +45,7 @@ public class EventCreationDateTime extends AppCompatActivity {
     private AutoCompleteTextView autoCompleteTextView;
     private Locale selectedLocale;
     private PostgresqlAPI postgresqlAPI = new PostgresqlAPI();
+    private String title, description;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,11 @@ public class EventCreationDateTime extends AppCompatActivity {
             return insets;
         });
 
+        title = getIntent().getStringExtra("title");
+        description = getIntent().getStringExtra("description");
+        ArrayList<Uri> imagesUri = getIntent().getParcelableArrayListExtra("imagesUri");
+
+
         findViewById(R.id.returnArrow).setOnClickListener(v -> finish());
 
         endTimeInputLayout = findViewById(R.id.endTimeInputLayout);
@@ -65,7 +73,18 @@ public class EventCreationDateTime extends AppCompatActivity {
 
         nextBtn = findViewById(R.id.nextBtn);
         nextBtn.setEnabled(false);
-        nextBtn.setOnClickListener(v -> startActivity(new Intent(this, EventCreationTagsSelection.class)));
+        nextBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(this, EventCreationTagsSelection.class);
+            intent.putExtra("title", title);
+            intent.putExtra("description", description);
+            intent.putParcelableArrayListExtra("imagesUri", imagesUri);
+            intent.putExtra("localeId", String.valueOf(selectedLocale.getId()));
+            intent.putExtra("startDate", Objects.requireNonNull(startDate.getText()).toString());
+            intent.putExtra("endDate", Objects.requireNonNull(endDate.getText()).toString());
+            intent.putExtra("startTime", Objects.requireNonNull(startTime.getText()).toString());
+            intent.putExtra("endTime", Objects.requireNonNull(endTime.getText()).toString());
+            startActivity(intent);
+        });
 
         startDate = findViewById(R.id.startDate);
         endDate = findViewById(R.id.endDate);

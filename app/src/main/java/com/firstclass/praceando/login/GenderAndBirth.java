@@ -32,7 +32,6 @@ import java.util.Objects;
 
 import android.text.TextUtils;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class GenderAndBirth extends AppCompatActivity {
     private AutoCompleteTextView autoCompleteTextView;
@@ -106,7 +105,6 @@ public class GenderAndBirth extends AppCompatActivity {
 
         nextBtn.setOnClickListener(v -> {
             if (validateFields()) {
-                Toast.makeText(this, "gender "+selectedGender.getId(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, RegistrationScreen.class);
                 intent.putExtra("gender", String.valueOf(selectedGender.getId()));
                 intent.putExtra("birthDate", Objects.requireNonNull(birthDate.getText()).toString());

@@ -5,14 +5,16 @@ public class Product {
     private String nmProduto;
     private String dsProduto;
     private double vlPreco;
+    private String nmCategoria;
     private String urlImagem;
 
-    public Product(int id, String description, double price, String title, String imageUrl) {
+    public Product(int id, String description, double price, String title, String imageUrl, String nmCategoria) {
         this.id = id;
         this.vlPreco = price;
         this.nmProduto = title;
         this.dsProduto = description;
         this.urlImagem = imageUrl;
+        this.nmCategoria = nmCategoria;
     }
 
     public String getTitle() {
@@ -51,6 +53,10 @@ public class Product {
         return id;
     }
 
+    public String getNmCategoria() {
+        return nmCategoria;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -59,6 +65,7 @@ public class Product {
                 ", dsProduto='" + dsProduto + '\'' +
                 ", vlPreco=" + vlPreco +
                 ", urlImagem='" + urlImagem + '\'' +
+                ", nmCategoria='" + nmCategoria + '\'' +
                 '}';
     }
 }

@@ -27,4 +27,12 @@ public class AvaliacoesUsuarios {
     public void setAvaliacoes(List<Avaliacao> avaliacoes) {
         this.avaliacoes = avaliacoes;
     }
+
+    @Override
+    public String toString() {
+        return "AvaliacoesUsuarios{" +
+                "usuarioJaAvaliou=" + usuarioJaAvaliou +
+                ", avaliacoes=" + avaliacoes +
+                '}';
+    }
 }

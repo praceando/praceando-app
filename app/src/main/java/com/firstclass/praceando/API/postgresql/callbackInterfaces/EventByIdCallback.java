@@ -1,8 +1,8 @@
 package com.firstclass.praceando.API.postgresql.callbackInterfaces;
 
-import com.firstclass.praceando.API.postgresql.entities.Evento;
+import com.firstclass.praceando.API.postgresql.entities.EventoCompleto;
 
 public interface EventByIdCallback {
-    void onSuccess(Evento evento);
+    void onSuccess(EventoCompleto evento);
     void onError(String errorMessage);
 }

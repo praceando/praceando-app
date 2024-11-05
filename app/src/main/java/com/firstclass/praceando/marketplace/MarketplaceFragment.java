@@ -56,9 +56,6 @@ public class MarketplaceFragment extends Fragment {
             @Override
             public void onSuccess(List<Product> products) {
                 Log.e("PRODUCTS", ""+products);
-                products.get(0).setImageUrl("https://firebasestorage.googleapis.com/v0/b/praceando-dbad6.appspot.com/o/avatars%2FAvatar1.png?alt=media&token=a9346a19-2340-4de7-b3ec-7c125562bff2");
-                products.get(1).setImageUrl("https://cdn-icons-png.freepik.com/512/13748/13748379.png");
-                products.get(2).setImageUrl("https://cdn-icons-png.freepik.com/512/13748/13748670.png");
                 ProductItemAdapter productItemAdapter = new ProductItemAdapter(products);
                 recyclerView.setAdapter(productItemAdapter);
             }

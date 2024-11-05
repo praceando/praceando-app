@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.firstclass.praceando.API.postgresql.PostgresqlAPI;
@@ -46,15 +47,14 @@ import java.util.List;
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private final int FINE_PERMISSION_CODE = 1;
-    Location currentLocation;
-    FusedLocationProviderClient fusedLocationProviderClient;
+    private Location currentLocation;
+    private FusedLocationProviderClient fusedLocationProviderClient;
     private FragmentMapBinding binding;
     private PostgresqlAPI postgresqlAPI = new PostgresqlAPI();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentMapBinding.inflate(inflater, container, false);
-
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
         getLastLocation();
 
@@ -63,11 +63,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         fragmentTransaction.add(R.id.headerFragmentLayout, new HeaderFragment());
         fragmentTransaction.commit();
 
+
         return binding.getRoot();
     }
 
     private void getLastLocation() {
-        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+         if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, FINE_PERMISSION_CODE);
             return;
         }
@@ -81,6 +82,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                             .findFragmentById(R.id.map);
                     mapFragment.getMapAsync(MapFragment.this);
+
                 }
             }
         });

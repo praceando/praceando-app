@@ -1,8 +1,8 @@
 package com.firstclass.praceando.API.postgresql.callbackInterfaces;
 
-import com.firstclass.praceando.API.postgresql.entities.NicknameIsInUse;
+import com.firstclass.praceando.API.postgresql.entities.EmailIsInUse;
 
 public interface EmailExistsCallback {
-    void onSuccess(NicknameIsInUse message);
+    void onSuccess(EmailIsInUse message);
     void onError(String errorMessage);
 }

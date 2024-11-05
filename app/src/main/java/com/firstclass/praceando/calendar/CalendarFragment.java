@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,10 +31,11 @@ import java.util.Objects;
 
 public class CalendarFragment extends Fragment {
 
-    private TextView dateTxt;
+    private TextView dateTxt, nothingFoundText;
     private RecyclerView recyclerView;
     private List<EventoFeed> eventList = new ArrayList<>();
     private PostgresqlAPI postgresqlAPI = new PostgresqlAPI();
+    private ProgressBar progressBar;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,7 +51,8 @@ public class CalendarFragment extends Fragment {
 
         dateTxt = view.findViewById(R.id.dateText);
 
-
+        nothingFoundText = view.findViewById(R.id.nothingFoundText);
+        progressBar = view.findViewById(R.id.progressBar);
 
         Calendar currentDate = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE d, MMMM", new Locale("pt", "BR"));
@@ -79,18 +82,25 @@ public class CalendarFragment extends Fragment {
 
     @SuppressLint("NotifyDataSetChanged")
     public void loadEvents(String date) {
-
+        progressBar.setVisibility(View.VISIBLE);
+        nothingFoundText.setVisibility(View.INVISIBLE);
         eventList.clear();
         postgresqlAPI.getEventsByDate(date, new EventsCallback() {
             @Override
             public void onSuccess(List<EventoFeed> events) {
+                if (events.isEmpty()) {
+                    nothingFoundText.setVisibility(View.VISIBLE);
+                }
+
                 eventList.addAll(events);
                 Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
+                progressBar.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onError(String errorMessage) {
-
+                progressBar.setVisibility(View.INVISIBLE);
+                nothingFoundText.setVisibility(View.VISIBLE);
             }
         });
     }

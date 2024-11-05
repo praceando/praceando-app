@@ -1,6 +1,9 @@
 package com.firstclass.praceando.entities;
 
-public class User {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class User implements Parcelable {
     private String bio;
     private String nome;
     private int tipoUsuario;
@@ -14,6 +17,30 @@ public class User {
         this.id = id;
         this.iventario = iventario;
     }
+
+    public User(long id) {
+        this.id = id;
+    }
+
+    protected User(Parcel in) {
+        bio = in.readString();
+        nome = in.readString();
+        tipoUsuario = in.readInt();
+        id = in.readLong();
+        iventario = in.readInt();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public String getBio() {
         return bio;
@@ -53,6 +80,20 @@ public class User {
 
     public void setIventario(int iventario) {
         this.iventario = iventario;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(bio);
+        dest.writeString(nome);
+        dest.writeInt(tipoUsuario);
+        dest.writeLong(id);
+        dest.writeInt(iventario);
     }
 
     @Override

@@ -16,11 +16,10 @@
 
         <ImageView
             android:id="@+id/userImage"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:scaleType="centerCrop"
-            android:clipToOutline="true"
-            android:background="@drawable/shape_user_image_background"/>
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:scaleType="fitCenter"
+            android:clipToOutline="true"/>
 
         <TextView
             android:id="@+id/nickname"

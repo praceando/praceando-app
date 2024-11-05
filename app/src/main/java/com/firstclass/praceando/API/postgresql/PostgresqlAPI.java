@@ -1,6 +1,7 @@
 package com.firstclass.praceando.API.postgresql;
-import android.util.Log;
-
+import com.firstclass.praceando.API.postgresql.callbackInterfaces.CreateCompraCallback;
+import com.firstclass.praceando.API.postgresql.callbackInterfaces.CreateEventoCallback;
+import com.firstclass.praceando.API.postgresql.callbackInterfaces.EmailExistsCallback;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.EventByIdCallback;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.EventsCallback;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.FraseSustentavelCallback;
@@ -12,7 +13,12 @@ import com.firstclass.praceando.API.postgresql.callbackInterfaces.TagsCallback;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.UserByIdCallback;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.UsuarioAnuncianteCallback;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.UsuarioConsumidorCallback;
+import com.firstclass.praceando.API.postgresql.entities.CreateCompra;
+import com.firstclass.praceando.API.postgresql.entities.CreateEventoResponse;
+import com.firstclass.praceando.API.postgresql.entities.EmailIsInUse;
 import com.firstclass.praceando.API.postgresql.entities.Evento;
+import com.firstclass.praceando.API.postgresql.entities.Evento2;
+import com.firstclass.praceando.API.postgresql.entities.EventoCompleto;
 import com.firstclass.praceando.API.postgresql.entities.EventoFeed;
 import com.firstclass.praceando.API.postgresql.entities.FraseSustentavel;
 import com.firstclass.praceando.API.postgresql.entities.NicknameIsInUse;
@@ -162,12 +168,12 @@ public class PostgresqlAPI {
         });
     }
 
-    public void emailExists(String nickname, NicknameExistsCallback callback) {
-        Call<NicknameIsInUse> call = postgresqApi.existsByNickname(nickname);
+    public void emailExists(String email, EmailExistsCallback callback) {
+        Call<EmailIsInUse> call = postgresqApi.existsByEmail(email);
 
-        call.enqueue(new Callback<NicknameIsInUse>() {
+        call.enqueue(new Callback<EmailIsInUse>() {
             @Override
-            public void onResponse(Call<NicknameIsInUse> call, Response<NicknameIsInUse> response) {
+            public void onResponse(Call<EmailIsInUse> call, Response<EmailIsInUse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.onSuccess(response.body());
                 } else {
@@ -176,18 +182,18 @@ public class PostgresqlAPI {
             }
 
             @Override
-            public void onFailure(Call<NicknameIsInUse> call, Throwable t) {
+            public void onFailure(Call<EmailIsInUse> call, Throwable t) {
                 callback.onError(t.getMessage());
             }
         });
     }
 
     public void getEventById(long id, EventByIdCallback callback) {
-        Call<Evento> call = postgresqApi.getEventById(id);
+        Call<EventoCompleto> call = postgresqApi.getEventById(id);
 
-        call.enqueue(new Callback<Evento>() {
+        call.enqueue(new Callback<EventoCompleto>() {
             @Override
-            public void onResponse(Call<Evento> call, Response<Evento> response) {
+            public void onResponse(Call<EventoCompleto> call, Response<EventoCompleto> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.onSuccess(response.body());
                 } else {
@@ -196,7 +202,7 @@ public class PostgresqlAPI {
             }
 
             @Override
-            public void onFailure(Call<Evento> call, Throwable t) {
+            public void onFailure(Call<EventoCompleto> call, Throwable t) {
                 callback.onError(t.getMessage());
             }
         });
@@ -222,7 +228,7 @@ public class PostgresqlAPI {
         });
     }
 
-    public void getEventsByUserId(int userId, EventsCallback callback) {
+    public void getEventsByUserId(Long userId, EventsCallback callback) {
         Call<List<EventoFeed>> call = postgresqApi.getEventsForFeedByUserId(userId);
 
         call.enqueue(new Callback<List<EventoFeed>>() {
@@ -356,6 +362,39 @@ public class PostgresqlAPI {
         });
     }
 
+    public void createEvento(Evento2 evento, CreateEventoCallback callback) {
+        Call<CreateEventoResponse> call = postgresqApi.createEvento(evento);
+
+        call.enqueue(new Callback<CreateEventoResponse>() {
+            @Override
+            public void onResponse(Call<CreateEventoResponse> call, Response<CreateEventoResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onResponse(response.body());
+                }
+            }
+            @Override
+            public void onFailure(Call<CreateEventoResponse> call, Throwable t) {
+                callback.onError(t.getMessage());
+            }
+        });
+    }
+
+    public void createCompra(CreateCompra createCompra, CreateCompraCallback callback) {
+        Call<CreateCompra> call = postgresqApi.createCompra(createCompra);
+
+        call.enqueue(new Callback<CreateCompra>() {
+            @Override
+            public void onResponse(Call<CreateCompra> call, Response<CreateCompra> response) {}
+            @Override
+            public void onFailure(Call<CreateCompra> call, Throwable t) {
+                callback.onError(t.getMessage());
+            }
+        });
+    }
+
+    public void pagamento(long cdCompra) {
+        postgresqApi.pagamento(cdCompra);
+    }
 
 //    private void updatePost() {
 //        Post postAtualizado = new Post();

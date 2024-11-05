@@ -30,6 +30,7 @@ import com.firstclass.praceando.MainActivity;
 import com.firstclass.praceando.R;
 import com.firstclass.praceando.entities.Gender;
 import com.firstclass.praceando.firebase.authentication.Authentication;
+import com.firstclass.praceando.firebase.database.Database;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.ParseException;
@@ -54,6 +55,7 @@ public class InfosPerfil extends AppCompatActivity {
     private String email;
     private String password;
     private String cnpj;
+    private Database database = new Database();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,8 +109,7 @@ public class InfosPerfil extends AppCompatActivity {
         findViewById(R.id.enterBtn).setOnClickListener(v -> {
 
             if (isAdvertiser) {
-                UsuarioAnunciante usuarioAnunciante = new UsuarioAnunciante(1, new Gender(Integer.parseInt(gender)), name, email, password, birthDate, nickname.getText().toString(), bio.getText().toString(), cnpj);
-                Log.e("USUARIO FINAL", usuarioAnunciante+"");
+                UsuarioAnunciante usuarioAnunciante = new UsuarioAnunciante(0, new Gender(Integer.parseInt(gender)), name, email, password, birthDate, nickname.getText().toString(), bio.getText().toString(), cnpj);
                 postgresqlAPI.createUsuarioAnunciante(usuarioAnunciante, new UsuarioAnuncianteCallback() {
                     @Override
                     public void onSuccess(UsuarioAnunciante usuarioAnunciante1) {
@@ -126,6 +127,8 @@ public class InfosPerfil extends AppCompatActivity {
                                 globals.setUserRole(1);
                                 globals.setId(usuarioAnunciante1.getId());
                                 startActivity(new Intent(InfosPerfil.this, UserInterest.class));
+
+                                database.criarInventario(usuarioAnunciante1.getId());
                             }
 
                             @Override
@@ -145,7 +148,6 @@ public class InfosPerfil extends AppCompatActivity {
 
             } else {
                 UsuarioConsumidor usuarioConsumidor = new UsuarioConsumidor(1, new Gender(Integer.parseInt(gender)), name, email, password, birthDate, nickname.getText().toString(), bio.getText().toString());
-                Log.e("USUARIO FINAL", usuarioConsumidor+"\ngender: "+gender);
                 postgresqlAPI.createUsuarioConsumidor(usuarioConsumidor, new UsuarioConsumidorCallback() {
                     @Override
                     public void onSuccess(UsuarioConsumidor usuarioConsumidor) {

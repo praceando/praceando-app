@@ -6,6 +6,7 @@ import com.firstclass.praceando.entities.Tag;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import android.os.Parcel;
@@ -110,8 +111,9 @@ public class EventoFeed implements Parcelable {
         dest.writeString(horaInicio);
         dest.writeString(dataFim);
         dest.writeString(horaFim);
-        dest.createStringArrayList();
+        dest.writeStringList(tags);
     }
+
     public long getId() {
         return idEvento;
     }

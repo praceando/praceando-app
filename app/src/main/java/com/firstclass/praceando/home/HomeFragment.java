@@ -17,7 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.firstclass.praceando.API.postgresql.PostgresqlAPI;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.EventsCallback;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.FraseSustentavelCallback;
@@ -40,12 +43,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.microedition.khronos.opengles.GL;
+
 public class HomeFragment extends Fragment {
 
     private final List<Object> eventList = new ArrayList<>();
     private final List<Tag> tagList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private TextView otherEnventsTab, myEnventsTab;
+    private TextView otherEnventsTab, myEnventsTab, nothingFoundText;
     private FloatingActionButton addEvent;
     private LinearLayout tabs;
     private String fraseSustentavel;
@@ -54,6 +59,7 @@ public class HomeFragment extends Fragment {
     private Tag  selectedTag;
     private boolean isMyEvents = false;
     private TextInputLayout textInputLayout;
+    private ProgressBar progressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,11 +69,14 @@ public class HomeFragment extends Fragment {
         loadFraseSustevel();
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-
+        globals = (Globals) requireActivity().getApplication();
         otherEnventsTab = view.findViewById(R.id.otherEnventsTab);
         myEnventsTab = view.findViewById(R.id.myEnventsTab);
         addEvent = view.findViewById(R.id.addEvent);
         tabs = view.findViewById(R.id.tabs);
+        nothingFoundText = view.findViewById(R.id.nothingFoundText);
+        progressBar = view.findViewById(R.id.progressBar);
+
 
         Globals globals = new Globals();
         int userRole = globals.getUserRole();
@@ -125,7 +134,7 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    private void setupAutoCompleteTextView(View view) {
+    private void setupAutoCompleteTextView(View view) {eventList.clear();
         AutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
         TagItemAdapter adapter = new TagItemAdapter(getContext(), tagList);
         autoCompleteTextView.setAdapter(adapter);
@@ -145,18 +154,31 @@ public class HomeFragment extends Fragment {
     private void addEventsInTheList(boolean isMyEvents) {
         eventList.clear();
         eventList.add(fraseSustentavel);
+        progressBar.setVisibility(View.VISIBLE);
+        nothingFoundText.setVisibility(View.INVISIBLE);
 
         if (isMyEvents) {
-            postgresqlAPI.getEventsByUserId(13, new EventsCallback() {
+
+            postgresqlAPI.getEventsByUserId(globals.getId(), new EventsCallback() {
                 @Override
                 public void onSuccess(List<EventoFeed> events) {
+                    nothingFoundText.setVisibility(View.INVISIBLE);
+                    if(events.isEmpty()) {
+                        nothingFoundText.setText("Você não tem nenhum evento, poste o seu primeiro! \uD83D\uDE09");
+                        nothingFoundText.setVisibility(View.VISIBLE);
+                    }
+
                     eventList.addAll(events);
                     Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
+                    progressBar.setVisibility(View.INVISIBLE);
                 }
 
                 @Override
                 public void onError(String errorMessage) {
                     Log.e("API", errorMessage);
+                    nothingFoundText.setText("Você não tem nenhum evento, poste o seu primeiro! \uD83D\uDE09");
+                    nothingFoundText.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.INVISIBLE);
                 }
             });
         } else if (selectedTag != null) {
@@ -164,26 +186,48 @@ public class HomeFragment extends Fragment {
             postgresqlAPI.getEventsByTagId(selectedTag.getId(), new EventsCallback() {
                 @Override
                 public void onSuccess(List<EventoFeed> events) {
+                    nothingFoundText.setVisibility(View.INVISIBLE);
+                    if (events.isEmpty()) {
+
+                        nothingFoundText.setText("Nenhum evento encontrado com essa tag \uD83D\uDE14");
+                        nothingFoundText.setVisibility(View.VISIBLE);
+                    }
+
                     eventList.addAll(events);
                     Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
+                    progressBar.setVisibility(View.INVISIBLE);
                 }
 
                 @Override
                 public void onError(String errorMessage) {
                     Log.e("API", errorMessage);
+                    nothingFoundText.setText("Nenhum evento encontrado com essa tag \uD83D\uDE14");
+                    nothingFoundText.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.INVISIBLE);
                 }
             });
         }  else {
             postgresqlAPI.getEvents(new EventsCallback() {
                 @Override
                 public void onSuccess(List<EventoFeed> events) {
+                    nothingFoundText.setVisibility(View.INVISIBLE);
+
+                    if (events.isEmpty()) {
+                        nothingFoundText.setText("Nenhum evento encontrado \uD83D\uDE14");
+                        nothingFoundText.setVisibility(View.VISIBLE);
+                    }
+
                     eventList.addAll(events);
                     Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
+                    progressBar.setVisibility(View.INVISIBLE);
                 }
 
                 @Override
                 public void onError(String errorMessage) {
                     Log.e("API", errorMessage);
+                    nothingFoundText.setText("Nenhum evento encontrado \uD83D\uDE14");
+                    nothingFoundText.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.INVISIBLE);
                 }
             });
         }

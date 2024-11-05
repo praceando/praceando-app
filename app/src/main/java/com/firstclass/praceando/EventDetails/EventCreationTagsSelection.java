@@ -4,7 +4,9 @@ import static android.view.View.inflate;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -33,6 +35,7 @@ public class EventCreationTagsSelection extends AppCompatActivity {
     private FlexboxLayout tagsFlexbox;
     private Button nextBtn;
     private PostgresqlAPI postgresqlAPI;
+    private String title, description, localeId, startDate, endDate, startTime, endTime;
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -47,6 +50,23 @@ public class EventCreationTagsSelection extends AppCompatActivity {
             return insets;
         });
 
+        title = getIntent().getStringExtra("title");
+        description = getIntent().getStringExtra("description");
+        ArrayList<Uri> imagesUri = getIntent().getParcelableArrayListExtra("imagesUri");
+        localeId = getIntent().getStringExtra("localeId");
+        startDate = getIntent().getStringExtra("startDate");
+        startTime = getIntent().getStringExtra("startTime");
+        endDate = getIntent().getStringExtra("endDate");
+        endTime = getIntent().getStringExtra("endTime");
+
+        Log.e("TESTE", "title: " + title +
+                ", description: " + description +
+                ", localeId: " + localeId +
+                ", startDate: " + startDate +
+                ", startTime: " + startTime +
+                ", endDate: " + endDate +
+                ", endTime: " + endTime);
+
         postgresqlAPI = new PostgresqlAPI();
         tagsFlexbox = findViewById(R.id.tagsFlexblox);
         nextBtn = findViewById(R.id.nextBtn);
@@ -55,7 +75,22 @@ public class EventCreationTagsSelection extends AppCompatActivity {
         addTagsInTheList();
 
         nextBtn.setOnClickListener(v -> {
-            startActivity(new Intent(this, EventCreationAdDuration.class));
+            ArrayList<String> tags = new ArrayList<>();
+            for (Tag tag : tagsSelected) {
+                tags.add(tag.getName());
+            }
+
+            Intent intent = new Intent(this, EventCreationPayment.class);
+            intent.putExtra("title", title);
+            intent.putExtra("description", description);
+            intent.putParcelableArrayListExtra("imagesUri", imagesUri);
+            intent.putExtra("localeId", String.valueOf(localeId));
+            intent.putExtra("startDate", Objects.requireNonNull(startDate));
+            intent.putExtra("endDate", Objects.requireNonNull(endDate));
+            intent.putExtra("startTime", Objects.requireNonNull(startTime));
+            intent.putExtra("endTime", Objects.requireNonNull(endTime));
+            intent.putStringArrayListExtra("tags", tags);
+            startActivity(intent);
         });
 
         updateButtonState();

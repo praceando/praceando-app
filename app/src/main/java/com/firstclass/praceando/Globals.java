@@ -71,4 +71,17 @@ public class Globals extends Application {
     public void setId(long id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "Globals{" +
+                "nickname='" + nickname + '\'' +
+                ", bio='" + bio + '\'' +
+                ", userProfileImage='" + userProfileImage + '\'' +
+                ", userRole=" + userRole +
+                ", id=" + id +
+                ", token='" + token + '\'' +
+                ", alreadyNotified=" + alreadyNotified +
+                '}';
+    }
 }

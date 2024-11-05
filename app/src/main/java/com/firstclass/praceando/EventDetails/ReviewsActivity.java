@@ -16,20 +16,25 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firstclass.praceando.API.mongo.MongoAPI;
+import com.firstclass.praceando.API.mongo.callbacksInterfaces.AvaliacaoCallback;
 import com.firstclass.praceando.API.mongo.callbacksInterfaces.EventReviewsInterface;
 import com.firstclass.praceando.API.mongo.entities.Avaliacao;
 import com.firstclass.praceando.API.mongo.entities.AvaliacoesUsuarios;
 import com.firstclass.praceando.API.postgresql.PostgresqlAPI;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.UserByIdCallback;
 import com.firstclass.praceando.API.postgresql.entities.EventoFeed;
+import com.firstclass.praceando.Globals;
 import com.firstclass.praceando.R;
 import com.firstclass.praceando.entities.Review;
 import com.firstclass.praceando.entities.User;
+import com.firstclass.praceando.firebase.database.Database;
+import com.firstclass.praceando.firebase.database.callback.AvatarCallback;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -42,10 +47,14 @@ public class ReviewsActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private List<Review> reviewList = new ArrayList<>();
     private ImageView returnArrow;
-    private TextView title;
+    private TextView title, nothingFoundText;
     private FloatingActionButton addReviewBtn;
     private EventoFeed event;
     private PostgresqlAPI postgresqlAPI = new PostgresqlAPI();
+    private MongoAPI mongoAPI = new MongoAPI();
+    private Globals globals;
+    private ProgressBar progressBar;
+    private Database database = new Database();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +69,9 @@ public class ReviewsActivity extends AppCompatActivity {
             return insets;
         });
 
+        nothingFoundText = findViewById(R.id.nothingFoundText);
+        progressBar = findViewById(R.id.progressBar);
+        globals = (Globals) getApplication();
         returnArrow = findViewById(R.id.returnArrow);
         returnArrow.setOnClickListener(v -> finish());
         title = findViewById(R.id.title);
@@ -88,50 +100,93 @@ public class ReviewsActivity extends AppCompatActivity {
             Button reviewBtn = view.findViewById(R.id.reviewBtn);
 
             title.setText("Como você avaliaria "+event.getNomeEvento()+"?");
-            reviewBtn.setOnClickListener(vv -> {
-                //enviar para a api e tals
-                bottomSheetDialog.dismiss();
-            });
 
-            ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-                @Override
-                public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-                    Toast.makeText(ReviewsActivity.this, ratingBar.getRating() + "", Toast.LENGTH_SHORT).show();
+            // Adiciona um listener para o RatingBar
+            ratingBar.setOnRatingBarChangeListener((ratingBar1,  rating, fromUser) -> {
+                // Ativa o botão se o rating for maior que 0
+                if (rating > 0) {
+                    reviewBtn.setEnabled(true);
+                    reviewBtn.setBackgroundColor(getResources().getColor(R.color.rosaEscuro));
+                } else {
+                    reviewBtn.setEnabled(false);
+                    reviewBtn.setBackgroundColor(getResources().getColor(R.color.rosaEscuraoDesativado));
                 }
             });
+
+            reviewBtn.setOnClickListener(vv -> {
+
+                progressBar.setVisibility(View.VISIBLE);
+                Avaliacao avaliacao = new Avaliacao(event.getId(), globals.getId(), ratingBar.getRating(), comment.getText().toString());
+
+                mongoAPI.createAvaliacao(avaliacao, new AvaliacaoCallback() {
+                    @Override
+                    public void onSuccess(Avaliacao avaliacao) {
+                        Log.e("API", avaliacao+"");
+                        Toast.makeText(ReviewsActivity.this, "Obrigada por avaliar!", Toast.LENGTH_SHORT).show();
+                        bottomSheetDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        Log.e("API", errorMessage);
+                    }
+                });
+
+            });
+
         });
 
     }
 
     private void addReviewsInTheList() {
-
-        MongoAPI mongoAPI = new MongoAPI();
-
-        mongoAPI.getEventReviews(event.getId(), 1, new EventReviewsInterface() {
+        progressBar.setVisibility(View.VISIBLE);
+        mongoAPI.getEventReviews(event.getId(), globals.getId(), new EventReviewsInterface() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onSuccess(AvaliacoesUsuarios avaliacoesUsuarios) {
+
+                if (!avaliacoesUsuarios.isUsuarioJaAvaliou()) {
+                    addReviewBtn.setVisibility(View.VISIBLE);
+                }
+
+                if (avaliacoesUsuarios.getAvaliacoes().isEmpty()) {
+                    nothingFoundText.setVisibility(View.VISIBLE);
+                    return;
+                }
 
                 for (Avaliacao avaliacao : avaliacoesUsuarios.getAvaliacoes()) {
 
                     postgresqlAPI.getUserById(avaliacao.getCdUsuario(), new UserByIdCallback() {
                         @Override
                         public void onSuccess(User user) {
-                            Log.e("USER", user+"");
-                            reviewList.add(
-                                    new Review(
-                                            user.getNome(),
-                                            "https://img.freepik.com/psd-gratuitas/ilustracao-3d-de-avatar-ou-perfil-humano_23-2150671142.jpg?size=338&ext=jpg&ga=GA1.1.1413502914.1725148800&semt=ais_hybrid",
-                                            avaliacao.getNrNota(),
-                                            avaliacao.getDsComentario()
-                                    )
-                            );
-                            Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
+                            progressBar.setVisibility(View.GONE);
+
+                            database.buscarAvatarAtual(user.getId(), new AvatarCallback() {
+                                @Override
+                                public void onAvatarRetrieved(String avatarAtual) {
+                                    reviewList.add(
+                                            new Review(
+                                                    user.getNome(),
+                                                    avatarAtual,
+                                                    avaliacao.getNrNota(),
+                                                    avaliacao.getDsComentario()
+                                            )
+                                    );
+                                    Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
+                                    progressBar.setVisibility(View.INVISIBLE);
+                                }
+
+                                @Override
+                                public void onError(String errorMessage) {
+                                    Log.e("FIREBASE", errorMessage);
+                                }
+                            });
                         }
 
                         @Override
                         public void onError(String errorMessage) {
                             Log.e("API", errorMessage);
+                            progressBar.setVisibility(View.INVISIBLE);
                         }
                     });
                 }
@@ -140,7 +195,11 @@ public class ReviewsActivity extends AppCompatActivity {
 
             @Override
             public void onError(String errorMessage) {
-                Log.e("ERRO", errorMessage);
+                progressBar.setVisibility(View.GONE);
+                title.setText(0+" Avaliações de "+event.getNomeEvento());
+                nothingFoundText.setVisibility(View.VISIBLE);
+                addReviewBtn.setVisibility(View.VISIBLE);
+                Log.e("API", errorMessage);
             }
         });
 

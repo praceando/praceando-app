@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,9 +17,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.firstclass.praceando.Globals;
+import com.firstclass.praceando.API.postgresql.PostgresqlAPI;
+import com.firstclass.praceando.API.postgresql.callbackInterfaces.EmailExistsCallback;
+import com.firstclass.praceando.API.postgresql.entities.EmailIsInUse;
 import com.firstclass.praceando.R;
-import com.firstclass.praceando.firebase.authentication.Authentication;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -43,6 +44,7 @@ public class RegistrationScreen extends AppCompatActivity {
     private String birthDate;
     private String name;
     private String userRole;
+    private PostgresqlAPI postgresqlAPI = new PostgresqlAPI();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +61,6 @@ public class RegistrationScreen extends AppCompatActivity {
         birthDate = getIntent().getStringExtra("birthDate");
         name = getIntent().getStringExtra("name");
         userRole = getIntent().getStringExtra("type");
-
-        Toast.makeText(this, "gender "+gender, Toast.LENGTH_SHORT).show();
 
         isAdvertiser = Objects.equals(getIntent().getStringExtra("type"), "advertiser");
         cnpjLayout = findViewById(R.id.cnpjBox);
@@ -155,9 +155,11 @@ public class RegistrationScreen extends AppCompatActivity {
                 if (!isValidEmail(s.toString())) {
                     emailInputLayout.setError("E-mail inválido");
                     emailEditText.setTextColor(getResources().getColor(R.color.red));
+                    validateFields();
                 } else {
                     emailInputLayout.setError(null);
                     emailEditText.setTextColor(getResources().getColor(R.color.black));
+                    isEmailAlreadyInUse();
                 }
             }
         });
@@ -257,14 +259,38 @@ public class RegistrationScreen extends AppCompatActivity {
         boolean isCNPJValid = isCNPJValid(Objects.requireNonNull(cnpjEditText.getText()).toString());
         boolean isTermsChecked = termsCheckbox.isChecked();
 
+        boolean isEmailAvailable = emailInputLayout.getError() == null;
+
         if(isAdvertiser){
-            enable = isEmailValid && isPasswordValid && doPasswordsMatch && isCNPJValid && isTermsChecked;
+            enable = isEmailValid && isEmailAvailable && isPasswordValid && doPasswordsMatch && isCNPJValid && isTermsChecked;
         } else {
-            enable = isEmailValid && isPasswordValid && doPasswordsMatch && isTermsChecked;
+            enable = isEmailValid && isEmailAvailable && isPasswordValid && doPasswordsMatch && isTermsChecked;
         }
 
         nextBtn.setEnabled(enable);
         int color = enable ? getResources().getColor(R.color.rosaEscuraoClaro, getTheme()) : getResources().getColor(R.color.rosaEscuraoDesativado, getTheme());
         nextBtn.setBackgroundColor(color);
+    }
+
+    private void isEmailAlreadyInUse() {
+        postgresqlAPI.emailExists(emailEditText.getText().toString(), new EmailExistsCallback() {
+            @Override
+            public void onSuccess(EmailIsInUse message) {
+                boolean emailEmUso = message.getEmailEmUso();
+                if (emailEmUso) {
+                    emailInputLayout.setError("E-mail já em uso");
+                    emailEditText.setTextColor(getResources().getColor(R.color.red));
+                } else {
+                    emailInputLayout.setError(null);
+                    emailEditText.setTextColor(getResources().getColor(R.color.black));
+                }
+                validateFields();
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.e("API", errorMessage);
+            }
+        });
     }
 }

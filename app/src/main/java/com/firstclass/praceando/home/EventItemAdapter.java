@@ -3,6 +3,7 @@ package com.firstclass.praceando.home;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ import com.firstclass.praceando.EventDetails.EventActivity;
 import com.firstclass.praceando.R;
 import com.firstclass.praceando.entities.Event;
 import com.firstclass.praceando.entities.Tag;
+import com.firstclass.praceando.firebase.database.Database;
+import com.firstclass.praceando.firebase.database.FotosCallback;
 import com.firstclass.praceando.marketplace.Payment;
 import com.google.android.flexbox.FlexboxLayout;
 import com.squareup.picasso.Picasso;
@@ -69,9 +72,17 @@ public class EventItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             eventHolder.time.setText(event.getFormattedHrInicio() + " - " + event.getFormattedHrFim());
             eventHolder.date.setText(event.getFormattedDtInicio() + " - " + event.getFormattedDtFim());
 
-            Picasso.get()
-                    .load("https://joycone.com/wp-content/uploads/2019/07/joycone_milkshakes3.jpeg")
-                    .into(eventHolder.image);
+            Database database = new Database();
+            database.listar(event.getId(), new FotosCallback() {
+                @Override
+                public void onFotosReceived(List<String> fotos) {
+                    if (fotos != null && !fotos.isEmpty()) {
+                        Picasso.get()
+                                .load(fotos.get(0))
+                                .into(eventHolder.image);
+                    }
+                }
+            });
 
             eventHolder.tagsFlexbox.removeAllViews();
             List<String> tags = event.getTags();

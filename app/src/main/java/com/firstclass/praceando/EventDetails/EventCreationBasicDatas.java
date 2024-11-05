@@ -37,7 +37,9 @@ public class EventCreationBasicDatas extends AppCompatActivity {
     private EditText titleEditText, descriptionEditText;
     private TextView titleErrorMessage, descriptionErrorMessage;
     private Button nextButton;
-    List<Uri> imagesUri = new ArrayList<>();
+    private List<Uri> imagesUri = new ArrayList<>();
+    private List<ImageViewUriPair> imageViewUriPairs = new ArrayList<>();
+
 
 
     @Override
@@ -52,8 +54,6 @@ public class EventCreationBasicDatas extends AppCompatActivity {
             return insets;
         });
 
-        Database database = new Database();
-
         img1 = findViewById(R.id.img1);
         img2 = findViewById(R.id.img2);
         img3 = findViewById(R.id.img3);
@@ -62,7 +62,15 @@ public class EventCreationBasicDatas extends AppCompatActivity {
         x3 = findViewById(R.id.x3);
 
         findViewById(R.id.nextBtn).setOnClickListener(v -> {
-            startActivity(new Intent(this, EventCreationDateTime.class));
+            Intent intent = new  Intent(this, EventCreationDateTime.class);
+            intent.putExtra("title", titleEditText.getText().toString());
+            intent.putExtra("description", descriptionEditText.getText().toString());
+            ArrayList<Uri> urisToPass = new ArrayList<>();
+            for (ImageViewUriPair pair : imageViewUriPairs) {
+                urisToPass.add(pair.getUri());
+            }
+            intent.putParcelableArrayListExtra("imagesUri", urisToPass);
+            startActivity(intent);
         });
 
         findViewById(R.id.returnArrow).setOnClickListener(v -> finish());
@@ -122,6 +130,7 @@ public class EventCreationBasicDatas extends AppCompatActivity {
 
         boolean isTitleValid = title.length() >= 3;
         boolean isDescriptionValid = description.length() >= 3;
+        boolean isImageSelected = !imagesUri.isEmpty();
 
         if (!isTitleValid) {
             titleErrorMessage.setText("O título deve ter no mínimo 3 caracteres.");
@@ -136,6 +145,14 @@ public class EventCreationBasicDatas extends AppCompatActivity {
         }
 
         if (isTitleValid && isDescriptionValid && !title.isEmpty() && !description.isEmpty()) {
+            nextButton.setEnabled(true);
+            nextButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.rosaEscuraoClaro));
+        } else {
+            nextButton.setEnabled(false);
+            nextButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.rosaEscuraoDesativado));
+        }
+
+        if (isTitleValid && isDescriptionValid && isImageSelected) {
             nextButton.setEnabled(true);
             nextButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.rosaEscuraoClaro));
         } else {
@@ -165,25 +182,10 @@ public class EventCreationBasicDatas extends AppCompatActivity {
         imageView.setPadding(0, 0, 0, 0);
 
         imageView.setImageURI(imageUri);
-        Database database = new Database();
-        database.teste(imageView);
-//        Picasso.get().load(imageUri).into(imageView, new com.squareup.picasso.Callback() {
-//            @Override
-//            public void onSuccess() {
-//                // A imagem foi carregada com sucesso, agora podemos acessar o drawable
-//                Toast.makeText(EventCreationBasicDatas.this, "" + imageView.getDrawable(), Toast.LENGTH_SHORT).show();
-//
-//                // Chame a função do banco de dados aqui
-//
-//            }
-//
-//            @Override
-//            public void onError(Exception e) {
-//                // Trate o erro de carregamento aqui
-//                Toast.makeText(EventCreationBasicDatas.this, "Erro ao carregar imagem", Toast.LENGTH_SHORT).show();
-//            }
-//        });
 
+        // Remove pares antigos para essa ImageView e adiciona o novo par
+        imageViewUriPairs.removeIf(pair -> pair.getImageView() == imageView);
+        imageViewUriPairs.add(new ImageViewUriPair(imageView, imageUri));
 
         if (imageView == img1) {
             x1.setVisibility(View.VISIBLE);
@@ -192,13 +194,31 @@ public class EventCreationBasicDatas extends AppCompatActivity {
         } else if (imageView == img3) {
             x3.setVisibility(View.VISIBLE);
         }
-
-
     }
 
     private void clearImage(ImageView imageView, ImageView closeButton) {
         imageView.setImageResource(R.drawable.ic_plus);
         imageView.setPadding(143, 143, 143, 143);
         closeButton.setVisibility(View.GONE);
+
+        imageViewUriPairs.removeIf(pair -> pair.getImageView() == imageView);
+    }
+
+    private static class ImageViewUriPair {
+        private final ImageView imageView;
+        private final Uri uri;
+
+        public ImageViewUriPair(ImageView imageView, Uri uri) {
+            this.imageView = imageView;
+            this.uri = uri;
+        }
+
+        public ImageView getImageView() {
+            return imageView;
+        }
+
+        public Uri getUri() {
+            return uri;
+        }
     }
 }

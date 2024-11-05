@@ -68,6 +68,7 @@ public class PerfilFragment extends Fragment {
         nickname.setText(globals.getNickname());
         bio.setText(globals.getBio());
 
+        Log.e("GLOBALS", globals+"");
         Picasso.get()
                 .load(globals.getUserProfileImage())
                 .into(userImage);
@@ -103,11 +104,13 @@ public class PerfilFragment extends Fragment {
 
     private void scheduleNotificationAfterDelay(long delayMillis) {
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            // Create and execute the notification
-            Notify notify = new Notify();
-            notify.execute(requireContext());
+            if (isAdded()) { // Verifica se o fragmento ainda está anexado
+                // Cria e executa a notificação
+                Notify notify = new Notify();
+                notify.execute(requireContext());
+                globals.setAlreadyNotified(true);
+            }
         }, delayMillis);
-
-        globals.setAlreadyNotified(true);
     }
+
 }

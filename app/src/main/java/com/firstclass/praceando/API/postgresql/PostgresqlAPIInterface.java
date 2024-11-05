@@ -1,6 +1,11 @@
 package com.firstclass.praceando.API.postgresql;
 
+import com.firstclass.praceando.API.postgresql.entities.CreateCompra;
+import com.firstclass.praceando.API.postgresql.entities.CreateEventoResponse;
 import com.firstclass.praceando.API.postgresql.entities.Evento;
+import com.firstclass.praceando.API.postgresql.entities.EmailIsInUse;
+import com.firstclass.praceando.API.postgresql.entities.Evento2;
+import com.firstclass.praceando.API.postgresql.entities.EventoCompleto;
 import com.firstclass.praceando.API.postgresql.entities.EventoFeed;
 import com.firstclass.praceando.API.postgresql.entities.FraseSustentavel;
 import com.firstclass.praceando.API.postgresql.entities.NicknameIsInUse;
@@ -41,14 +46,17 @@ public interface PostgresqlAPIInterface {
     @GET("consumidor/existsByNickname/{nickname}")
     Call<NicknameIsInUse> existsByNickname(@Path("nickname") String nickname);
 
+    @GET("usuario/existsByEmail/{email}")
+    Call<EmailIsInUse> existsByEmail(@Path("email") String nickname);
+
     @GET("evento/find/{id}")
-    Call<Evento> getEventById(@Path("id") long id);
+    Call<EventoCompleto> getEventById(@Path("id") long id);
 
     @GET("evento/read")
     Call<List<EventoFeed>> getEventsForFeed();
 
     @GET("evento/findByAnunciante/{userId}")
-    Call<List<EventoFeed>> getEventsForFeedByUserId(@Path("userId") int userId);
+    Call<List<EventoFeed>> getEventsForFeedByUserId(@Path("userId") long userId);
 
     @GET("evento/findByTag/{tagId}")
     Call<List<EventoFeed>> getEventsByTagId(@Path("tagId") long tagId);
@@ -67,6 +75,16 @@ public interface PostgresqlAPIInterface {
 
     @POST("anunciante/create")
     Call<UsuarioAnunciante> createUsuarioAnunciante(@Body UsuarioAnunciante usuarioAnunciante);
+
+    @POST("evento/create")
+    Call<CreateEventoResponse> createEvento(@Body Evento2 evento);
+
+    @POST("compra/create")
+    Call<CreateCompra> createCompra(@Body CreateCompra  compra);
+
+    @POST("pagamento/complete-purchase/{cdCompra}")
+    void pagamento(@Path("cdCompra") long cdCompra);
+
 //
 //    @PUT("posts/{id}")
 //    Call<Post> updatePost(@Path("id") int id, @Body Post post);

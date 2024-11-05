@@ -7,7 +7,7 @@ public class Avaliacao {
     private Long idAvaliacao;
     private Long cdEvento;
     private Long cdUsuario;
-    private Long nrNota;
+    private float nrNota;
     private String dsComentario;
 
     public Avaliacao(String dsComentario, Long nrNota, Long cdUsuario, Long cdEvento, Long idAvaliacao, String id) {
@@ -17,6 +17,19 @@ public class Avaliacao {
         this.cdEvento = cdEvento;
         this.idAvaliacao = idAvaliacao;
         this.id = id;
+    }
+
+    public Avaliacao(Long cdEvento, Long cdUsuario, float nrNota, String dsComentario) {
+        this.cdEvento = cdEvento;
+        this.cdUsuario = cdUsuario;
+        this.nrNota = nrNota;
+        this.dsComentario = dsComentario;
+    }
+
+    public Avaliacao(Long cdEvento, Long cdUsuario, float nrNota) {
+        this.cdEvento = cdEvento;
+        this.cdUsuario = cdUsuario;
+        this.nrNota = nrNota;
     }
 
     public String getId() {
@@ -51,11 +64,11 @@ public class Avaliacao {
         this.cdUsuario = cdUsuario;
     }
 
-    public Long getNrNota() {
+    public float getNrNota() {
         return nrNota;
     }
 
-    public void setNrNota(Long nrNota) {
+    public void setNrNota(float nrNota) {
         this.nrNota = nrNota;
     }
 
@@ -67,5 +80,15 @@ public class Avaliacao {
         this.dsComentario = dsComentario;
     }
 
-
+    @Override
+    public String toString() {
+        return "Avaliacao{" +
+                "id='" + id + '\'' +
+                ", idAvaliacao=" + idAvaliacao +
+                ", cdEvento=" + cdEvento +
+                ", cdUsuario=" + cdUsuario +
+                ", nrNota=" + nrNota +
+                ", dsComentario='" + dsComentario + '\'' +
+                '}';
+    }
 }

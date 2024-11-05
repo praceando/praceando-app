@@ -1,40 +1,26 @@
 package com.firstclass.praceando.firebase.database.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Foto {
-    private int id;
-    private int eventoId;
-    private String fotoUrl;
-    private Date dataAtualizacao = new Date();
+    private List<String> fotosUrls; // Lista de URLs das fotos
 
-    public Foto(int id, int eventoId, String fotoUrl) {
-        this.id = id;
-        this.eventoId = eventoId;
-        this.fotoUrl = fotoUrl;
+    public Foto(List<String> fotosUrls) {
+        this.fotosUrls = new ArrayList<>();
     }
 
-    public int getId() {
-        return id;
+    public List<String> getFotosUrls() {
+        return fotosUrls;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setFotosUrls(List<String> fotosUrls) {
+        this.fotosUrls = fotosUrls;
     }
 
-    public int getEventoId() {
-        return eventoId;
+    public void addFotoUrl(String fotoUrl) {
+        this.fotosUrls.add(fotoUrl); // Método para adicionar uma URL à lista
     }
 
-    public void setEventoId(int eventoId) {
-        this.eventoId = eventoId;
-    }
-
-    public String getFotoUrl() {
-        return fotoUrl;
-    }
-
-    public void setFotoUrl(String fotoUrl) {
-        this.fotoUrl = fotoUrl;
-    }
 }

@@ -27,6 +27,10 @@ public class Locale implements Parcelable {
         this.nrLong = nrLong;
     }
 
+    public Locale(Long id) {
+        this.id = id;
+    }
+
     protected Locale(Parcel in) {
         if (in.readByte() == 0) {
             id = null;

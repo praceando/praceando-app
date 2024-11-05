@@ -16,6 +16,8 @@ import androidx.core.view.WindowInsetsCompat;
 import com.firstclass.praceando.API.postgresql.PostgresqlAPI;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.UserByIdCallback;
 import com.firstclass.praceando.entities.User;
+import com.firstclass.praceando.firebase.database.Database;
+import com.firstclass.praceando.firebase.database.callback.AvatarCallback;
 import com.firstclass.praceando.login.LandingScreen;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -57,6 +59,20 @@ public class SplashScreenActivity extends AppCompatActivity {
                     globals.setUserRole(user.getTipoUsuario());
                     globals.setId(user.getId());
                     globals.setNickname(user.getNome());
+
+                    Database database = new Database();
+                    database.buscarAvatarAtual(user.getId(), new AvatarCallback() {
+                        @Override
+                        public void onAvatarRetrieved(String avatarAtual) {
+                            globals.setUserProfileImage(avatarAtual);
+                        }
+
+                        @Override
+                        public void onError(String errorMessage) {
+                            globals.setUserProfileImage("");
+                        }
+                    });
+
                 }
 
                 @Override
