@@ -4,7 +4,9 @@ import static android.view.View.inflate;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -17,18 +19,23 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.firstclass.praceando.API.postgresql.PostgresqlAPI;
+import com.firstclass.praceando.API.postgresql.callbackInterfaces.TagsCallback;
 import com.firstclass.praceando.R;
 import com.firstclass.praceando.entities.Tag;
 import com.google.android.flexbox.FlexboxLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class EventCreationTagsSelection extends AppCompatActivity {
     private List<Tag> tagList = new ArrayList<>();
     private List<Tag> tagsSelected = new ArrayList<>();
     private FlexboxLayout tagsFlexbox;
     private Button nextBtn;
+    private PostgresqlAPI postgresqlAPI;
+    private String title, description, localeId, startDate, endDate, startTime, endTime;
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -43,15 +50,47 @@ public class EventCreationTagsSelection extends AppCompatActivity {
             return insets;
         });
 
+        title = getIntent().getStringExtra("title");
+        description = getIntent().getStringExtra("description");
+        ArrayList<Uri> imagesUri = getIntent().getParcelableArrayListExtra("imagesUri");
+        localeId = getIntent().getStringExtra("localeId");
+        startDate = getIntent().getStringExtra("startDate");
+        startTime = getIntent().getStringExtra("startTime");
+        endDate = getIntent().getStringExtra("endDate");
+        endTime = getIntent().getStringExtra("endTime");
+
+        Log.e("TESTE", "title: " + title +
+                ", description: " + description +
+                ", localeId: " + localeId +
+                ", startDate: " + startDate +
+                ", startTime: " + startTime +
+                ", endDate: " + endDate +
+                ", endTime: " + endTime);
+
+        postgresqlAPI = new PostgresqlAPI();
         tagsFlexbox = findViewById(R.id.tagsFlexblox);
         nextBtn = findViewById(R.id.nextBtn);
         findViewById(R.id.returnArrow).setOnClickListener(v -> finish());
 
-        addTagsInList();
-        setupTags();
+        addTagsInTheList();
 
         nextBtn.setOnClickListener(v -> {
-            startActivity(new Intent(this, EventCreationAdDuration.class));
+            ArrayList<String> tags = new ArrayList<>();
+            for (Tag tag : tagsSelected) {
+                tags.add(tag.getName());
+            }
+
+            Intent intent = new Intent(this, EventCreationPayment.class);
+            intent.putExtra("title", title);
+            intent.putExtra("description", description);
+            intent.putParcelableArrayListExtra("imagesUri", imagesUri);
+            intent.putExtra("localeId", String.valueOf(localeId));
+            intent.putExtra("startDate", Objects.requireNonNull(startDate));
+            intent.putExtra("endDate", Objects.requireNonNull(endDate));
+            intent.putExtra("startTime", Objects.requireNonNull(startTime));
+            intent.putExtra("endTime", Objects.requireNonNull(endTime));
+            intent.putStringArrayListExtra("tags", tags);
+            startActivity(intent);
         });
 
         updateButtonState();
@@ -102,77 +141,21 @@ public class EventCreationTagsSelection extends AppCompatActivity {
         }
     }
 
-    public void addTagsInList() {
-        tagList.add(new Tag(1L, "Artesanato"));
-        tagList.add(new Tag(2L, "Pintura"));
-        tagList.add(new Tag(3L, "Escultura"));
-        tagList.add(new Tag(4L, "Fotografia"));
-        tagList.add(new Tag(5L, "Música ao vivo"));
-        tagList.add(new Tag(6L, "Teatro"));
-        tagList.add(new Tag(7L, "Dança"));
-        tagList.add(new Tag(8L, "Cinema"));
-        tagList.add(new Tag(9L, "Literatura"));
-        tagList.add(new Tag(10L, "Feira de livros"));
-        tagList.add(new Tag(11L, "Festival de comida"));
-        tagList.add(new Tag(12L, "Exposição de arte"));
-        tagList.add(new Tag(13L, "Show de comédia"));
-        tagList.add(new Tag(14L, "Stand-up"));
-        tagList.add(new Tag(15L, "Workshop"));
-        tagList.add(new Tag(16L, "Seminário"));
-        tagList.add(new Tag(17L, "Palestra"));
-        tagList.add(new Tag(18L, "Conferência"));
-        tagList.add(new Tag(19L, "Encontro de negócios"));
-        tagList.add(new Tag(20L, "Networking"));
-        tagList.add(new Tag(21L, "Hackathon"));
-        tagList.add(new Tag(22L, "Corrida de rua"));
-        tagList.add(new Tag(23L, "Maratona"));
-        tagList.add(new Tag(24L, "Triatlo"));
-        tagList.add(new Tag(25L, "Caminhada ecológica"));
-        tagList.add(new Tag(26L, "Acampamento"));
-        tagList.add(new Tag(27L, "Festival de música"));
-        tagList.add(new Tag(28L, "Competição de dança"));
-        tagList.add(new Tag(29L, "Feira de ciências"));
-        tagList.add(new Tag(30L, "Festa junina"));
-        tagList.add(new Tag(31L, "Carnaval"));
-        tagList.add(new Tag(32L, "Festa de ano novo"));
-        tagList.add(new Tag(33L, "Festa temática"));
-        tagList.add(new Tag(34L, "Festa de casamento"));
-        tagList.add(new Tag(35L, "Evento corporativo"));
-        tagList.add(new Tag(36L, "Inauguração"));
-        tagList.add(new Tag(37L, "Feira de negócios"));
-        tagList.add(new Tag(38L, "Evento de caridade"));
-        tagList.add(new Tag(39L, "Bazar beneficente"));
-        tagList.add(new Tag(40L, "Encontro de carros antigos"));
-        tagList.add(new Tag(41L, "Festa infantil"));
-        tagList.add(new Tag(42L, "Festival cultural"));
-        tagList.add(new Tag(43L, "Encontro de colecionadores"));
-        tagList.add(new Tag(44L, "Lançamento de livro"));
-        tagList.add(new Tag(45L, "Desfile de moda"));
-        tagList.add(new Tag(46L, "Mostra de cinema"));
-        tagList.add(new Tag(47L, "Sarau"));
-        tagList.add(new Tag(48L, "Feira de artesanato"));
-        tagList.add(new Tag(49L, "Evento esportivo"));
-        tagList.add(new Tag(50L, "Competição de jogos eletrônicos"));
-        tagList.add(new Tag(51L, "Encontro de motociclistas"));
-        tagList.add(new Tag(52L, "Feira de tecnologia"));
-        tagList.add(new Tag(53L, "Encontro de startups"));
-        tagList.add(new Tag(54L, "Festival de cerveja artesanal"));
-        tagList.add(new Tag(55L, "Festa de aniversário"));
-        tagList.add(new Tag(56L, "Festival gastronômico"));
-        tagList.add(new Tag(57L, "Piquenique"));
-        tagList.add(new Tag(58L, "Evento de ioga"));
-        tagList.add(new Tag(59L, "Corrida de aventura"));
-        tagList.add(new Tag(60L, "Feira de adoção de animais"));
-        tagList.add(new Tag(61L, "Competição de natação"));
-        tagList.add(new Tag(62L, "Encontro de fotografia"));
-        tagList.add(new Tag(63L, "Festival de inverno"));
-        tagList.add(new Tag(64L, "Feira de automóveis"));
-        tagList.add(new Tag(65L, "Torneio de futebol"));
-        tagList.add(new Tag(66L, "Feira de quadrinhos"));
-        tagList.add(new Tag(67L, "Competição de cosplay"));
-        tagList.add(new Tag(68L, "Exposição de flores"));
-        tagList.add(new Tag(69L, "Torneio de xadrez"));
-        tagList.add(new Tag(70L, "Festival de jazz"));
+    private void addTagsInTheList() {
+
+        postgresqlAPI.getTags(new TagsCallback() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onSuccess(List<Tag> tags) {
+                tagList.addAll(tags);
+                setupTags();
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+        });
     }
 
 }

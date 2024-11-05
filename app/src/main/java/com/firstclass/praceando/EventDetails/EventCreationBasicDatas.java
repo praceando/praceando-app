@@ -1,5 +1,7 @@
 package com.firstclass.praceando.EventDetails;
 
+import static java.security.AccessController.getContext;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
@@ -22,7 +25,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.firstclass.praceando.R;
+import com.firstclass.praceando.firebase.database.Database;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EventCreationBasicDatas extends AppCompatActivity {
     ImageView img1, img2, img3, selectedImageView;
@@ -30,6 +37,9 @@ public class EventCreationBasicDatas extends AppCompatActivity {
     private EditText titleEditText, descriptionEditText;
     private TextView titleErrorMessage, descriptionErrorMessage;
     private Button nextButton;
+    private List<Uri> imagesUri = new ArrayList<>();
+    private List<ImageViewUriPair> imageViewUriPairs = new ArrayList<>();
+
 
 
     @Override
@@ -52,7 +62,15 @@ public class EventCreationBasicDatas extends AppCompatActivity {
         x3 = findViewById(R.id.x3);
 
         findViewById(R.id.nextBtn).setOnClickListener(v -> {
-            startActivity(new Intent(this, EventCreationDateTime.class));
+            Intent intent = new  Intent(this, EventCreationDateTime.class);
+            intent.putExtra("title", titleEditText.getText().toString());
+            intent.putExtra("description", descriptionEditText.getText().toString());
+            ArrayList<Uri> urisToPass = new ArrayList<>();
+            for (ImageViewUriPair pair : imageViewUriPairs) {
+                urisToPass.add(pair.getUri());
+            }
+            intent.putParcelableArrayListExtra("imagesUri", urisToPass);
+            startActivity(intent);
         });
 
         findViewById(R.id.returnArrow).setOnClickListener(v -> finish());
@@ -112,6 +130,7 @@ public class EventCreationBasicDatas extends AppCompatActivity {
 
         boolean isTitleValid = title.length() >= 3;
         boolean isDescriptionValid = description.length() >= 3;
+        boolean isImageSelected = !imagesUri.isEmpty();
 
         if (!isTitleValid) {
             titleErrorMessage.setText("O título deve ter no mínimo 3 caracteres.");
@@ -132,6 +151,14 @@ public class EventCreationBasicDatas extends AppCompatActivity {
             nextButton.setEnabled(false);
             nextButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.rosaEscuraoDesativado));
         }
+
+        if (isTitleValid && isDescriptionValid && isImageSelected) {
+            nextButton.setEnabled(true);
+            nextButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.rosaEscuraoClaro));
+        } else {
+            nextButton.setEnabled(false);
+            nextButton.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.rosaEscuraoDesativado));
+        }
     }
 
     private void openGalleryForImage(ImageView imageView) {
@@ -144,27 +171,54 @@ public class EventCreationBasicDatas extends AppCompatActivity {
             new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getData() != null && result.getData().getData() != null) {
                     Uri imageUri = result.getData().getData();
+                    imagesUri.add(imageUri);
+
                     updateImageView(selectedImageView, imageUri);
                 }
             }
     );
 
     private void updateImageView(ImageView imageView, Uri imageUri) {
-            imageView.setPadding(0, 0, 0, 0);
-            Picasso.get().load(imageUri).into(imageView);
+        imageView.setPadding(0, 0, 0, 0);
 
-            if (imageView == img1) {
-                x1.setVisibility(View.VISIBLE);
-            } else if (imageView == img2) {
-                x2.setVisibility(View.VISIBLE);
-            } else if (imageView == img3) {
-                x3.setVisibility(View.VISIBLE);
-            }
+        imageView.setImageURI(imageUri);
+
+        // Remove pares antigos para essa ImageView e adiciona o novo par
+        imageViewUriPairs.removeIf(pair -> pair.getImageView() == imageView);
+        imageViewUriPairs.add(new ImageViewUriPair(imageView, imageUri));
+
+        if (imageView == img1) {
+            x1.setVisibility(View.VISIBLE);
+        } else if (imageView == img2) {
+            x2.setVisibility(View.VISIBLE);
+        } else if (imageView == img3) {
+            x3.setVisibility(View.VISIBLE);
+        }
     }
 
     private void clearImage(ImageView imageView, ImageView closeButton) {
         imageView.setImageResource(R.drawable.ic_plus);
         imageView.setPadding(143, 143, 143, 143);
         closeButton.setVisibility(View.GONE);
+
+        imageViewUriPairs.removeIf(pair -> pair.getImageView() == imageView);
+    }
+
+    private static class ImageViewUriPair {
+        private final ImageView imageView;
+        private final Uri uri;
+
+        public ImageViewUriPair(ImageView imageView, Uri uri) {
+            this.imageView = imageView;
+            this.uri = uri;
+        }
+
+        public ImageView getImageView() {
+            return imageView;
+        }
+
+        public Uri getUri() {
+            return uri;
+        }
     }
 }

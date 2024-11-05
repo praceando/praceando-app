@@ -1,4 +1,4 @@
-package com.firstclass.praceando.authentication;
+package com.firstclass.praceando.firebase.authentication;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,6 +44,7 @@ public class Authentication {
                     }
                 });
     }
+
 
     public void signOut() {
         FirebaseAuth.getInstance().signOut();

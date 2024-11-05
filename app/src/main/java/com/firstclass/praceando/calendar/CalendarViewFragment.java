@@ -34,14 +34,18 @@ public class CalendarViewFragment extends Fragment {
                 Calendar selectedDate = Calendar.getInstance();
                 selectedDate.set(year, month, dayOfMonth);
 
-                // Define the desired date format
-                SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE d, MMMM", new Locale("pt", "BR"));
-                String formattedDate = dateFormat.format(selectedDate.getTime());
+                SimpleDateFormat dateFormatLong = new SimpleDateFormat("EEEE d, MMMM", new Locale("pt", "BR"));
+                SimpleDateFormat dateFormatShort = new SimpleDateFormat("yyyy-MM-dd", new Locale("pt", "BR"));
+
+                String formattedDateLong = dateFormatLong.format(selectedDate.getTime());
+                String formattedDateShort = dateFormatShort.format(selectedDate.getTime());
+
 
                 // Find the parent fragment (CalendarFragment) and update the date
                 CalendarFragment parentFragment = (CalendarFragment) getParentFragment();
                 if (parentFragment != null) {
-                    parentFragment.updateDateText(formattedDate);
+                    parentFragment.updateDateText(formattedDateLong);
+                    parentFragment.loadEvents(formattedDateShort);
                 }
             }
         });

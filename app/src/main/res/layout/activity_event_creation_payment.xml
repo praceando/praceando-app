@@ -76,7 +76,7 @@
             android:id="@+id/adDescription"
             android:layout_width="330dp"
             android:layout_height="wrap_content"
-            android:text="seu anuncio ficara exposto durante 3 dias, totalizando R$9.50"
+            android:text="seu anuncio ficara exposto durante 3 dias, totalizando "
             android:textColor="@color/black"
             android:layout_gravity="center_horizontal"
             android:gravity="center"

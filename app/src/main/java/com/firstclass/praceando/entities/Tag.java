@@ -5,10 +5,10 @@ import android.os.Parcelable;
 
 public class Tag implements Parcelable {
     private Long id;
-    private String name;
+    private String nmTag;
 
-    public Tag(Long id, String name) {
-        this.name = name;
+    public Tag(Long id, String nmTag) {
+        this.nmTag = nmTag;
         this.id = id;
     }
 
@@ -18,7 +18,7 @@ public class Tag implements Parcelable {
         } else {
             id = in.readLong();
         }
-        name = in.readString();
+        nmTag = in.readString();
     }
 
     public static final Creator<Tag> CREATOR = new Creator<Tag>() {
@@ -42,16 +42,16 @@ public class Tag implements Parcelable {
     }
 
     public String getName() {
-        return name;
+        return nmTag;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String nmTag) {
+        this.nmTag = nmTag;
     }
 
     @Override
     public String toString() {
-        return name;
+        return nmTag;
     }
 
     @Override
@@ -67,6 +67,6 @@ public class Tag implements Parcelable {
             dest.writeByte((byte) 1);
             dest.writeLong(id);
         }
-        dest.writeString(name);
+        dest.writeString(nmTag);
     }
 }

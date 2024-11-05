@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="10dp"
     app:cardCornerRadius="0dp"
     android:backgroundTint="@color/white"
     app:cardElevation="0dp">
@@ -12,92 +11,110 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/shape_event"
-        android:layout_marginVertical="7dp">
+        android:layout_marginVertical="12dp">
 
         <TextView
             android:id="@+id/title"
-            android:layout_marginStart="130dp"
-            android:layout_marginTop="15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="26dp"
-            android:fontFamily="@font/montserrat_medium"
-            android:textSize="18sp"
-            android:text="Hot dog Sr. Antonio"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_marginEnd="15dp"
+            android:layout_height="43dp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:textSize="16.5sp"
+            android:text="Hot dog Sr.\n Antonio"
+            android:gravity="center"
             android:textColor="@color/rosaEscurao"
             android:textStyle="bold"
             />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_marginStart="12dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="140dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:layout_gravity="bottom"
+            android:layout_marginStart="145dp"
+            android:layout_marginTop="55dp"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="15dp"
-                android:layout_height="19dp"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/ic_location"/>
-
-            <TextView
-                android:id="@+id/locale"
-                android:fontFamily="@font/montserrat_medium"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:text="Praça do Samba"
-                android:textColor="@color/rosaEscurao"
-                android:layout_marginRight="10dp"
-                android:gravity="center_vertical"
-                android:textSize="11sp" />
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="19dp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/ic_location"/>
 
+                <TextView
+                    android:id="@+id/locale"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="Parque Heróis da FEB"
+                    android:textColor="@color/rosaEscurao"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center_vertical"
+                    android:textSize="12sp" />
+            </LinearLayout>
 
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginHorizontal="5dp"
-                android:background="@drawable/ic_calendar_item"/>
-
-            <TextView
-                android:id="@+id/date"
-                android:fontFamily="@font/montserrat_medium"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:text="14/07 - 14/07"
-                android:layout_marginRight="10dp"
-                android:gravity="center_vertical"
-                android:textColor="@color/rosaEscurao"
-                android:textSize="11sp" />
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/ic_calendar_item"/>
 
-            <ImageView
-                android:layout_width="19dp"
-                android:layout_height="19dp"
-                android:layout_marginHorizontal="5dp"
-                android:background="@drawable/ic_clock"/>
-
-            <TextView
-                android:id="@+id/time"
-                android:fontFamily="@font/montserrat_medium"
+                <TextView
+                    android:id="@+id/date"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="14/07/2024 - 14/07/2024"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/rosaEscurao"
+                    android:textSize="12sp" />
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:layout_marginRight="10dp"
-                android:text="9:30 - 17h"
-                android:gravity="center_vertical"
-                android:textColor="@color/rosaEscurao"
-                android:textSize="11sp" />
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="19dp"
+                    android:layout_height="19dp"
+                    android:background="@drawable/ic_clock"/>
+
+                <TextView
+                    android:id="@+id/time"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginStart="5dp"
+                    android:text="9:30 - 17:00"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/rosaEscurao"
+                    android:textSize="12sp" />
+            </LinearLayout>
 
         </LinearLayout>
 
         <ImageView
             android:id="@+id/eventImage"
-            android:layout_width="100dp"
+            android:layout_width="110dp"
             android:layout_height="110dp"
             android:layout_gravity="start"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="50dp"
             android:layout_marginBottom="50dp"
             android:scaleType="centerCrop"
             android:clipToOutline="true"
@@ -105,10 +122,12 @@
 
         <com.google.android.flexbox.FlexboxLayout
             android:id="@+id/tagsFlexblox"
-            android:layout_width="230dp"
-            android:layout_height="100dp"
-            android:layout_marginStart="122dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginHorizontal="14dp"
             android:layout_marginTop="45dp"
+            android:layout_gravity="bottom|center"
             app:flexDirection="row"
             app:flexWrap="wrap"
             app:alignItems="center"/>

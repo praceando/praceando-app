@@ -1,47 +1,71 @@
 package com.firstclass.praceando.entities;
 
 public class Product {
-    private String title;
-    private String description;
-    private double price;
-    private String imageUrl;
+    private int id;
+    private String nmProduto;
+    private String dsProduto;
+    private double vlPreco;
+    private String nmCategoria;
+    private String urlImagem;
 
-    public Product(String description, double price, String title, String imageUrl) {
-        this.price = price;
-        this.title = title;
-        this.description = description;
-        this.imageUrl = imageUrl;
+    public Product(int id, String description, double price, String title, String imageUrl, String nmCategoria) {
+        this.id = id;
+        this.vlPreco = price;
+        this.nmProduto = title;
+        this.dsProduto = description;
+        this.urlImagem = imageUrl;
+        this.nmCategoria = nmCategoria;
     }
 
     public String getTitle() {
-        return title;
+        return nmProduto;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        this.nmProduto = title;
     }
 
     public String getDescription() {
-        return description;
+        return dsProduto;
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.dsProduto = description;
     }
 
     public double getPrice() {
-        return price;
+        return vlPreco;
     }
 
     public void setPrice(double price) {
-        this.price = price;
+        this.vlPreco = price;
     }
 
     public String getImageUrl() {
-        return imageUrl;
+        return urlImagem;
     }
 
     public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+        this.urlImagem = imageUrl;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getNmCategoria() {
+        return nmCategoria;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", nmProduto='" + nmProduto + '\'' +
+                ", dsProduto='" + dsProduto + '\'' +
+                ", vlPreco=" + vlPreco +
+                ", urlImagem='" + urlImagem + '\'' +
+                ", nmCategoria='" + nmCategoria + '\'' +
+                '}';
     }
 }

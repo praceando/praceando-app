@@ -1,26 +1,31 @@
 package com.firstclass.praceando.perfil;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.firstclass.praceando.API.mongo.MongoAPI;
+import com.firstclass.praceando.API.mongo.callbacksInterfaces.UserGoalsCallback;
+import com.firstclass.praceando.API.mongo.entities.ConquistaUser;
 import com.firstclass.praceando.Globals;
 import com.firstclass.praceando.R;
-import com.firstclass.praceando.authentication.Authentication;
+import com.firstclass.praceando.firebase.authentication.Authentication;
 import com.firstclass.praceando.entities.Goal;
-import com.firstclass.praceando.fragments.HeaderFragment;
 import com.firstclass.praceando.login.LandingScreen;
+import com.firstclass.praceando.notification.Notify;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -31,6 +36,9 @@ import java.util.Objects;
 public class PerfilFragment extends Fragment {
     private List<Goal> goalList = new ArrayList<>();
     private RecyclerView recyclerView;
+    private Globals globals;
+    List<ConquistaUser> conquistaUserList;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,21 +63,54 @@ public class PerfilFragment extends Fragment {
         TextView nickname = view.findViewById(R.id.nickname);
         TextView bio = view.findViewById(R.id.bio);
 
-        Globals globals = (Globals) requireActivity().getApplication();
+        globals = (Globals) requireActivity().getApplication();
 
         nickname.setText(globals.getNickname());
         bio.setText(globals.getBio());
 
+        Log.e("GLOBALS", globals+"");
         Picasso.get()
                 .load(globals.getUserProfileImage())
                 .into(userImage);
+
+        if (!globals.isAlreadyNotified()) scheduleNotificationAfterDelay(5000);
 
         return view;
     }
 
     public void addGoalInTheList() {
-        goalList.add(new Goal("Faça 3 avaliações", "1/3"));
-        goalList.add(new Goal("Se interesse por 5 eventos", "2/5"));
-        goalList.add(new Goal("Vá até 2 parques e/ou praças", "0/2"));
+
+        MongoAPI mongoAPI = new MongoAPI();
+
+        mongoAPI.getUserGoals(1, new UserGoalsCallback() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onSuccess(List<ConquistaUser> conquistaUser) {
+
+                for (ConquistaUser conquista : conquistaUser) {
+                    goalList.add(new Goal(conquista.getDsConquista(), "1/3", conquista.getNmConquista()));
+                }
+
+                Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.e("ERRO", errorMessage);
+            }
+        });
+
     }
+
+    private void scheduleNotificationAfterDelay(long delayMillis) {
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            if (isAdded()) { // Verifica se o fragmento ainda está anexado
+                // Cria e executa a notificação
+                Notify notify = new Notify();
+                notify.execute(requireContext());
+                globals.setAlreadyNotified(true);
+            }
+        }, delayMillis);
+    }
+
 }

@@ -8,10 +8,13 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.firstclass.praceando.API.postgresql.PostgresqlAPI;
+import com.firstclass.praceando.API.postgresql.callbackInterfaces.ProductsCallback;
 import com.firstclass.praceando.R;
 import com.firstclass.praceando.calendar.CalendarEventItemAdapter;
 import com.firstclass.praceando.calendar.CalendarViewFragment;
@@ -23,8 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MarketplaceFragment extends Fragment {
-    RecyclerView recyclerView;
-    List<Product> productList = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private final List<Product> productList = new ArrayList<>();
+    private final PostgresqlAPI postgresqlAPI = new PostgresqlAPI();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,21 +43,27 @@ public class MarketplaceFragment extends Fragment {
         fragmentTransaction.commit();
 
 
-        productList.add(new Product("avatar padrão feio", 1.99, "Avatar Futuristico", "https://cdn-icons-png.freepik.com/512/13748/13748379.png"));
-        productList.add(new Product("avatar padrão feio", 1.99, "Avatar Futuristico", "https://cdn-icons-png.freepik.com/512/13748/13748436.png"));
-        productList.add(new Product("avatar padrão feio", 1.99, "Avatar Futuristico", "https://cdn-icons-png.freepik.com/512/13748/13748555.png"));
-        productList.add(new Product("avatar padrão feio", 1.99, "Avatar Futuristico", "https://cdn-icons-png.freepik.com/256/13748/13748527.png"));
-        productList.add(new Product("avatar padrão feio", 1.99, "Avatar Futuristico", "https://cdn-icons-png.freepik.com/512/13748/13748670.png"));
-        productList.add(new Product("avatar padrão feio", 1.99, "Avatar Futuristico", "https://cdn-icons-png.freepik.com/512/13748/13748614.png"));
-        productList.add(new Product("avatar padrão feio", 1.99, "Avatar Futuristico", "https://cdn-icons-png.freepik.com/512/13748/13748570.png"));
-        productList.add(new Product("avatar padrão feio", 1.99, "Avatar Futuristico", "https://cdn-icons-png.freepik.com/512/13748/13748687.png"));
-
-
         recyclerView = view.findViewById(R.id.recyclerViewProduct);
-        ProductItemAdapter productItemAdapter = new ProductItemAdapter(productList);
-        recyclerView.setAdapter(productItemAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
+
+        addProductsInTheList();
         return view;
+    }
+
+    private void addProductsInTheList() {
+        postgresqlAPI.getProducts(new ProductsCallback() {
+            @Override
+            public void onSuccess(List<Product> products) {
+                Log.e("PRODUCTS", ""+products);
+                ProductItemAdapter productItemAdapter = new ProductItemAdapter(products);
+                recyclerView.setAdapter(productItemAdapter);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+        });
     }
 }

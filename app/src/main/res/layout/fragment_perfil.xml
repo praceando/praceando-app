@@ -66,7 +66,7 @@
             android:layout_gravity="center"
             android:layout_width="140dp"
             android:layout_height="140dp"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:clipToOutline="true" />
 
         <TextView
@@ -91,8 +91,9 @@
                 android:layout_marginHorizontal="22dp"
                 android:scrollbars="none"
                 android:background="@color/white"
-                android:gravity="start"
                 android:editable="false"
+                android:gravity="start"
+                android:inputType="none"
                 android:fontFamily="@font/montserrat_medium"
                 android:text="Amante de eventos"
                 android:textSize="15sp"

@@ -25,13 +25,13 @@ public class WelcomeScreen extends AppCompatActivity {
         });
 
         findViewById(R.id.consumerBtn).setOnClickListener(v -> {
-            Intent intent = new Intent(this, RegistrationScreen.class);
+            Intent intent = new Intent(this, GenderAndBirth.class);
             intent.putExtra("type", "consumer");
             startActivity(intent);
         });
 
         findViewById(R.id.advertiserBtn).setOnClickListener(v -> {
-            Intent intent = new Intent(this, RegistrationScreen.class);
+            Intent intent = new Intent(this, GenderAndBirth.class);
             intent.putExtra("type", "advertiser");
             startActivity(intent);
         });

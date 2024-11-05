@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +13,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.firstclass.praceando.API.postgresql.PostgresqlAPI;
+import com.firstclass.praceando.API.postgresql.callbackInterfaces.UserByIdCallback;
+import com.firstclass.praceando.entities.User;
+import com.firstclass.praceando.firebase.database.Database;
+import com.firstclass.praceando.firebase.database.callback.AvatarCallback;
 import com.firstclass.praceando.login.LandingScreen;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,12 +41,46 @@ public class SplashScreenActivity extends AppCompatActivity {
             public void run() {
                 checkUserAuthentication();
             }
-        }, 3000);
+        }, 2000);
     }
 
     private void checkUserAuthentication() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
+
+            Globals globals = (Globals) getApplication();
+            PostgresqlAPI postgresqlAPI = new PostgresqlAPI();
+
+            postgresqlAPI.getUserByEmail(currentUser.getEmail(), new UserByIdCallback() {
+                @Override
+                public void onSuccess(User user) {
+                    Log.e("API", user+"");
+                    globals.setBio(user.getBio());
+                    globals.setUserRole(user.getTipoUsuario());
+                    globals.setId(user.getId());
+                    globals.setNickname(user.getNome());
+
+                    Database database = new Database();
+                    database.buscarAvatarAtual(user.getId(), new AvatarCallback() {
+                        @Override
+                        public void onAvatarRetrieved(String avatarAtual) {
+                            globals.setUserProfileImage(avatarAtual);
+                        }
+
+                        @Override
+                        public void onError(String errorMessage) {
+                            globals.setUserProfileImage("");
+                        }
+                    });
+
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+                    Log.e("API", errorMessage);
+                }
+            });
+
             // Usuário está autenticado, redirecionar para MainActivity
             Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
             startActivity(intent);

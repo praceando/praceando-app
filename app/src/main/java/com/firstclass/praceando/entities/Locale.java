@@ -5,15 +5,30 @@ import android.os.Parcelable;
 
 public class Locale implements Parcelable {
     private Long id;
-    private String name;
-    private String openingTime;
-    private String closingTime;
+    private String nmLocal;
+    private String hrAbertura;
+    private String hrFechamento;
+    private double nrLat;
+    private double nrLong;
 
-    public Locale(Long id, String name, String openingTime, String closingTime) {
-        this.name = name;
+    public Locale(Long id, String nmLocal, String hrAbertura, String hrFechamento) {
+        this.nmLocal = nmLocal;
         this.id = id;
-        this.openingTime = openingTime;
-        this.closingTime = closingTime;
+        this.hrAbertura = hrAbertura;
+        this.hrFechamento = hrFechamento;
+    }
+
+    public Locale(Long id, String nmLocal, String hrAbertura, String hrFechamento, double nrLat, double nrLong) {
+        this.nmLocal = nmLocal;
+        this.id = id;
+        this.hrAbertura = hrAbertura;
+        this.hrFechamento = hrFechamento;
+        this.nrLat = nrLat;
+        this.nrLong = nrLong;
+    }
+
+    public Locale(Long id) {
+        this.id = id;
     }
 
     protected Locale(Parcel in) {
@@ -22,9 +37,9 @@ public class Locale implements Parcelable {
         } else {
             id = in.readLong();
         }
-        name = in.readString();
-        openingTime = in.readString();
-        closingTime = in.readString();
+        nmLocal = in.readString();
+        hrAbertura = in.readString();
+        hrFechamento = in.readString();
     }
 
     public static final Creator<Locale> CREATOR = new Creator<Locale>() {
@@ -48,32 +63,43 @@ public class Locale implements Parcelable {
     }
 
     public String getName() {
-        return name;
+        return nmLocal;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String nmLocal) {
+        this.nmLocal = nmLocal;
     }
 
     public String getOpeningTime() {
-        return openingTime;
+        return hrAbertura;
     }
 
-    public void setOpeningTime(String openingTime) {
-        this.openingTime = openingTime;
+    public void setOpeningTime(String hrAbertura) {
+        this.hrAbertura = hrAbertura;
     }
 
     public String getClosingTime() {
-        return closingTime;
+        return hrFechamento;
     }
 
-    public void setClosingTime(String closingTime) {
-        this.closingTime = closingTime;
+    public void setClosingTime(String hrFechamento) {
+        this.hrFechamento = hrFechamento;
     }
 
-    @Override
-    public String toString() {
-        return name;
+    public double getNrLat() {
+        return nrLat;
+    }
+
+    public void setNrLat(double nrLat) {
+        this.nrLat = nrLat;
+    }
+
+    public double getNrLong() {
+        return nrLong;
+    }
+
+    public void setNrLong(double nrLong) {
+        this.nrLong = nrLong;
     }
 
     @Override
@@ -89,8 +115,13 @@ public class Locale implements Parcelable {
             dest.writeByte((byte) 1);
             dest.writeLong(id);
         }
-        dest.writeString(name);
-        dest.writeString(openingTime);
-        dest.writeString(closingTime);
+        dest.writeString(nmLocal);
+        dest.writeString(hrAbertura);
+        dest.writeString(hrFechamento);
+    }
+
+    @Override
+    public String toString() {
+        return nmLocal;
     }
 }

@@ -7,12 +7,21 @@ public class Globals extends Application {
     private String bio;
     private String userProfileImage;
     private int userRole; // 0 - anunciante 1 - consumidor
-    private int id;
+    private long id;
     private String token;
+    private boolean alreadyNotified = false;
 
     @Override
     public void onCreate() {
         super.onCreate();
+    }
+
+    public boolean isAlreadyNotified() {
+        return alreadyNotified;
+    }
+
+    public void setAlreadyNotified(boolean alreadyNotified) {
+        this.alreadyNotified = alreadyNotified;
     }
 
     public String getToken() {
@@ -55,11 +64,24 @@ public class Globals extends Application {
         this.userRole = userRole;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Globals{" +
+                "nickname='" + nickname + '\'' +
+                ", bio='" + bio + '\'' +
+                ", userProfileImage='" + userProfileImage + '\'' +
+                ", userRole=" + userRole +
+                ", id=" + id +
+                ", token='" + token + '\'' +
+                ", alreadyNotified=" + alreadyNotified +
+                '}';
     }
 }
