@@ -64,16 +64,19 @@ public class Database {
             }
         });
     }
-    public void uploadFoto (String eventoId, ImageView foto){
-        // Configura a imagem
+
+    public void uploadFoto(Context context, String eventoId, ImageView foto, Uri imageUri) {
         Bitmap bitmap = ((BitmapDrawable) foto.getDrawable()).getBitmap();
+
+        bitmap = corrigirOrientacao(context, bitmap, imageUri);
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos);
         byte[] databyte = baos.toByteArray();
 
         StorageReference storageRef = storage.getReference().child("eventos/" + eventoId + "/foto_" + System.currentTimeMillis() + ".jpg");
-
         UploadTask uploadTask = storageRef.putBytes(databyte);
+
         uploadTask.addOnSuccessListener(taskSnapshot -> {
             storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                 String fotoUrl = uri.toString();
@@ -83,6 +86,45 @@ public class Database {
             e.printStackTrace();
         });
     }
+
+    private Bitmap corrigirOrientacao(Context context, Bitmap bitmap, Uri imageUri) {
+        try {
+            InputStream inputStream = context.getContentResolver().openInputStream(imageUri);
+            if (inputStream != null) {
+                ExifInterface exif = new ExifInterface(inputStream);
+                int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+                int rotation = 0;
+                switch (orientation) {
+                    case ExifInterface.ORIENTATION_ROTATE_90:
+                        rotation = 90;
+                        break;
+                    case ExifInterface.ORIENTATION_ROTATE_180:
+                        rotation = 180;
+                        break;
+                    case ExifInterface.ORIENTATION_ROTATE_270:
+                        rotation = 270;
+                        break;
+                    default:
+                        break;
+                }
+
+                if (rotation != 0) {
+                    Matrix matrix = new Matrix();
+                    matrix.postRotate(rotation);
+
+                    bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                }
+                inputStream.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
+
+
+
 
     private void salvarFotoNoFirestore (String eventoId, String fotoUrl){
 
