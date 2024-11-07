@@ -1,27 +1,36 @@
 package com.firstclass.praceando.API.postgresql;
+import android.util.Log;
+
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.CreateCompraCallback;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.CreateEventoCallback;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.EmailExistsCallback;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.EventByIdCallback;
+import com.firstclass.praceando.API.postgresql.callbackInterfaces.EventInteresseCallback;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.EventsCallback;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.FraseSustentavelCallback;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.GendersCallback;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.LocalesCallback;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.NicknameExistsCallback;
+import com.firstclass.praceando.API.postgresql.callbackInterfaces.ProductByIdCallback;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.ProductsCallback;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.TagsCallback;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.UserByIdCallback;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.UsuarioAnuncianteCallback;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.UsuarioConsumidorCallback;
 import com.firstclass.praceando.API.postgresql.entities.CreateCompra;
+import com.firstclass.praceando.API.postgresql.entities.CreateCompraResponse;
 import com.firstclass.praceando.API.postgresql.entities.CreateEventoResponse;
 import com.firstclass.praceando.API.postgresql.entities.EmailIsInUse;
 import com.firstclass.praceando.API.postgresql.entities.Evento;
 import com.firstclass.praceando.API.postgresql.entities.Evento2;
 import com.firstclass.praceando.API.postgresql.entities.EventoCompleto;
 import com.firstclass.praceando.API.postgresql.entities.EventoFeed;
+import com.firstclass.praceando.API.postgresql.entities.EventoReadBody;
 import com.firstclass.praceando.API.postgresql.entities.FraseSustentavel;
+import com.firstclass.praceando.API.postgresql.entities.Interesse;
+import com.firstclass.praceando.API.postgresql.entities.InteresseResponse;
 import com.firstclass.praceando.API.postgresql.entities.NicknameIsInUse;
+import com.firstclass.praceando.API.postgresql.entities.ProfileUser;
 import com.firstclass.praceando.API.postgresql.entities.UsuarioAnunciante;
 import com.firstclass.praceando.API.postgresql.entities.UsuarioConsumidor;
 import com.firstclass.praceando.entities.Gender;
@@ -30,8 +39,10 @@ import com.firstclass.praceando.entities.Product;
 import com.firstclass.praceando.entities.Tag;
 import com.firstclass.praceando.entities.User;
 
+import java.io.IOException;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -148,6 +159,26 @@ public class PostgresqlAPI {
         });
     }
 
+    public void getProductById(int id, ProductByIdCallback callback) {
+        Call<Product> call = postgresqApi.getProductById(id);
+
+        call.enqueue(new Callback<Product>() {
+            @Override
+            public void onResponse(Call<Product> call, Response<Product> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onError("Resposta falhou: " + response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Product> call, Throwable t) {
+                callback.onError(t.getMessage());
+            }
+        });
+    }
+
     public void nicknameExists(String nickname, NicknameExistsCallback callback) {
         Call<NicknameIsInUse> call = postgresqApi.existsByNickname(nickname);
 
@@ -208,8 +239,8 @@ public class PostgresqlAPI {
         });
     }
 
-    public void getEvents(EventsCallback callback) {
-        Call<List<EventoFeed>> call = postgresqApi.getEventsForFeed();
+    public void getEvents(EventoReadBody body, EventsCallback callback) {
+        Call<List<EventoFeed>> call = postgresqApi.getEventsForFeed(body);
 
         call.enqueue(new Callback<List<EventoFeed>>() {
             @Override
@@ -223,6 +254,26 @@ public class PostgresqlAPI {
 
             @Override
             public void onFailure(Call<List<EventoFeed>> call, Throwable t) {
+                callback.onError(t.getMessage());
+            }
+        });
+    }
+
+    public void getEventInteresse(long eventId, long userId, EventInteresseCallback callback) {
+        Call<InteresseResponse> call = postgresqApi.getEventInteresses(eventId, userId);
+
+        call.enqueue(new Callback<InteresseResponse>() {
+            @Override
+            public void onResponse(Call<InteresseResponse> call, Response<InteresseResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onError("Resposta falhou: " + response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<InteresseResponse> call, Throwable t) {
                 callback.onError(t.getMessage());
             }
         });
@@ -380,45 +431,86 @@ public class PostgresqlAPI {
     }
 
     public void createCompra(CreateCompra createCompra, CreateCompraCallback callback) {
-        Call<CreateCompra> call = postgresqApi.createCompra(createCompra);
+        Call<CreateCompraResponse> call = postgresqApi.createCompra(createCompra);
 
-        call.enqueue(new Callback<CreateCompra>() {
+        call.enqueue(new Callback<CreateCompraResponse>() {
             @Override
-            public void onResponse(Call<CreateCompra> call, Response<CreateCompra> response) {}
+            public void onResponse(Call<CreateCompraResponse> call, Response<CreateCompraResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onError("Falha na resposta: " + response.message());
+                }
+            }
+
             @Override
-            public void onFailure(Call<CreateCompra> call, Throwable t) {
+            public void onFailure(Call<CreateCompraResponse> call, Throwable t) {
                 callback.onError(t.getMessage());
             }
         });
     }
 
+
     public void pagamento(long cdCompra) {
-        postgresqApi.pagamento(cdCompra);
+        postgresqApi.pagamento(cdCompra).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Log.d("Retrofit", "Profile atualizado com sucesso!");
+                } else {
+                    Log.e("Retrofit", "Erro na resposta: " + response.errorBody());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("Retrofit", "Falha na chamada: " + t.getMessage());
+            }
+        });;
     }
 
-//    private void updatePost() {
-//        Post postAtualizado = new Post();
-//        postAtualizado.setTitle("Título atualizado");
-//        postAtualizado.setBody("Conteúdo atualizado");
-//        postAtualizado.setUserId(1);
-//
-//        PhotoApi photoApi = retrofit.create(PhotoApi.class);
-//        Call<Post> call = photoApi.updatePost(1, postAtualizado);
-//        call.enqueue(new Callback<Post>() {
-//            @Override
-//            public void onResponse(Call<Post> call, Response<Post> response) {
-//                if (response.isSuccessful()) {
-//                    Post post = response.body();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Post> call, Throwable t) {
-//            }
-//        });
-//
-//    }
+    public void updateProfile(ProfileUser profileUser) {
+        postgresqApi.updateProfile(profileUser).enqueue(new Callback<ProfileUser>() {
+            @Override
+            public void onResponse(Call<ProfileUser> call, Response<ProfileUser> response) {
+                if (response.isSuccessful()) {
+                    Log.d("Retrofit", "Profile atualizado com sucesso!");
+                } else {
+                    Log.e("Retrofit", "Erro na resposta: " + response.errorBody());
+                }
+            }
 
+            @Override
+            public void onFailure(Call<ProfileUser> call, Throwable t) {
+                Log.e("Retrofit", "Falha na chamada: " + t.getMessage());
+            }
+        });
+
+    }
+
+    public void addInteresse(Interesse interesse) {
+        postgresqApi.addInteresse(interesse).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Log.d("API", "Interesse criado");
+                } else {
+                    try {
+                        Log.e("API", "Erro na criacao de interesse: " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("API", "Falha na chamada: " + t.getMessage());
+            }
+        });
+
+
+    }
 //    public void deletePost() {
 //        PhotoApi photoApi = retrofit.create(PhotoApi.class);
 //        Call<Void> call = photoApi.deletePost(1);

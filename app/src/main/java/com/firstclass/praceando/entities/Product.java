@@ -1,14 +1,14 @@
 package com.firstclass.praceando.entities;
 
 public class Product {
-    private int id;
+    private long id;
     private String nmProduto;
     private String dsProduto;
     private double vlPreco;
     private String nmCategoria;
     private String urlImagem;
 
-    public Product(int id, String description, double price, String title, String imageUrl, String nmCategoria) {
+    public Product(long id, String description, double price, String title, String imageUrl, String nmCategoria) {
         this.id = id;
         this.vlPreco = price;
         this.nmProduto = title;
@@ -49,7 +49,7 @@ public class Product {
         this.urlImagem = imageUrl;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

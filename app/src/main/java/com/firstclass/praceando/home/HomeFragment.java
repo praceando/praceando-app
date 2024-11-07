@@ -21,12 +21,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firstclass.praceando.API.Flask.EventsIdsCallback;
+import com.firstclass.praceando.API.Flask.EventsIdsResponse;
+import com.firstclass.praceando.API.Flask.FlaskAPI;
 import com.firstclass.praceando.API.postgresql.PostgresqlAPI;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.EventsCallback;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.FraseSustentavelCallback;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.TagsCallback;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.UsuarioConsumidorCallback;
 import com.firstclass.praceando.API.postgresql.entities.EventoFeed;
+import com.firstclass.praceando.API.postgresql.entities.EventoReadBody;
 import com.firstclass.praceando.API.postgresql.entities.FraseSustentavel;
 import com.firstclass.praceando.API.postgresql.entities.UsuarioConsumidor;
 import com.firstclass.praceando.EventDetails.EventCreationBasicDatas;
@@ -60,6 +64,7 @@ public class HomeFragment extends Fragment {
     private boolean isMyEvents = false;
     private TextInputLayout textInputLayout;
     private ProgressBar progressBar;
+    private FlaskAPI flaskAPI = new FlaskAPI();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -77,8 +82,6 @@ public class HomeFragment extends Fragment {
         nothingFoundText = view.findViewById(R.id.nothingFoundText);
         progressBar = view.findViewById(R.id.progressBar);
 
-
-        Globals globals = new Globals();
         int userRole = globals.getUserRole();
 
         if (userRole == 1) {
@@ -100,8 +103,6 @@ public class HomeFragment extends Fragment {
         recyclerView.setAdapter(eventItemAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        loadEvents();
-
         addEvent.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), EventCreationBasicDatas.class);
             startActivity(intent);
@@ -116,7 +117,20 @@ public class HomeFragment extends Fragment {
             loadEvents();
         });
 
-        // Configura o listener para o ícone "X"
+        otherEnventsTab.setOnClickListener(v -> {
+            isMyEvents = false;
+            addEventsInTheList(isMyEvents);
+            updateTabColors(isMyEvents);
+            textInputLayout.setVisibility(View.VISIBLE);
+        });
+
+        myEnventsTab.setOnClickListener(v -> {
+            isMyEvents = true;
+            addEventsInTheList(isMyEvents);
+            updateTabColors(isMyEvents);
+            textInputLayout.setVisibility(View.GONE);
+        });
+
         textInputLayout.setEndIconOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,7 +148,8 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    private void setupAutoCompleteTextView(View view) {eventList.clear();
+    private void setupAutoCompleteTextView(View view) {
+        eventList.clear();
         AutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
         TagItemAdapter adapter = new TagItemAdapter(getContext(), tagList);
         autoCompleteTextView.setAdapter(adapter);
@@ -181,6 +196,7 @@ public class HomeFragment extends Fragment {
                     progressBar.setVisibility(View.INVISIBLE);
                 }
             });
+
         } else if (selectedTag != null) {
             // Se uma tag estiver selecionada, busque eventos por tag
             postgresqlAPI.getEventsByTagId(selectedTag.getId(), new EventsCallback() {
@@ -207,29 +223,43 @@ public class HomeFragment extends Fragment {
                 }
             });
         }  else {
-            postgresqlAPI.getEvents(new EventsCallback() {
+
+            flaskAPI.getEventsIds(globals.getId(), new EventsIdsCallback() {
                 @Override
-                public void onSuccess(List<EventoFeed> events) {
-                    nothingFoundText.setVisibility(View.INVISIBLE);
+                public void onSuccess(EventsIdsResponse response) {
+                    Log.e("FLASK" , response+"");
+                    postgresqlAPI.getEvents( new EventoReadBody(response.getEventos_ids()),new EventsCallback() {
+                        @Override
+                        public void onSuccess(List<EventoFeed> events) {
+                            nothingFoundText.setVisibility(View.INVISIBLE);
 
-                    if (events.isEmpty()) {
-                        nothingFoundText.setText("Nenhum evento encontrado \uD83D\uDE14");
-                        nothingFoundText.setVisibility(View.VISIBLE);
-                    }
+                            if (events.isEmpty()) {
+                                nothingFoundText.setText("Nenhum evento encontrado \uD83D\uDE14");
+                                nothingFoundText.setVisibility(View.VISIBLE);
+                            }
 
-                    eventList.addAll(events);
-                    Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
-                    progressBar.setVisibility(View.INVISIBLE);
+                            eventList.addAll(events);
+                            Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
+                            progressBar.setVisibility(View.INVISIBLE);
+                        }
+
+                        @Override
+                        public void onError(String errorMessage) {
+                            Log.e("API", errorMessage);
+                            nothingFoundText.setText("Nenhum evento encontrado \uD83D\uDE14");
+                            nothingFoundText.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.INVISIBLE);
+                        }
+                    });
                 }
 
                 @Override
                 public void onError(String errorMessage) {
-                    Log.e("API", errorMessage);
-                    nothingFoundText.setText("Nenhum evento encontrado \uD83D\uDE14");
-                    nothingFoundText.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.INVISIBLE);
+                    Log.e("FLASK" , errorMessage);
                 }
             });
+
+
         }
     }
 
@@ -255,20 +285,6 @@ public class HomeFragment extends Fragment {
     private void loadEvents() {
         addEventsInTheList(isMyEvents);
         updateTabColors(isMyEvents);
-
-        otherEnventsTab.setOnClickListener(v -> {
-            isMyEvents = false;
-            addEventsInTheList(isMyEvents);
-            updateTabColors(isMyEvents);
-            textInputLayout.setVisibility(View.VISIBLE);
-        });
-
-        myEnventsTab.setOnClickListener(v -> {
-            isMyEvents = true;
-            addEventsInTheList(isMyEvents);
-            updateTabColors(isMyEvents);
-            textInputLayout.setVisibility(View.GONE);
-        });
     }
 
     private void loadFraseSustevel() {

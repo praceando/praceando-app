@@ -101,6 +101,7 @@
                 />
 
         <Button
+            android:id="@+id/premiumBtn"
             android:layout_gravity="center"
             android:layout_marginVertical="25dp"
             android:layout_width="wrap_content"

@@ -123,6 +123,9 @@ public class ReviewsActivity extends AppCompatActivity {
                     public void onSuccess(Avaliacao avaliacao) {
                         Log.e("API", avaliacao+"");
                         Toast.makeText(ReviewsActivity.this, "Obrigada por avaliar!", Toast.LENGTH_SHORT).show();
+                        reviewList.clear();
+                        addReviewBtn.setVisibility(View.INVISIBLE);
+                        addReviewsInTheList();
                         bottomSheetDialog.dismiss();
                     }
 

@@ -59,6 +59,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     globals.setUserRole(user.getTipoUsuario());
                     globals.setId(user.getId());
                     globals.setNickname(user.getNome());
+                    globals.setPremium(user.isPremium());
 
                     Database database = new Database();
                     database.buscarAvatarAtual(user.getId(), new AvatarCallback() {

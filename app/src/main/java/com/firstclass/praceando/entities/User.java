@@ -9,13 +9,15 @@ public class User implements Parcelable {
     private int tipoUsuario;
     private long id;
     private int iventario;
+    private boolean isPremium;
 
-    public User(String bio, String nome, int tipoUsuario, long id, int iventario) {
+    public User(String bio, String nome, int tipoUsuario, long id, int iventario, boolean isPremium) {
         this.bio = bio;
         this.nome = nome;
         this.tipoUsuario = tipoUsuario;
         this.id = id;
         this.iventario = iventario;
+        this.isPremium = isPremium;
     }
 
     public User(long id) {
@@ -82,6 +84,10 @@ public class User implements Parcelable {
         this.iventario = iventario;
     }
 
+    public boolean isPremium() {
+        return isPremium;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -104,6 +110,7 @@ public class User implements Parcelable {
                 ", tipoUsuario=" + tipoUsuario +
                 ", id=" + id +
                 ", iventario=" + iventario +
+                ", premium=" + isPremium +
                 '}';
     }
 }

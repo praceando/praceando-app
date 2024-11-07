@@ -3,7 +3,6 @@ package com.firstclass.praceando;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -37,7 +36,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             v.setPadding(systemBars.left, 60, systemBars.right, 0);
             return insets;
         });
-
 
         navigationView = findViewById(R.id.bottonNavigation);
         navigationView.setOnNavigationItemSelectedListener(this);

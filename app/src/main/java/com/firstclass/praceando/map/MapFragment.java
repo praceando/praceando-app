@@ -17,14 +17,16 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.firstclass.praceando.API.postgresql.PostgresqlAPI;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.LocalesCallback;
+import com.firstclass.praceando.Globals;
 import com.firstclass.praceando.R;
 import com.firstclass.praceando.entities.Locale;
 import com.firstclass.praceando.fragments.HeaderFragment;
@@ -41,6 +43,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.firstclass.praceando.databinding.FragmentMapBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.List;
 
@@ -51,6 +55,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private FusedLocationProviderClient fusedLocationProviderClient;
     private FragmentMapBinding binding;
     private PostgresqlAPI postgresqlAPI = new PostgresqlAPI();
+    private Globals globals;
+    private ImageView avatar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,11 +64,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
         getLastLocation();
 
+        globals = (Globals) requireActivity().getApplication();
+
+        avatar = binding.getRoot().findViewById(R.id.avatar);
+
+        Picasso.get().load(globals.getUserProfileImage()).into(avatar);
+
         FragmentManager fragmentManager = getChildFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.headerFragmentLayout, new HeaderFragment());
         fragmentTransaction.commit();
-
 
         return binding.getRoot();
     }
@@ -91,25 +102,42 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        int height = 130;
-        int width = 130;
-        BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.img_bee);
-        Bitmap b = bitmapdraw.getBitmap();
-        Bitmap myLocationMarker = Bitmap.createScaledBitmap(b, width, height, false);
+        ImageView imageView = new ImageView(requireContext());
 
-        LatLng userLocation = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+        int height = 110;
+        int width = 110;
 
-        googleMap.setMyLocationEnabled(true);
-        googleMap.getUiSettings().setZoomControlsEnabled(true);
-        googleMap.getUiSettings().setCompassEnabled(true);
-        googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+        Picasso.get().load(globals.getUserProfileImage()).into(imageView, new com.squareup.picasso.Callback() {
+            @Override
+            public void onSuccess() {
+                // Image loaded successfully, proceed with getting the Bitmap
+                BitmapDrawable bitmapdraw = (BitmapDrawable) imageView.getDrawable();
+                if (bitmapdraw != null) {
+                    Bitmap b = bitmapdraw.getBitmap();
+                    Bitmap myLocationMarker = Bitmap.createScaledBitmap(b, width, height, false);
 
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
-        googleMap.moveCamera(CameraUpdateFactory.zoomTo(12));
-        googleMap.addMarker(new MarkerOptions()
-                .position(userLocation)
-                .icon(BitmapDescriptorFactory.fromBitmap(myLocationMarker))
-                .title("Você está aqui!"));
+                    LatLng userLocation = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+
+                    googleMap.setMyLocationEnabled(true);
+                    googleMap.getUiSettings().setZoomControlsEnabled(true);
+                    googleMap.getUiSettings().setCompassEnabled(true);
+                    googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLng(userLocation));
+                    googleMap.moveCamera(CameraUpdateFactory.zoomTo(12));
+                    googleMap.addMarker(new MarkerOptions()
+                            .position(userLocation)
+                            .icon(BitmapDescriptorFactory.fromBitmap(myLocationMarker))
+                            .title("Você está aqui!"));
+                }
+            }
+
+            @Override
+            public void onError(Exception e) {
+                // Handle the error case where the image could not be loaded
+                e.printStackTrace();
+            }
+        });
 
         postgresqlAPI.getLocales(new LocalesCallback() {
             @Override

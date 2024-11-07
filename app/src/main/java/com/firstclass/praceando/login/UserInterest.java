@@ -18,6 +18,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.firstclass.praceando.API.postgresql.PostgresqlAPI;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.TagsCallback;
+import com.firstclass.praceando.API.postgresql.entities.Interesse;
+import com.firstclass.praceando.Globals;
 import com.firstclass.praceando.MainActivity;
 import com.firstclass.praceando.R;
 import com.firstclass.praceando.entities.Tag;
@@ -43,7 +45,19 @@ public class UserInterest extends AppCompatActivity {
         });
 
         findViewById(R.id.returnArrow).setOnClickListener(v -> finish());
-        findViewById(R.id.startBtn).setOnClickListener(v -> navigateToHome());
+        findViewById(R.id.startBtn).setOnClickListener(v -> {
+            Globals globals = (Globals) getApplication();
+            PostgresqlAPI postgresqlAPI = new PostgresqlAPI();
+            List<String> tags = new ArrayList<>();
+
+            for (Tag tag: tagsSelected) {
+                tags.add(tag.getName());
+            }
+
+            postgresqlAPI.addInteresse(new Interesse(globals.getId(), null, tags));
+
+            navigateToHome();
+        });
 
         tagsFlexbox = findViewById(R.id.tagsFlexblox);
 
