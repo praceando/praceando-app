@@ -109,8 +109,7 @@ public class EventCreationPayment extends AppCompatActivity {
                                 @Override
                                 public void onSuccess() {
                                     Database database = new Database();
-                                    // A imagem foi carregada com sucesso
-                                    database.uploadFoto(String.valueOf(response.getIdEvento()), imageView);
+                                    database.uploadFoto(EventCreationPayment.this, String.valueOf(response.getIdEvento()), imageView, imagesUri.get(finalI));
                                 }
 
                                 @Override
