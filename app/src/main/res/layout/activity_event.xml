@@ -199,7 +199,7 @@
         android:orientation="horizontal"
         android:layout_gravity="end|bottom"
         android:layout_marginEnd="25dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="40dp"
         tools:ignore="UseCompoundDrawables">
 
         <TextView
@@ -208,7 +208,7 @@
             android:text="Ver avaliações"
             android:fontFamily="@font/montserrat_medium"
             android:textColor="@color/rosaEscuro"
-            android:textSize="15sp"/>
+            android:textSize="16sp"/>
 
         <ImageView
             android:layout_width="wrap_content"
@@ -216,9 +216,42 @@
             android:background="@drawable/ic_arrow"
             android:backgroundTint="@color/rosaEscuro"
             android:layout_gravity="center"
-            android:layout_marginTop="1dp"
+            android:layout_marginTop="2.5dp"
             android:layout_marginStart="5dp"
             />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:orientation="horizontal"
+        android:layout_gravity="start|bottom"
+        android:layout_marginStart="60dp"
+        android:layout_marginBottom="40dp"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:id="@+id/heartIcon"
+            android:layout_width="23dp"
+            android:layout_height="21dp"
+            android:background="@drawable/ic_heat"
+            android:backgroundTint="@color/rosaEscuro"
+            android:layout_gravity="center"
+            android:layout_marginTop="1dp"
+            />
+
+        <TextView
+            android:id="@+id/interesseTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:fontFamily="@font/montserrat_medium"
+            android:textColor="@color/black"
+            android:layout_marginStart="5dp"
+            android:layout_gravity="center"
+            android:textSize="16sp"/>
+
     </LinearLayout>
 
     <ProgressBar

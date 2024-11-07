@@ -14,17 +14,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firstclass.praceando.API.mongo.MongoAPI;
 import com.firstclass.praceando.API.mongo.callbacksInterfaces.UserGoalsCallback;
 import com.firstclass.praceando.API.mongo.entities.ConquistaUser;
+import com.firstclass.praceando.API.postgresql.PostgresqlAPI;
+import com.firstclass.praceando.API.postgresql.callbackInterfaces.ProductByIdCallback;
 import com.firstclass.praceando.Globals;
 import com.firstclass.praceando.R;
+import com.firstclass.praceando.entities.Product;
 import com.firstclass.praceando.firebase.authentication.Authentication;
 import com.firstclass.praceando.entities.Goal;
 import com.firstclass.praceando.login.LandingScreen;
+import com.firstclass.praceando.marketplace.Payment;
 import com.firstclass.praceando.notification.Notify;
 import com.squareup.picasso.Picasso;
 
@@ -37,7 +42,8 @@ public class PerfilFragment extends Fragment {
     private List<Goal> goalList = new ArrayList<>();
     private RecyclerView recyclerView;
     private Globals globals;
-    List<ConquistaUser> conquistaUserList;
+    private Button premiumBtn;
+    private PostgresqlAPI postgresqlAPI = new PostgresqlAPI();
 
 
     @Override
@@ -55,6 +61,7 @@ public class PerfilFragment extends Fragment {
 
         addGoalInTheList();
 
+        premiumBtn = view.findViewById(R.id.premiumBtn);
         GoalAdapter goalAdapter = new GoalAdapter(goalList);
         recyclerView.setAdapter(goalAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
@@ -65,15 +72,51 @@ public class PerfilFragment extends Fragment {
 
         globals = (Globals) requireActivity().getApplication();
 
+        if (globals.getUserRole() == 1 ) premiumBtn.setText("Estatísticas gerais");
+
+        if (globals.getUserRole() == 2 && globals.getPremium()) premiumBtn.setText("Minhas estatísticas");
+
         nickname.setText(globals.getNickname());
         bio.setText(globals.getBio());
 
-        Log.e("GLOBALS", globals+"");
         Picasso.get()
                 .load(globals.getUserProfileImage())
                 .into(userImage);
 
         if (!globals.isAlreadyNotified()) scheduleNotificationAfterDelay(5000);
+
+        premiumBtn.setOnClickListener(v -> {
+            Intent intent;
+            if (globals.getUserRole() == 2 && globals.getPremium()) {
+                intent = new Intent(requireActivity(), AreaRestrita.class);
+                startActivity(intent);
+            }
+            else if (globals.getUserRole() == 2) {
+                intent = new Intent(requireActivity(), Payment.class);
+                postgresqlAPI.getProductById(4, new ProductByIdCallback() {
+                    @Override
+                    public void onSuccess(Product product) {
+                        intent.putExtra("title", product.getTitle());
+                        intent.putExtra("price", product.getPrice());
+                        intent.putExtra("image", product.getImageUrl());
+                        intent.putExtra("description", product.getDescription());
+                        intent.putExtra("id", product.getId());
+                        intent.putExtra("categoria", product.getNmCategoria());
+
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        Log.e("API", errorMessage);
+                    }
+                });
+            } else {
+                intent = new Intent(requireActivity(), AreaRestrita.class);
+                startActivity(intent);
+            }
+
+        });
 
         return view;
     }
@@ -104,8 +147,7 @@ public class PerfilFragment extends Fragment {
 
     private void scheduleNotificationAfterDelay(long delayMillis) {
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            if (isAdded()) { // Verifica se o fragmento ainda está anexado
-                // Cria e executa a notificação
+            if (isAdded()) {
                 Notify notify = new Notify();
                 notify.execute(requireContext());
                 globals.setAlreadyNotified(true);

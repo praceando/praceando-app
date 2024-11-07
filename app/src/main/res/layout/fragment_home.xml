@@ -51,14 +51,14 @@
                 android:textSize="19sp"
                 android:textStyle="bold"
                 android:visibility="visible"
-                android:layout_marginStart="40dp"
+                android:layout_marginStart="60dp"
                 />
         </LinearLayout>
 
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/dropdownLayout"
-            android:layout_width="match_parent"
+            android:layout_width="370dp"
             android:layout_marginHorizontal="20dp"
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
@@ -97,7 +97,7 @@
             android:id="@+id/recyclerViewEvent"
             android:layout_gravity="bottom|center_horizontal"
             android:layout_marginHorizontal="20dp"
-            android:layout_width="match_parent"
+            android:layout_width="370dp"
             android:layout_height="wrap_content"
             tools:listitem="@layout/item_event"
             />
@@ -120,7 +120,7 @@
         android:layout_height="90dp"
         android:layout_gravity="center"
         android:indeterminateTint="@color/rosaEscurao"
-        android:visibility="gone"
+        android:visibility="invisible"
         />
 
     <TextView

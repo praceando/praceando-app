@@ -59,14 +59,6 @@ public class EventCreationTagsSelection extends AppCompatActivity {
         endDate = getIntent().getStringExtra("endDate");
         endTime = getIntent().getStringExtra("endTime");
 
-        Log.e("TESTE", "title: " + title +
-                ", description: " + description +
-                ", localeId: " + localeId +
-                ", startDate: " + startDate +
-                ", startTime: " + startTime +
-                ", endDate: " + endDate +
-                ", endTime: " + endTime);
-
         postgresqlAPI = new PostgresqlAPI();
         tagsFlexbox = findViewById(R.id.tagsFlexblox);
         nextBtn = findViewById(R.id.nextBtn);

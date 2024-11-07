@@ -28,10 +28,14 @@ import com.firstclass.praceando.API.mongo.entities.Mean;
 import com.firstclass.praceando.API.postgresql.PostgresqlAPI;
 import com.firstclass.praceando.API.postgresql.PostgresqlAPIInterface;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.EventByIdCallback;
+import com.firstclass.praceando.API.postgresql.callbackInterfaces.EventInteresseCallback;
 import com.firstclass.praceando.API.postgresql.callbackInterfaces.TagsCallback;
 import com.firstclass.praceando.API.postgresql.entities.Evento;
 import com.firstclass.praceando.API.postgresql.entities.EventoCompleto;
 import com.firstclass.praceando.API.postgresql.entities.EventoFeed;
+import com.firstclass.praceando.API.postgresql.entities.Interesse;
+import com.firstclass.praceando.API.postgresql.entities.InteresseResponse;
+import com.firstclass.praceando.Globals;
 import com.firstclass.praceando.R;
 import com.firstclass.praceando.entities.Event;
 import com.firstclass.praceando.entities.Tag;
@@ -48,7 +52,7 @@ import java.util.Objects;
 public class EventActivity  extends AppCompatActivity {
 
     private ImageView returnArrow;
-    private TextView title, locale, time, date, averageRate, description;
+    private TextView title, locale, time, date, averageRate, description, interesseTxt;
     private LinearLayout goToReviews;
     private RatingBar ratingBar;
     private RecyclerView recyclerView;
@@ -57,6 +61,9 @@ public class EventActivity  extends AppCompatActivity {
     private EventoFeed event;
     private ProgressBar progressBar;
     private MongoAPI mongoAPI = new MongoAPI();
+    private ImageView heartIcon;
+    private Globals globals;
+    private int qntInteresse;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -72,6 +79,9 @@ public class EventActivity  extends AppCompatActivity {
             return insets;
         });
 
+        globals = (Globals) getApplication();
+        heartIcon = findViewById(R.id.heartIcon);
+        interesseTxt = findViewById(R.id.interesseTxt);
         progressBar = findViewById(R.id.progressBar);
         averageRate = findViewById(R.id.averageRate);
         locale = findViewById(R.id.locale);
@@ -85,25 +95,23 @@ public class EventActivity  extends AppCompatActivity {
         returnArrow.setOnClickListener(v -> finish());
 
         title = findViewById(R.id.eventTitle);
-        event = (EventoFeed) getIntent().getParcelableExtra("event");
+        event = getIntent().getParcelableExtra("event");
 
         ratingBar = findViewById(R.id.ratingBar);
 
-
         ArrayList<SlideModel> imageList = new ArrayList<>();
+
+        if (globals.getUserRole() == 2) heartIcon.setEnabled(false);
 
         Database database = new Database();
 
-        database.listar(event.getId(), new FotosCallback() {
-            @Override
-            public void onFotosReceived(List<String> fotos) {
-                if (fotos != null && !fotos.isEmpty()) {
-                    for (String url: fotos) {
-                        imageList.add(new SlideModel(url, ScaleTypes.CENTER_CROP));
-                    }
-                    ImageSlider imageSlider = findViewById(R.id.imageSlider);
-                    imageSlider.setImageList(imageList);
+        database.listar(event.getId(), fotos -> {
+            if (fotos != null && !fotos.isEmpty()) {
+                for (String url: fotos) {
+                    imageList.add(new SlideModel(url, ScaleTypes.CENTER_CROP));
                 }
+                ImageSlider imageSlider = findViewById(R.id.imageSlider);
+                imageSlider.setImageList(imageList);
             }
         });
 
@@ -118,7 +126,15 @@ public class EventActivity  extends AppCompatActivity {
 
         getMeanById();
         getEventById();
+        userIsInteressado();
 
+        heartIcon.setOnClickListener(v -> {
+            heartIcon.setBackground(getDrawable(R.drawable.ic_filled_heart));
+            qntInteresse += 1;
+            interesseTxt.setText(qntInteresse+" interesses");
+            heartIcon.setEnabled(false);
+            postgresqlAPI.addInteresse(new Interesse(globals.getId(), event.getId(), new ArrayList<>()));
+        });
     }
 
     private void getMeanById() {
@@ -136,6 +152,23 @@ public class EventActivity  extends AppCompatActivity {
             });
     }
 
+    private void userIsInteressado() {
+        postgresqlAPI.getEventInteresse(event.getId(), globals.getId(), new EventInteresseCallback() {
+            @Override
+            public void onSuccess(InteresseResponse interesseResponse) {
+                if (interesseResponse.isUserInteressou()) {
+                    heartIcon.setBackground(getDrawable(R.drawable.ic_filled_heart));
+                    heartIcon.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+
+            }
+        });
+    }
+
     private void getEventById() {
         progressBar.setVisibility(View.VISIBLE);
         postgresqlAPI.getEventById(event.getId(), new EventByIdCallback() {
@@ -148,6 +181,9 @@ public class EventActivity  extends AppCompatActivity {
                 time.setText(evento.getFormattedHrInicio() + " - " + evento.getFormattedHrFim());
                 date.setText(evento.getFormattedDtInicio() + " - " + evento.getFormattedDtFim());
                 description.setText(evento.getDsEvento());
+                interesseTxt.setText(evento.getQtInteresse()+" interesses");
+
+                qntInteresse = evento.getQtInteresse();
 
                 for (String tagName: event.getTags()) {
                     tagList.add(new Tag(0L, tagName));

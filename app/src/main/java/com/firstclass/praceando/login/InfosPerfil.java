@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -39,8 +40,7 @@ import java.util.Objects;
 
 public class InfosPerfil extends AppCompatActivity {
 
-    private EditText nickname;
-    private EditText bio;
+    private EditText nickname, bio;
     private Button enterBtn;
     private ImageView userImage;
     private Globals globals;
@@ -56,6 +56,8 @@ public class InfosPerfil extends AppCompatActivity {
     private String password;
     private String cnpj;
     private Database database = new Database();
+    private String urlPadrao = "https://firebasestorage.googleapis.com/v0/b/praceando-dbad6.appspot.com/o/avatars%2Fbelha.png?alt=media&token=252fa23d-8369-4cb0-a7f2-6a5c39e9d522";
+    private TextView nameText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +74,7 @@ public class InfosPerfil extends AppCompatActivity {
 
         globals = (Globals) getApplication();
 
+        nameText = findViewById(R.id.nameText);
         gender = getIntent().getStringExtra("gender");
         birthDate = getIntent().getStringExtra("birthDate");
         name = getIntent().getStringExtra("name");
@@ -91,6 +94,7 @@ public class InfosPerfil extends AppCompatActivity {
 
         isAdvertiser = Objects.equals(String.valueOf(userRole), "advertiser");
         if (isAdvertiser) {
+            nameText.setText("Nome da empresa");
             cnpj = getIntent().getStringExtra("cnpj");
             assert cnpj != null;
             cnpj = cnpj.replaceAll("[^\\d]", ""); // mantém apenas números
@@ -116,6 +120,10 @@ public class InfosPerfil extends AppCompatActivity {
                         Log.e("API", usuarioAnunciante1+"");
                         Toast.makeText(InfosPerfil.this, "Usuário criado com sucesso!", Toast.LENGTH_SHORT).show();
 
+                        globals.setUserProfileImage(urlPadrao);
+                        database.criarInventario(usuarioAnunciante1.getId());
+                        database.criarAnotacao(usuarioAnunciante1.getId());
+
                         Authentication authManager = new Authentication();
                         authManager.signUp(email, password, new Authentication.AuthCallback() {
                             @Override
@@ -124,11 +132,10 @@ public class InfosPerfil extends AppCompatActivity {
                                 globals.setNickname(usuarioAnunciante1.getNmNickname());
                                 globals.setBio(usuarioAnunciante1.getDsUsuario());
                                 globals.setId(usuarioAnunciante1.getId());
-                                globals.setUserRole(1);
+                                globals.setUserRole(2);
                                 globals.setId(usuarioAnunciante1.getId());
-                                startActivity(new Intent(InfosPerfil.this, UserInterest.class));
+                                startActivity(new Intent(InfosPerfil.this, MainActivity.class));
 
-                                database.criarInventario(usuarioAnunciante1.getId());
                             }
 
                             @Override
@@ -154,6 +161,10 @@ public class InfosPerfil extends AppCompatActivity {
                         Log.e("API", usuarioConsumidor+"");
                         Toast.makeText(InfosPerfil.this, "Usuário criado com sucesso!", Toast.LENGTH_SHORT).show();
 
+                        globals.setUserProfileImage(urlPadrao);
+                        database.criarInventario(usuarioConsumidor.getId());
+                        database.criarAnotacao(usuarioConsumidor.getId());
+
                         Authentication authManager = new Authentication();
                         authManager.signUp(email, password, new Authentication.AuthCallback() {
                             @Override
@@ -165,6 +176,7 @@ public class InfosPerfil extends AppCompatActivity {
                                 globals.setUserRole(1);
                                 globals.setId(usuarioConsumidor.getId());
                                 startActivity(new Intent(InfosPerfil.this, UserInterest.class));
+
                             }
 
                             @Override
@@ -178,7 +190,7 @@ public class InfosPerfil extends AppCompatActivity {
                     @Override
                     public void onError(String errorMessage) {
                         Log.e("API", errorMessage);
-                        Toast.makeText(InfosPerfil.this, "Erro ao criar usuário", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(InfosPerfil.this, "Erro ao criar usuário, tente novamente.", Toast.LENGTH_SHORT).show();
                     }
                 });
 

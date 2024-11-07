@@ -6,10 +6,11 @@ public class Globals extends Application {
     private String nickname;
     private String bio;
     private String userProfileImage;
-    private int userRole; // 0 - anunciante 1 - consumidor
+    private int userRole; // 2 - anunciante 1 - consumidor
     private long id;
     private String token;
     private boolean alreadyNotified = false;
+    private boolean isPremium;
 
     @Override
     public void onCreate() {
@@ -30,6 +31,10 @@ public class Globals extends Application {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public void setPremium(boolean premium) {
+        isPremium = premium;
     }
 
     public String getNickname() {
@@ -71,6 +76,8 @@ public class Globals extends Application {
     public void setId(long id) {
         this.id = id;
     }
+
+    public boolean getPremium() {return this.isPremium; }
 
     @Override
     public String toString() {

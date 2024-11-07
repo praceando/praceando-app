@@ -33,4 +33,58 @@
         android:visibility="invisible"
         />
 
+    <LinearLayout
+        android:layout_marginTop="70dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="5dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp">
+            <ImageView
+                android:id="@+id/avatar"
+                android:layout_width="31dp"
+                android:layout_height="31dp"
+                android:src="@drawable/img_bee"
+                android:layout_marginEnd="5dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sua localização"
+                android:fontFamily="@font/montserrat_medium"
+                android:textColor="@color/black"
+                android:textSize="13sp"
+                android:layout_gravity="center"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/ic_flower_filled"
+                android:layout_marginEnd="13dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Parques e praças"
+                android:fontFamily="@font/montserrat_medium"
+                android:textColor="@color/black"
+                android:textSize="13sp"
+                android:layout_gravity="center"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
 </FrameLayout>

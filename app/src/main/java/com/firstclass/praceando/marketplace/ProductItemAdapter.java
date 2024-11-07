@@ -47,6 +47,7 @@ public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemAdapter.
                 bundle.putString("image", productList.get(position).getImageUrl());
                 bundle.putString("categoria", productList.get(position).getNmCategoria());
                 bundle.putString("description", productList.get(position).getDescription());
+                bundle.putLong("id", productList.get(position).getId());
 
                 Intent intent = new Intent(holder.itemView.getContext(), Payment.class);
                 intent.putExtras(bundle);

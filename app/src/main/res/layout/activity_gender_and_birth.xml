@@ -14,29 +14,22 @@
         android:src="@drawable/half_flowers"
         android:layout_gravity="end"/>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal|top"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="80dp"
-        android:scrollbars="none"
-        android:layout_marginBottom="20dp">
+    <ImageView
+        android:id="@+id/returnArrow"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/ic_rounded_arrow"
+        android:layout_margin="35dp"
+        />
 
         <LinearLayout
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="center"
             android:layout_width="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="20dp"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-
-            <ImageView
-                android:id="@+id/returnArrow"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/ic_rounded_arrow"
-                android:layout_marginBottom="35dp"
-                />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -203,5 +196,4 @@
                 android:textColor="@color/white"
                 android:enabled="true"/>
         </LinearLayout>
-    </ScrollView>
 </FrameLayout>

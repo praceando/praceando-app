@@ -1,14 +1,19 @@
 package com.firstclass.praceando.API.postgresql;
 
 import com.firstclass.praceando.API.postgresql.entities.CreateCompra;
+import com.firstclass.praceando.API.postgresql.entities.CreateCompraResponse;
 import com.firstclass.praceando.API.postgresql.entities.CreateEventoResponse;
 import com.firstclass.praceando.API.postgresql.entities.Evento;
 import com.firstclass.praceando.API.postgresql.entities.EmailIsInUse;
 import com.firstclass.praceando.API.postgresql.entities.Evento2;
 import com.firstclass.praceando.API.postgresql.entities.EventoCompleto;
 import com.firstclass.praceando.API.postgresql.entities.EventoFeed;
+import com.firstclass.praceando.API.postgresql.entities.EventoReadBody;
 import com.firstclass.praceando.API.postgresql.entities.FraseSustentavel;
+import com.firstclass.praceando.API.postgresql.entities.Interesse;
+import com.firstclass.praceando.API.postgresql.entities.InteresseResponse;
 import com.firstclass.praceando.API.postgresql.entities.NicknameIsInUse;
+import com.firstclass.praceando.API.postgresql.entities.ProfileUser;
 import com.firstclass.praceando.API.postgresql.entities.UsuarioAnunciante;
 import com.firstclass.praceando.API.postgresql.entities.UsuarioConsumidor;
 import com.firstclass.praceando.entities.Gender;
@@ -19,10 +24,12 @@ import com.firstclass.praceando.entities.User;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -43,6 +50,9 @@ public interface PostgresqlAPIInterface {
     @GET("produto/read")
     Call<List<Product>> getProducts();
 
+    @GET("produto/find/{id}")
+    Call<Product> getProductById(@Path("id") int id);
+
     @GET("consumidor/existsByNickname/{nickname}")
     Call<NicknameIsInUse> existsByNickname(@Path("nickname") String nickname);
 
@@ -52,8 +62,8 @@ public interface PostgresqlAPIInterface {
     @GET("evento/find/{id}")
     Call<EventoCompleto> getEventById(@Path("id") long id);
 
-    @GET("evento/read")
-    Call<List<EventoFeed>> getEventsForFeed();
+    @POST("evento/read")
+    Call<List<EventoFeed>> getEventsForFeed(@Body()EventoReadBody body);
 
     @GET("evento/findByAnunciante/{userId}")
     Call<List<EventoFeed>> getEventsForFeedByUserId(@Path("userId") long userId);
@@ -70,6 +80,9 @@ public interface PostgresqlAPIInterface {
     @GET("evento/findByDate")
     Call<List<EventoFeed>> getEventsByDate(@Query("data") String date);
 
+    @GET("evento/find-interesse")
+    Call<InteresseResponse> getEventInteresses(@Query("idEvento") long eventoId, @Query("idUsuario") long userId);
+
     @POST("consumidor/create")
     Call<UsuarioConsumidor> createUsuarioConsumidor(@Body UsuarioConsumidor usuarioConsumidor);
 
@@ -80,16 +93,15 @@ public interface PostgresqlAPIInterface {
     Call<CreateEventoResponse> createEvento(@Body Evento2 evento);
 
     @POST("compra/create")
-    Call<CreateCompra> createCompra(@Body CreateCompra  compra);
+    Call<CreateCompraResponse> createCompra(@Body CreateCompra  compra);
 
     @POST("pagamento/complete-purchase/{cdCompra}")
-    void pagamento(@Path("cdCompra") long cdCompra);
+    Call<ResponseBody> pagamento(@Path("cdCompra") long cdCompra);
 
-//
-//    @PUT("posts/{id}")
-//    Call<Post> updatePost(@Path("id") int id, @Body Post post);
-//
-//    @DELETE("posts/{id}")
-//    Call<Void> deletePost(@Path("id") int id);
+    @PUT("evento/add-interesse")
+    Call<ResponseBody> addInteresse(@Body()Interesse interesse);
+
+    @PUT("usuario/update-profile")
+    Call<ProfileUser> updateProfile(@Body ProfileUser profileUser);
 
 }

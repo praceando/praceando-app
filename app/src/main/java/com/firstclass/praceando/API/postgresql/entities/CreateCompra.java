@@ -2,20 +2,22 @@ package com.firstclass.praceando.API.postgresql.entities;
 
 public class CreateCompra {
     private long cdUsuario;
-    private long cdProduto;
-    private long cdEvento;
+    private Long cdProduto;
+    private Long cdEvento;
     private double vlTotal;
 
     public CreateCompra(long cdUsuario, long cdEvento, double vlTotal) {
         this.cdEvento = cdEvento;
         this.cdUsuario = cdUsuario;
         this.vlTotal = vlTotal;
+        this.cdProduto = null;
     }
 
     public CreateCompra(long cdUsuario, double vlTotal, long cdProduto) {
         this.cdProduto = cdProduto;
         this.cdUsuario = cdUsuario;
         this.vlTotal = vlTotal;
+        this.cdEvento = null;
     }
 
     public double getVlTotal() {
@@ -43,4 +45,5 @@ public class CreateCompra {
                 ", vlTotal=" + vlTotal +
                 '}';
     }
+
 }

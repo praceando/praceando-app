@@ -2,9 +2,11 @@ package com.firstclass.praceando.perfil;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +16,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.firstclass.praceando.API.postgresql.PostgresqlAPI;
+import com.firstclass.praceando.API.postgresql.entities.ProfileUser;
 import com.firstclass.praceando.Globals;
 import com.firstclass.praceando.MainActivity;
 import com.firstclass.praceando.R;
@@ -32,6 +36,8 @@ public class PerfilEdit extends AppCompatActivity {
     private TextInputLayout nicknameInputLayout, bioInputLayout;
     private Database database = new Database();
     private TextView bio, nickname;
+    private PostgresqlAPI postgresqlAPI = new PostgresqlAPI();
+    private TextView nameTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +54,17 @@ public class PerfilEdit extends AppCompatActivity {
 
         findViewById(R.id.returnArrow).setOnClickListener(v -> finish());
 
+        avatarSelecionado = globals.getUserProfileImage();
+
+        nameTitle = findViewById(R.id.nameTitle);
         avatarsFlexbox = findViewById(R.id.avatarFlexblox);
         userImage = findViewById(R.id.userImage);
         bio = findViewById(R.id.bio);
         nickname = findViewById(R.id.nickname);
         nicknameInputLayout = findViewById(R.id.nicknameInputLayout);
         bioInputLayout = findViewById(R.id.bioInputLayout);
+
+        nameTitle.setText(globals.getUserRole() == 2? "Empresa" : "Nickname");
 
         database.buscarEAdicionarAvatares(globals.getId(), avatares -> {
             float density = getResources().getDisplayMetrics().density;
@@ -98,6 +109,10 @@ public class PerfilEdit extends AppCompatActivity {
             intent.putExtra("openFragment", "perfil");
             startActivity(intent);
             database.alterarAvatarAtual(globals.getId(), avatarSelecionado);
+            globals.setNickname(nickname.getText().toString());
+            globals.setBio(bio.getText().toString());
+            ProfileUser profileUser = new ProfileUser(globals.getId(), nickname.getText().toString(), bio.getText().toString());
+            postgresqlAPI.updateProfile(profileUser);
             globals.setUserProfileImage(avatarSelecionado);
             finish();
         });
@@ -116,22 +131,31 @@ public class PerfilEdit extends AppCompatActivity {
         }
     };
 
-    // Função para validar os campos e ajustar a cor e habilitação do botão
     @SuppressLint("ResourceType")
     private void validateFields() {
-        boolean isNicknameFilled = !Objects.requireNonNull(nickname.getText()).toString().isEmpty();
-        boolean isBioFilled = !Objects.requireNonNull(bio.getText()).toString().isEmpty();
+        boolean isNicknameValid = Objects.requireNonNull(nickname.getText()).length() >= 3;
+        boolean isBioValid = Objects.requireNonNull(bio.getText()).length() <= 230;
 
-        boolean isBioLengthValid = bio.getText().length() <= 230;
+        boolean enable = isNicknameValid && isBioValid;
 
-        boolean enable = isNicknameFilled && isBioFilled && isBioLengthValid;
+        TextView saveBtn = findViewById(R.id.saveBtn);
+        saveBtn.setEnabled(enable);
 
-//        enterBtn.setEnabled(enable);
+        int color = enable ? R.color.rosaEscuraoClaro : R.color.cinza;
+        saveBtn.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(color, getTheme())));
 
-        globals.setNickname(nickname.getText().toString());
-        globals.setBio(bio.getText().toString());
+        if (!isNicknameValid) {
+            nicknameInputLayout.setError("O nickname deve ter pelo menos 3 caracteres.");
+        } else {
+            nicknameInputLayout.setError(null);
+        }
 
-        int color = enable ? R.color.rosaEscurao : R.color.rosaEscuraoDesativado;
-//        enterBtn.setBackgroundTintList(getResources().getColorStateList(color, getTheme()));
+        if (!isBioValid) {
+            bioInputLayout.setError("A bio deve ter no máximo 230 caracteres.");
+        } else {
+            bioInputLayout.setError(null);
+        }
     }
+
+
 }

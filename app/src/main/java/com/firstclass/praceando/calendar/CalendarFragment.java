@@ -1,6 +1,7 @@
 package com.firstclass.praceando.calendar;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -69,6 +70,8 @@ public class CalendarFragment extends Fragment {
         CalendarEventItemAdapter calendarEventItemAdaptereventAdapter = new CalendarEventItemAdapter(eventList);
         recyclerView.setAdapter(calendarEventItemAdaptereventAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
+        view.findViewById(R.id.annotation).setOnClickListener(v -> startActivity(new Intent(requireActivity(), Anotations.class)));
 
         return view;
     }

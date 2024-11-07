@@ -3,13 +3,19 @@ import static android.content.ContentValues.TAG;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.ExifInterface;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.ImageView;
 import androidx.annotation.Nullable;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,27 +64,27 @@ public class Database {
             }
         });
     }
-        public void uploadFoto (String eventoId, ImageView foto){
-            // Configura a imagem
-            Bitmap bitmap = ((BitmapDrawable) foto.getDrawable()).getBitmap();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos);
-            byte[] databyte = baos.toByteArray();
+    public void uploadFoto (String eventoId, ImageView foto){
+        // Configura a imagem
+        Bitmap bitmap = ((BitmapDrawable) foto.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos);
+        byte[] databyte = baos.toByteArray();
 
-            StorageReference storageRef = storage.getReference().child("eventos/" + eventoId + "/foto_" + System.currentTimeMillis() + ".jpg");
+        StorageReference storageRef = storage.getReference().child("eventos/" + eventoId + "/foto_" + System.currentTimeMillis() + ".jpg");
 
-            UploadTask uploadTask = storageRef.putBytes(databyte);
-            uploadTask.addOnSuccessListener(taskSnapshot -> {
-                storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                    String fotoUrl = uri.toString();
-                    salvarFotoNoFirestore(eventoId, fotoUrl);
-                });
-            }).addOnFailureListener(e -> {
-                e.printStackTrace();
+        UploadTask uploadTask = storageRef.putBytes(databyte);
+        uploadTask.addOnSuccessListener(taskSnapshot -> {
+            storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                String fotoUrl = uri.toString();
+                salvarFotoNoFirestore(eventoId, fotoUrl);
             });
-        }
+        }).addOnFailureListener(e -> {
+            e.printStackTrace();
+        });
+    }
 
-        private void salvarFotoNoFirestore (String eventoId, String fotoUrl){
+    private void salvarFotoNoFirestore (String eventoId, String fotoUrl){
 
             fotosEventosRef.document(eventoId).get().addOnSuccessListener(documentSnapshot -> {
                 ArrayList<String> fotosUrls;
@@ -112,17 +118,14 @@ public class Database {
     public void criarInventario(long usuarioId) {
         String urlPadrao = "https://firebasestorage.googleapis.com/v0/b/praceando-dbad6.appspot.com/o/avatars%2Fbelha.png?alt=media&token=252fa23d-8369-4cb0-a7f2-6a5c39e9d522";
 
-        // Criando o mapa de dados para o inventário
         Map<String, Object> inventario = new HashMap<>();
         inventario.put("dt_atualizacao", FieldValue.serverTimestamp());
         inventario.put("avatar_atual", urlPadrao);
 
-        // Criando a lista de avatares com a URL padrão
         List<String> avatares = new ArrayList<>();
         avatares.add(urlPadrao);
         inventario.put("avatares", avatares);
 
-        // Adicionando o documento ao Firestore com o ID do usuário
         db.collection("inventario").document(String.valueOf(usuarioId))
                 .set(inventario)
                 .addOnSuccessListener(aVoid -> Log.d("FIREBASE", "Inventário criado com sucesso!"))
@@ -184,6 +187,47 @@ public class Database {
                 .update("avatares", FieldValue.arrayUnion(novaUrlAvatar))
                 .addOnSuccessListener(aVoid -> Log.d(TAG, "Avatar adicionado com sucesso à lista de avatares."))
                 .addOnFailureListener(e -> Log.e(TAG, "Erro ao adicionar avatar à lista de avatares", e));
+    }
+
+    public void criarAnotacao(long usuarioId) {
+        Map<String, Object> anotacao = new HashMap<>();
+        anotacao.put("dt_atualizacao", FieldValue.serverTimestamp());
+        anotacao.put("anotacao", "");
+
+        db.collection("anotacoes").document(String.valueOf(usuarioId))
+                .set(anotacao)
+                .addOnSuccessListener(aVoid -> Log.d("FIREBASE", "Anotação criado com sucesso!"))
+                .addOnFailureListener(e -> Log.w("FIREBASE", "Erro ao criar anotação", e));
+    }
+
+    public void alterarAnotacao(long usuarioId, @NonNull String anotacaoNova) {
+        db.collection("anotacoes").document(String.valueOf(usuarioId))
+                .update("anotacao", anotacaoNova)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d(TAG, "Anotação atualizada com sucesso no Firestore.");
+                })
+                .addOnFailureListener(e -> Log.w(TAG, "Erro ao atualizar anotação no Firestore", e));
+    }
+
+    public void buscarAnotacao(long usuarioId, AvatarCallback callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("anotacoes").document(String.valueOf(usuarioId))
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        String anotacao = documentSnapshot.getString("anotacao");
+                        callback.onAvatarRetrieved(anotacao);
+                    } else {
+                        String message = "Documento não encontrado para o ID: " + usuarioId;
+                        callback.onError(message);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    String message = "Erro ao buscar anotação ";
+                    Log.w("FIREBASE", message, e);
+                    callback.onError(message);
+                });
     }
 
 }

@@ -35,6 +35,19 @@
         android:layout_marginStart="30dp"
         />
 
+    <TextView
+        android:id="@+id/annotation"
+        android:layout_width="wrap_content"
+        android:layout_height="21dp"
+        android:text="Anotações"
+        android:textSize="13sp"
+        android:fontFamily="@font/montserrat_medium"
+        android:textColor="@color/rosaEscuro"
+        android:layout_gravity="end"
+        android:layout_marginTop="405dp"
+        android:layout_marginEnd="30dp"
+        />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1.5dp"

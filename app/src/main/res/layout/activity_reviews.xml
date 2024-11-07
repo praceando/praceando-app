@@ -39,15 +39,15 @@
         android:textSize="24sp"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
-        android:layout_marginTop="55dp"/>
+        android:layout_marginTop="50dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/commentsRecyclerView"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         tools:listitem="@layout/item_review"
         android:layout_marginTop="165dp"
-        android:layout_gravity="bottom"/>
+        android:layout_gravity="bottom|center"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addReviewBtn"

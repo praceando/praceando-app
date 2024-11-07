@@ -12,6 +12,7 @@ import android.text.style.StyleSpan;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -84,20 +85,22 @@ public class EventCreationPayment extends AppCompatActivity {
         Evento createEvento = new Evento(Long.parseLong(localeId), globals.getId(), title, description, startDateString, startTime, endDateString, endTime);
         Evento2 evento = new Evento2(createEvento, tags);
 
+        Log.e("EVENTOO", evento+"");
         postgresqlAPI.createEvento(evento, new CreateEventoCallback() {
 
             @Override
             public void onResponse(CreateEventoResponse response) {
+                Toast.makeText(EventCreationPayment.this, "Evento criado!", Toast.LENGTH_SHORT).show();
                 postgresqlAPI.createCompra(new CreateCompra(globals.getId(), response.getIdEvento(), price), new CreateCompraCallback() {
                     @Override
                     public void onSuccess(CreateCompraResponse response) {
                         postgresqlAPI.pagamento(response.getIdCompra());
-                        globals.setUserProfileImage("https://firebasestorage.googleapis.com/v0/b/praceando-dbad6.appspot.com/o/avatars%2Fbelha.png?alt=media&token=252fa23d-8369-4cb0-a7f2-6a5c39e9d522");
+
                     }
 
                     @Override
                     public void onError(String errorMessage) {
-
+                        Log.e("API", "erro ao criar compra     "+errorMessage);
                     }
                 });
 
@@ -117,7 +120,6 @@ public class EventCreationPayment extends AppCompatActivity {
 
                 for (int i = 0; i < imagesUri.size(); i++) {
                     int finalI = i;
-                    // Usando postDelayed para criar um atraso entre as chamadas
                     handler.postDelayed(() -> {
                         ImageView imageView = new ImageView(EventCreationPayment.this);
                         Picasso.get().load(imagesUri.get(finalI)).into(imageView, new com.squareup.picasso.Callback() {
@@ -130,7 +132,6 @@ public class EventCreationPayment extends AppCompatActivity {
 
                             @Override
                             public void onError(Exception e) {
-                                // Trate a falha ao carregar a imagem
                                 e.printStackTrace();
                             }
                         });
