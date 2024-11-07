@@ -50,6 +50,7 @@ public class EventCreationPayment extends AppCompatActivity {
     private PostgresqlAPI postgresqlAPI = new PostgresqlAPI();
     private MongoAPI mongoAPI = new MongoAPI();
     private double price;
+    private ArrayList<Uri> imagesUri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +64,72 @@ public class EventCreationPayment extends AppCompatActivity {
 
         TextView adPriceTxt = findViewById(R.id.adPrice);
         findViewById(R.id.returnArrow).setOnClickListener(v -> finish());
-        findViewById(R.id.finishBtn).setOnClickListener(v -> navigateToHome());
+        findViewById(R.id.finishBtn).setOnClickListener(v -> {
+            Evento createEvento = new Evento(Long.parseLong(localeId), globals.getId(), title, description, startDateString, startTime, endDateString, endTime);
+            Evento2 evento = new Evento2(createEvento, tags);
+
+            postgresqlAPI.createEvento(evento, new CreateEventoCallback() {
+
+                @Override
+                public void onResponse(CreateEventoResponse response) {
+                    Toast.makeText(EventCreationPayment.this, "Evento criado!", Toast.LENGTH_SHORT).show();
+                    navigateToHome();
+                    postgresqlAPI.createCompra(new CreateCompra(globals.getId(), response.getIdEvento(), price), new CreateCompraCallback() {
+                        @Override
+                        public void onSuccess(CreateCompraResponse response) {
+                            postgresqlAPI.pagamento(response.getIdCompra());
+
+                        }
+
+                        @Override
+                        public void onError(String errorMessage) {
+                            Log.e("API", "erro ao criar compra     "+errorMessage);
+                        }
+                    });
+
+                    mongoAPI.createRecorrencia(new Recorrencia("Diaria", response.getIdEvento()), new RecorrenciaCallback() {
+                        @Override
+                        public void onSuccess(Recorrencia recorrencia) {
+                            Log.e("API", "recorrencia criada");
+                        }
+
+                        @Override
+                        public void onError(String errorMessage) {
+                            Log.e("API", "erro ao criar recorrencia     "+errorMessage);
+                        }
+                    });
+
+                    Handler handler = new Handler(Looper.getMainLooper());
+
+                    for (int i = 0; i < imagesUri.size(); i++) {
+                        int finalI = i;
+                        handler.postDelayed(() -> {
+                            ImageView imageView = new ImageView(EventCreationPayment.this);
+                            Picasso.get().load(imagesUri.get(finalI)).into(imageView, new com.squareup.picasso.Callback() {
+                                @Override
+                                public void onSuccess() {
+                                    Database database = new Database();
+                                    // A imagem foi carregada com sucesso
+                                    database.uploadFoto(String.valueOf(response.getIdEvento()), imageView);
+                                }
+
+                                @Override
+                                public void onError(Exception e) {
+                                    e.printStackTrace();
+                                }
+                            });
+                        }, finalI * 700);
+                    }
+
+                }
+
+                @Override
+                public void onError(String errorMessage) {
+                    Log.e("EVENTO", errorMessage);
+                }
+            });
+
+        });
 
         TextView durationDescription = findViewById(R.id.durationDescription);
         TextView adDescription = findViewById(R.id.adDescription);
@@ -75,77 +141,11 @@ public class EventCreationPayment extends AppCompatActivity {
 
         title = getIntent().getStringExtra("title");
         description = getIntent().getStringExtra("description");
-        ArrayList<Uri> imagesUri = getIntent().getParcelableArrayListExtra("imagesUri");
+        imagesUri = getIntent().getParcelableArrayListExtra("imagesUri");
         localeId = getIntent().getStringExtra("localeId");
         startTime = getIntent().getStringExtra("startTime");
         endTime = getIntent().getStringExtra("endTime");
         tags = getIntent().getStringArrayListExtra("tags").toArray(new String[0]);
-
-
-        Evento createEvento = new Evento(Long.parseLong(localeId), globals.getId(), title, description, startDateString, startTime, endDateString, endTime);
-        Evento2 evento = new Evento2(createEvento, tags);
-
-        Log.e("EVENTOO", evento+"");
-        postgresqlAPI.createEvento(evento, new CreateEventoCallback() {
-
-            @Override
-            public void onResponse(CreateEventoResponse response) {
-                Toast.makeText(EventCreationPayment.this, "Evento criado!", Toast.LENGTH_SHORT).show();
-                postgresqlAPI.createCompra(new CreateCompra(globals.getId(), response.getIdEvento(), price), new CreateCompraCallback() {
-                    @Override
-                    public void onSuccess(CreateCompraResponse response) {
-                        postgresqlAPI.pagamento(response.getIdCompra());
-
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-                        Log.e("API", "erro ao criar compra     "+errorMessage);
-                    }
-                });
-
-                mongoAPI.createRecorrencia(new Recorrencia("Diaria", response.getIdEvento()), new RecorrenciaCallback() {
-                    @Override
-                    public void onSuccess(Recorrencia recorrencia) {
-                        Log.e("API", "recorrencia criada");
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-                        Log.e("API", "erro ao criar recorrencia     "+errorMessage);
-                    }
-                });
-
-                Handler handler = new Handler(Looper.getMainLooper());
-
-                for (int i = 0; i < imagesUri.size(); i++) {
-                    int finalI = i;
-                    handler.postDelayed(() -> {
-                        ImageView imageView = new ImageView(EventCreationPayment.this);
-                        Picasso.get().load(imagesUri.get(finalI)).into(imageView, new com.squareup.picasso.Callback() {
-                            @Override
-                            public void onSuccess() {
-                                Database database = new Database();
-                                // A imagem foi carregada com sucesso
-                                database.uploadFoto(String.valueOf(response.getIdEvento()), imageView);
-                            }
-
-                            @Override
-                            public void onError(Exception e) {
-                                e.printStackTrace();
-                            }
-                        });
-                    }, finalI * 700);
-                }
-
-            }
-
-            @Override
-            public void onError(String errorMessage) {
-                Log.e("EVENTO", errorMessage);
-            }
-        });
-
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
 
